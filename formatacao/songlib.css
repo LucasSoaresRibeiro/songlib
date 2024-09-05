@@ -1,0 +1,283 @@
+@import url('https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
+h1 {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    text-transform: uppercase;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 700;
+    font-size: xx-large;
+    color: #0675bc  !important;
+    line-height: 50px;
+    text-decoration: underline;
+    margin-bottom: -3px;
+}
+
+h2 {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    text-transform: uppercase;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 700;
+    font-size: 50px;
+    color: #0675bc  !important;
+    margin-top: 100px;
+}
+
+h3 {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: 32px;
+    color: #626262 !important;
+    line-height: 55px;
+    text-transform: uppercase;
+    
+}
+
+h4 {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 250;
+    font-size: 20px;
+    color: #626262 !important;
+    line-height: 55px;
+}
+
+
+.cover-date {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 250;
+    font-size: 30px;
+    color: #626262 !important;
+    text-transform: none;
+    font-style: unset;
+}
+
+.cover-music-name {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 600;
+    font-size: 25px;
+    color: #626262 !important;
+    line-height: 22px;
+    margin-left: 20px;
+    text-transform: uppercase;
+    letter-spacing: -1px;
+}
+
+.cover-key {
+	font-weight: 700;
+    line-height: normal;
+	color: #0675bc !important;
+	text-transform: initial;
+}
+
+.cover-link {
+	line-height: normal;
+	text-transform: none;
+    color: #626262 !important;
+    margin-left: 60px;
+    margin-top: -5px;
+    margin-bottom: 15px;
+}
+
+.cover-playlist-link {
+	line-height: normal;
+	text-transform: none;
+  color: #626262 !important;
+  font-size: 15px;
+  word-wrap: break-word;
+}
+
+p {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 250;
+    text-transform: uppercase;
+    color: #7e7e7e !important;
+    line-height: 5px;
+}
+
+.link {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 250;
+    color: #7e7e7e !important;
+    font-size: 13px;
+    margin-top: -5px !important;
+    text-transform: none;
+    line-height: normal;
+}
+
+.key {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+	font-optical-sizing: auto;
+
+	font-weight: 700;
+    line-height: normal;
+	color: #0675bc !important;
+	font-size: large;
+	text-transform: initial;
+}
+
+.byline {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 250;
+    color: #7e7e7e !important;
+    font-size: 10px;
+    margin-top: -5px !important;
+}
+
+.chordchart {
+	padding-top: 15px;
+}
+
+.chordchart .heading-repetition {
+font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: italic;
+    font-weight: 500;
+    font-size: small;
+    color: #fd8000 !important;
+    /* border-left-width: 3px; */
+    /* border-left-style: solid; */
+    text-decoration: none;
+    text-transform: uppercase;
+    /* padding-left: 4px; */
+    /* margin-left: -5px; */
+    margin-top: 2px;
+}
+
+.chordchart .heading {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: 13px;
+    color: #ffffff !important;
+    border-left-width: 3px !important;
+    border-left-style: solid !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+    padding-left: 4px !important;
+    margin-left: -5px !important;
+    margin-top: 1px !important;
+    background-color: #fd8000 !important;
+    width: min-content !important;
+    padding-right: 5px !important;
+    padding-top: 2px !important;
+    font-style: italic;
+}
+
+.chordchart .heading-bkp-tag-left {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 500;
+    font-size: 15px;
+    color: #ffffff !important;
+    border-left-width: 3px !important;
+    border-left-style: solid !important;
+    text-decoration: none !important;
+    text-transform: uppercase !important;
+    padding-left: 4px !important;
+    margin-left: -5px !important;
+    margin-top: -2px !important;
+    background-color: #fd8000 !important;
+    width: min-content !important;
+    padding-right: 5px !important;
+    padding-top: 2px !important;
+	right: 750px;
+    position: absolute;
+}
+
+.chordchart .chords {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+	font-optical-sizing: auto;
+	font-style: normal;
+
+	font-weight: 700;
+	color: #0675bc !important;
+	margin-left: 25px;
+	
+	font-size: 21px;
+  line-height: 16.5px;
+  letter-spacing: -2px;
+  margin-top: 2px;
+}
+
+.chordchart .lyrics  {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+	font-optical-sizing: auto;
+	font-style: normal;
+
+	font-weight: 250;
+	text-transform: uppercase;
+	color: #000000 !important;
+	margin-left: 25px;
+	
+	font-size: 21px;
+  line-height: 23px;
+  letter-spacing: -2px;
+}
+
+.titlebar {
+	float: right;
+    position: absolute;
+}
+
+.notes  {
+	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-size: 14px;
+    color: #86a !important;
+    font-style: italic;
+    padding: 0 10px;
+    clear: both;
+    border-right: 23px solid #a7f;
+    text-align: right;
+    line-height: normal;
+    position: relative;
+    right: 0;
+    margin-top: 42px;
+}
+
+.church-logo  {
+    position: absolute;
+    right: 0;
+    margin-top: -5px;
+    width: 80px;
+    height: 85px;
+    object-fit: cover;
+    object-position: left;
+}
+
+@media print {
+    h1 {
+        page-break-before: always;
+    }
+    
+    .hasslide {
+    	break-inside: avoid;
+    }
+    @page {
+      size: A4; /* DIN A4 standard, Europe */
+      margin: 4mm 15mm 4mm 15mm;
+    }
+    html, body {
+        width: 210mm;
+        /* height: 297mm; */
+        height: 282mm;
+        font-size: 11px;
+        background: #FFF;
+        overflow: visible;
+    }
+    body {
+        padding-top: 15mm;
+    }
+    
+}
