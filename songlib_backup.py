@@ -6,7 +6,7 @@ import json
 import time
 import os
 
-REPROCESSAR_MUSICAS = False
+REPROCESSAR_MUSICAS = True
 
 def salvar_backup(site_url):
 
