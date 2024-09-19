@@ -37,7 +37,7 @@ def salvar_backup(site_url):
             'title': song_element.text,
         })
 
-    songs = [song for song in songs if song['title'] is not '']
+    songs = [song for song in songs if song['title'] != '']
     
     # salva músicas
     counter = 0
