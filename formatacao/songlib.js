@@ -241,5 +241,5 @@ console.log("finalizado!");
 window.print();
 
 setTimeout(function() {
-	// window.open(whats_url);
+	window.open(whats_url);
 }, 1000);
