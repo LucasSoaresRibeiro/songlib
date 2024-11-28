@@ -8,7 +8,7 @@ h1 {
     font-style: italic;
     font-weight: 700;
     font-size: xx-large;
-    color: #0675bc  !important;
+    color: #0675bc !important;
     line-height: 50px;
     text-decoration: underline;
     margin-bottom: -3px;
@@ -21,7 +21,7 @@ h2 {
     font-style: italic;
     font-weight: 700;
     font-size: 50px;
-    color: #0675bc  !important;
+    color: #0675bc !important;
     margin-top: 100px;
 }
 
@@ -33,7 +33,7 @@ h3 {
     color: #626262 !important;
     line-height: 55px;
     text-transform: uppercase;
-    
+
 }
 
 h4 {
@@ -47,7 +47,7 @@ h4 {
 
 
 .cover-date {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 250;
     font-size: 30px;
@@ -66,30 +66,33 @@ h4 {
     margin-left: 20px;
     text-transform: uppercase;
     letter-spacing: -1px;
+    margin-top: 18px;
 }
 
 .cover-key {
-	font-weight: 700;
+    font-weight: 700;
     line-height: normal;
-	color: #0675bc !important;
-	text-transform: initial;
+    color: #0675bc !important;
+    text-transform: initial;
 }
 
 .cover-link {
-	line-height: normal;
-	text-transform: none;
+    line-height: normal;
+    text-transform: none;
     color: #626262 !important;
     margin-left: 60px;
     margin-top: -5px;
-    margin-bottom: 15px;
+    font-size: 16px;
+    margin-bottom: 13px;
+    color: #b9b9b9 !important;
 }
 
 .cover-playlist-link {
-	line-height: normal;
-	text-transform: none;
-  color: #626262 !important;
-  font-size: 15px;
-  word-wrap: break-word;
+    line-height: normal;
+    text-transform: none;
+    color: #626262 !important;
+    font-size: 15px;
+    word-wrap: break-word;
 }
 
 p {
@@ -115,14 +118,14 @@ p {
 }
 
 .key {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
-	font-optical-sizing: auto;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
 
-	font-weight: 700;
+    font-weight: 700;
     line-height: normal;
-	color: #0675bc !important;
-	font-size: large;
-	text-transform: initial;
+    color: #0675bc !important;
+    font-size: large;
+    text-transform: initial;
 }
 
 .byline {
@@ -136,11 +139,11 @@ p {
 }
 
 .chordchart {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 
 .chordchart .heading-repetition {
-font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-style: italic;
     font-weight: 500;
@@ -156,7 +159,7 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
 }
 
 .chordchart .heading {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
     font-size: 13px;
@@ -176,7 +179,7 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
 }
 
 .chordchart .heading-bkp-tag-left {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
     font-size: 15px;
@@ -192,47 +195,47 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
     width: min-content !important;
     padding-right: 5px !important;
     padding-top: 2px !important;
-	right: 750px;
+    right: 750px;
     position: absolute;
 }
 
 .chordchart .chords {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
-	font-optical-sizing: auto;
-	font-style: normal;
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
 
-	font-weight: 700;
-	color: #0675bc !important;
-	margin-left: 25px;
-	
-	font-size: 21px;
-  line-height: 16.5px;
-  letter-spacing: -2px;
-  margin-top: 2px;
+    font-weight: 700;
+    color: #0675bc !important;
+    margin-left: 25px;
+
+    font-size: 21px;
+    line-height: 16.5px;
+    letter-spacing: -2px;
+    margin-top: 2px;
 }
 
-.chordchart .lyrics  {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
-	font-optical-sizing: auto;
-	font-style: normal;
+.chordchart .lyrics {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-style: normal;
 
-	font-weight: 250;
-	text-transform: uppercase;
-	color: #000000 !important;
-	margin-left: 25px;
-	
-	font-size: 21px;
-  line-height: 23px;
-  letter-spacing: -2px;
+    font-weight: 250;
+    text-transform: uppercase;
+    color: #000000 !important;
+    margin-left: 25px;
+
+    font-size: 21px;
+    line-height: 23px;
+    letter-spacing: -2px;
 }
 
 .titlebar {
-	float: right;
+    float: right;
     position: absolute;
 }
 
-.notes  {
-	font-family: "Martian Mono", "Roboto Mono", monospace;
+.notes {
+    font-family: "Martian Mono", "Roboto Mono", monospace;
     font-size: 14px;
     color: #86a !important;
     font-style: italic;
@@ -246,7 +249,7 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
     margin-top: 42px;
 }
 
-.church-logo  {
+.church-logo {
     position: absolute;
     right: 0;
     margin-top: -5px;
@@ -260,15 +263,19 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
     h1 {
         page-break-before: always;
     }
-    
+
     .hasslide {
-    	break-inside: avoid;
+        break-inside: avoid;
     }
+
     @page {
-      size: A4; /* DIN A4 standard, Europe */
-      margin: 4mm 15mm 4mm 15mm;
+        size: A4;
+        /* DIN A4 standard, Europe */
+        margin: 4mm 15mm 4mm 15mm;
     }
-    html, body {
+
+    html,
+    body {
         width: 210mm;
         /* height: 297mm; */
         height: 282mm;
@@ -276,8 +283,9 @@ font-family: "Martian Mono", "Roboto Mono", monospace;
         background: #FFF;
         overflow: visible;
     }
+
     body {
         padding-top: 15mm;
     }
-    
+
 }

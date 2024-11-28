@@ -144,7 +144,7 @@ htmlHeader += "<hr></hr>";
 htmlHeader += "<h3>Músicas:</h3>";
 for (let index = 0; index < songDatas.length; index++) {
     htmlHeader+= `<p class='cover-music-name'>${songDatas[index].name} - <span class='cover-key'>${songDatas[index].key}</span></p>`;
-    // htmlHeader+= `<p><a class="cover-link" href="${songDatas[index].linkRef}" target="_blank"></a></p>`;
+    htmlHeader+= `<p><a class="cover-link" href="${songDatas[index].linkRef}" target="_blank"> </a></p>`;
     
     whats_msg.push('');
     whats_msg.push(`${songDatas[index].name}`);
@@ -152,21 +152,21 @@ for (let index = 0; index < songDatas.length; index++) {
     whats_msg.push(`${songDatas[index].linkRef}`);
 }
 
-// CAPA - Playlist
-htmlHeader += "<hr></hr>";
-htmlHeader += "<h4>Playlist de Referência:</h4>";
-let videoIds = []
-for (let index = 0; index < songDatas.length; index++) {
-	let videoId = YouTubeGetID(songDatas[index].linkRef);
-	if (videoId != null) {
-		videoIds.push(videoId);
-	}
-}
-let playlistLink = `http://www.youtube.com/watch_videos?video_ids=${videoIds}&start_radio=1`;
-htmlHeader += `<p><a class="cover-playlist-link" href="${playlistLink}" target="_blank"></a></p>`;
+// // CAPA - Playlist
+// htmlHeader += "<hr></hr>";
+// htmlHeader += "<h4>Playlist de Referência:</h4>";
+// let videoIds = []
+// for (let index = 0; index < songDatas.length; index++) {
+// 	let videoId = YouTubeGetID(songDatas[index].linkRef);
+// 	if (videoId != null) {
+// 		videoIds.push(videoId);
+// 	}
+// }
+// let playlistLink = `http://www.youtube.com/watch_videos?video_ids=${videoIds}&start_radio=1`;
+// htmlHeader += `<p><a class="cover-playlist-link" href="${playlistLink}" target="_blank"></a></p>`;
 
-// CAPA - Playlist QRCode
-htmlHeader += `<img width="150px" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${playlistLink}">`;
+// // CAPA - Playlist QRCode
+// htmlHeader += `<img width="150px" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${playlistLink}">`;
 
 // CAPA - Insere HTML
 var htmlObject = document.createElement('div');
@@ -233,13 +233,13 @@ headingElements.forEach((headingElement) => {
 	}
 });
 
-// send whats app message
-whats_url = `https://api.whatsapp.com/send/?phone=12982348140&text=${encodeURI(whats_msg.join('\n'))}&type=phone_number&app_absent=0`;
-console.log(whats_url);
+// // send whats app message
+// whats_url = `https://api.whatsapp.com/send/?phone=12982348140&text=${encodeURI(whats_msg.join('\n'))}&type=phone_number&app_absent=0`;
+// console.log(whats_url);
 
 console.log("finalizado!");
 window.print();
 
-setTimeout(function() {
-	window.open(whats_url);
-}, 1000);
+// setTimeout(function() {
+// 	window.open(whats_url);
+// }, 1000);
