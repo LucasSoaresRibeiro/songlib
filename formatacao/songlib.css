@@ -29,7 +29,7 @@ h3 {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
-    font-size: 32px;
+    font-size: 38px;
     color: #626262 !important;
     line-height: 55px;
     text-transform: uppercase;
@@ -60,7 +60,7 @@ h4 {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 600;
-    font-size: 25px;
+    font-size: 28px;
     color: #626262 !important;
     line-height: 22px;
     margin-left: 20px;
@@ -79,12 +79,11 @@ h4 {
 .cover-link {
     line-height: normal;
     text-transform: none;
-    color: #626262 !important;
+    color: black !important;
     margin-left: 60px;
     margin-top: -5px;
-    font-size: 16px;
+    font-size: 17px;
     margin-bottom: 13px;
-    color: #b9b9b9 !important;
 }
 
 .cover-playlist-link {
