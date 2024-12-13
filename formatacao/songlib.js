@@ -233,13 +233,13 @@ headingElements.forEach((headingElement) => {
 	}
 });
 
-// // send whats app message
-// whats_url = `https://api.whatsapp.com/send/?phone=12982348140&text=${encodeURI(whats_msg.join('\n'))}&type=phone_number&app_absent=0`;
-// console.log(whats_url);
+// send whats app message
+whats_url = `https://api.whatsapp.com/send/?phone=12982348140&text=${encodeURI(whats_msg.join('\n'))}&type=phone_number&app_absent=0`;
+console.log(whats_url);
 
 console.log("finalizado!");
 window.print();
 
-// setTimeout(function() {
-// 	window.open(whats_url);
-// }, 1000);
+setTimeout(function() {
+	window.open(whats_url);
+}, 1000);
