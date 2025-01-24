@@ -243,9 +243,11 @@ p {
     border-right: 23px solid #a7f;
     text-align: right;
     line-height: normal;
-    position: relative;
+    position: absolute !important;
     right: 0;
     margin-top: 42px;
+    width: 20%;
+    text-transform: none !important;
 }
 
 .church-logo {
