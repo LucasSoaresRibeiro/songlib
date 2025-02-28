@@ -45,6 +45,20 @@ function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
+    // Add logo click handler for home navigation
+    const logo = document.querySelector('.logo');
+    logo.style.cursor = 'pointer';
+    logo.addEventListener('click', () => {
+        const songContent = document.getElementById('songContent');
+        songContent.innerHTML = '';
+        searchInput.value = '';
+        searchResults.style.display = 'none';
+        // Update URL to remove song parameter
+        const url = new URL(window.location);
+        url.searchParams.delete('song');
+        window.history.pushState({}, '', url);
+    });
+
     searchInput.addEventListener('input', () => {
         const query = normalizeText(searchInput.value);
         if (query.length < 2) {
