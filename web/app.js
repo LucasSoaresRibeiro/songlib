@@ -85,9 +85,10 @@ function displaySearchResults(songs) {
                 createSongContent(song);
                 searchResults.style.display = 'none';
                 document.getElementById('searchInput').value = '';
-                // Update URL with song information
+                // Update URL with song information and set chords to true
                 const url = new URL(window.location);
                 url.searchParams.set('song', song.id);
+                url.searchParams.set('chords', 'true');
                 window.history.pushState({}, '', url);
             }
         });
@@ -119,19 +120,34 @@ async function createSongContent(songData) {
         <p class="author">${songData.author}</p>
         <p class="key">Key: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords">Ocultar Acordes</button>
-        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.origin}${window.location.pathname}?song=${songData.id}`)}', '_blank')">Compartilhar</button>
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')">Compartilhar</button>
     `;
     songContent.appendChild(header);
 
     // Add toggle chords functionality
     const toggleChordsBtn = header.querySelector('#toggleChords');
-    let chordsVisible = true;
+    const urlParams = new URLSearchParams(window.location.search);
+    let chordsVisible = urlParams.get('chords') !== 'false';
+    
+    // Initialize chord visibility based on URL parameter
+    if (!chordsVisible) {
+        document.querySelectorAll('.chords').forEach(chord => {
+            chord.style.display = 'none';
+        });
+        toggleChordsBtn.textContent = 'Mostrar Acordes';
+    }
+
     toggleChordsBtn.addEventListener('click', () => {
         chordsVisible = !chordsVisible;
         toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
         document.querySelectorAll('.chords').forEach(chord => {
             chord.style.display = chordsVisible ? 'block' : 'none';
         });
+        
+        // Update URL while preserving song ID
+        const url = new URL(window.location);
+        url.searchParams.set('chords', chordsVisible);
+        window.history.replaceState({}, '', url);
     });
 
     // Create chord chart content

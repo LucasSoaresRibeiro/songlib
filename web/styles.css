@@ -34,7 +34,7 @@ h1 {
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: visible;
     padding: 10px;
 }
 
@@ -43,7 +43,7 @@ h1 {
     white-space: pre-wrap;
     word-wrap: break-word;
     max-width: 100%;
-    overflow-x: hidden;
+    overflow-x: visible;
 }
 
 .chordchart .lyrics {
