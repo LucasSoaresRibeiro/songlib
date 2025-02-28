@@ -145,7 +145,6 @@ async function createSongContent(songData) {
         }
     };
     
-    /*
     try {
         // Create a temporary container for PDF generation
         const tempContainer = songContent.cloneNode(true);
@@ -170,7 +169,6 @@ async function createSongContent(songData) {
         console.error('Error generating PDF:', error);
         songContent.style.display = 'block';
     }
-    */
 }
 
 // Load song data when the page loads
