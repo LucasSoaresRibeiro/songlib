@@ -63,7 +63,10 @@ function displaySearchResults(songs) {
             <strong>${song.title}</strong>
             ${song.author ? `<br>by ${song.author}` : ''}
             ${song.key ? `<br>Key: ${song.key}` : ''}
-            <br><small>Share: <a href="?song=${song.id}" class="share-link">Direct Link</a></small>
+            <br><small>
+                Share: <a href="?song=${song.id}" class="share-link">Direct Link</a> | 
+                <a href="https://wa.me/?text=${encodeURIComponent(`${song.title}${song.author ? ' por ' + song.author : ''} - ${window.location.origin}${window.location.pathname}?song=${song.id}`)}" target="_blank" class="whatsapp-share">Share on WhatsApp</a>
+            </small>
         `;
         resultItem.addEventListener('click', (e) => {
             if (!e.target.classList.contains('share-link')) {
