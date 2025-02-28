@@ -193,9 +193,13 @@ async function createSongContent(songData) {
         if (line.trim() === '') {
             lineElement.className = 'empty-line';
             lineElement.innerHTML = '&nbsp;';
-        } else if (line.match(/^\[.*\]$/)) {
-            lineElement.className = 'heading';
-            lineElement.textContent = line.slice(1, -1).toUpperCase();
+        } else if (line.match(/^\[.*\]\s*$/)) {
+            lineElement.textContent = line.trim().slice(1, -1).toUpperCase();
+            if (line.trim().endsWith('...]')) {
+                lineElement.className = 'heading-repetition';
+            } else {
+                lineElement.className = 'heading';
+            }
         } else if (line.startsWith('.')) {
             lineElement.className = 'chords';
             lineElement.textContent = line.substring(1);
