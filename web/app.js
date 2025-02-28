@@ -1,5 +1,6 @@
 let allSongs = [];
 let chordsVisible = true; // Global variable to track chord visibility
+let songRelationships = {}; // Store song relationships
 
 async function loadAllSongs() {
     try {
@@ -8,6 +9,19 @@ async function loadAllSongs() {
         const fileContent = await response.text();
         const songFiles = fileContent.trim().split('\n');
         
+        // Load song relationships
+        const relationshipsResponse = await fetch('web/song_relationships.txt');
+        const relationshipsContent = await relationshipsResponse.text();
+        const relationships = relationshipsContent.trim().split('\n');
+        
+        // Parse relationships into a map
+        relationships.forEach(line => {
+            const relatedSongs = line.split(',');
+            relatedSongs.forEach(song => {
+                songRelationships[song] = relatedSongs.filter(s => s !== song);
+            });
+        });
+
         // Load full song data for each song file
         const songPromises = songFiles.map(async fileName => {
             const response = await fetch(`songs/${fileName}`);
@@ -168,6 +182,36 @@ async function createSongContent(songData) {
         ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
     `;
     songContent.appendChild(header);
+
+    // Add related songs section if available
+    const songFileName = `${songData.id}.json`;
+    if (songRelationships[songFileName] && songRelationships[songFileName].length > 0) {
+        const relatedSongsContainer = document.createElement('div');
+        relatedSongsContainer.className = 'related-songs';
+        relatedSongsContainer.innerHTML = '<h3>Versões Relacionadas:</h3>';
+        
+        const relatedList = document.createElement('div');
+        relatedList.className = 'related-songs-list';
+        
+        songRelationships[songFileName].forEach(relatedFileName => {
+            const relatedSong = allSongs.find(s => `${s.id}.json` === relatedFileName);
+            if (relatedSong) {
+                const relatedItem = document.createElement('button');
+                relatedItem.className = 'related-song-button';
+                relatedItem.innerHTML = `${relatedSong.title} (${relatedSong.key})`;
+                relatedItem.addEventListener('click', () => {
+                    const url = new URL(window.location);
+                    url.searchParams.set('songs', relatedSong.id);
+                    window.history.pushState({}, '', url);
+                    handleUrlChange();
+                });
+                relatedList.appendChild(relatedItem);
+            }
+        });
+        
+        relatedSongsContainer.appendChild(relatedList);
+        header.appendChild(relatedSongsContainer);
+    }
 
     // Add toggle chords functionality
     const toggleChordsBtn = header.querySelector('#toggleChords');

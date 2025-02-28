@@ -227,3 +227,44 @@ pre {
     height: 180px;
     border-radius: 8px;
 }
+/* Related Songs Styles */
+.related-songs {
+    margin-top: 15px;
+    padding: 10px;
+    background-color: #f8f9fa;
+    border-radius: 5px;
+    border: 1px solid #e9ecef;
+}
+
+.related-songs h3 {
+    margin-top: 0;
+    margin-bottom: -12px;
+    font-size: 12px;
+    color: #495057;
+}
+
+.related-songs-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.related-song-button {
+    background-color: #e9ecef;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.related-song-button:hover {
+    background-color: #dee2e6;
+    transform: translateY(-1px);
+}
+
+.related-song-button:active {
+    background-color: #ced4da;
+    transform: translateY(0);
+}
