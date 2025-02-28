@@ -118,11 +118,21 @@ async function createSongContent(songData) {
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
         <p class="key">Key: <span>${songData.key}</span></p>
-        <p class="share-options">
-            <a href="https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.origin}${window.location.pathname}?song=${songData.id}`)}" target="_blank" class="whatsapp-share">Compartilhar via WhatsApp</a>
-        </p>
+        <button id="toggleChords" class="toggle-chords">Ocultar Acordes</button>
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.origin}${window.location.pathname}?song=${songData.id}`)}', '_blank')">Compartilhar</button>
     `;
     songContent.appendChild(header);
+
+    // Add toggle chords functionality
+    const toggleChordsBtn = header.querySelector('#toggleChords');
+    let chordsVisible = true;
+    toggleChordsBtn.addEventListener('click', () => {
+        chordsVisible = !chordsVisible;
+        toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
+        document.querySelectorAll('.chords').forEach(chord => {
+            chord.style.display = chordsVisible ? 'block' : 'none';
+        });
+    });
 
     // Create chord chart content
     const chordChart = document.createElement('div');
