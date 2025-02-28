@@ -121,8 +121,8 @@ async function createSongContent(songData) {
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="key">Key: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords">Ocultar Acordes</button>
-        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
-        ${window.location.href}`)}', '_blank')">Compartilhar</button>
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n        ${window.location.href}`)}', '_blank')">Compartilhar</button>
+        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')">Ver no YouTube</button>` : ''}
     `;
     songContent.appendChild(header);
 
@@ -207,34 +207,44 @@ async function createSongContent(songData) {
             compress: true
         }
     };
-    
-    /*
-    try {
-        // Create a temporary container for PDF generation
-        const tempContainer = songContent.cloneNode(true);
-        tempContainer.style.position = 'absolute';
-        tempContainer.style.left = '0';
-        tempContainer.style.top = '0';
-        document.body.appendChild(tempContainer);
-
-        const blob = await html2pdf().set(opt).from(tempContainer).output('blob');
-        document.body.removeChild(tempContainer);
-
-        if (blob.size === 0) {
-            console.error('Generated PDF is empty');
-            return;
-        }
-
-        const pdfUrl = URL.createObjectURL(blob);
-        const pdfContainer = document.getElementById('pdfContainer');
-        pdfContainer.innerHTML = `<embed src="${pdfUrl}" type="application/pdf" width="100%" height="100%">`;
-        songContent.style.display = 'none';
-    } catch (error) {
-        console.error('Error generating PDF:', error);
-        songContent.style.display = 'block';
-    }
-    */
 }
 
-// Load song data when the page loads
+// Create and append modal elements
+const modal = document.createElement('div');
+modal.id = 'youtubeModal';
+modal.className = 'modal';
+modal.innerHTML = `
+    <div class="modal-content">
+        <span class="close-button">&times;</span>
+        <div id="youtube-container"></div>
+    </div>
+`;
+document.body.appendChild(modal);
+
+// Function to show YouTube modal
+function showYoutubeModal(url) {
+    const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/]{11})/i)?.[1];
+    if (!videoId) return;
+
+    const container = document.getElementById('youtube-container');
+    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    
+    const modal = document.getElementById('youtubeModal');
+    modal.style.display = 'block';
+
+    // Close modal when clicking the close button or outside the modal
+    const closeBtn = modal.querySelector('.close-button');
+    closeBtn.onclick = () => {
+        modal.style.display = 'none';
+        container.innerHTML = '';
+    };
+
+    window.onclick = (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+            container.innerHTML = '';
+        }
+    };
+}
+
 document.addEventListener('DOMContentLoaded', loadSongData);

@@ -118,3 +118,76 @@ h1 {
     border-radius: 4px;
     transition: background-color 0.3s;
 }
+
+.toggle-youtube {
+    background-color: #FF0000;
+    border: none;
+    color: white;
+    padding: 5px 10px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background-color 0.3s;
+}
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    right: 20px;
+    bottom: 20px;
+    width: auto;
+    height: auto;
+    background-color: transparent;
+}
+
+.modal-content {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+    width: 320px;
+    position: relative;
+    border-radius: 8px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.close-button {
+    color: white;
+    float: right;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    position: absolute;
+    right: -25px;
+    top: -25px;
+    background: rgba(0, 0, 0, 0.7);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 1;
+}
+
+.close-button:hover {
+    color: white;
+    background: rgba(0, 0, 0, 0.9);
+}
+
+#youtube-container {
+    margin: 0;
+    display: flex;
+    justify-content: flex-end;
+}
+
+#youtube-container iframe {
+    width: 320px;
+    height: 180px;
+    border-radius: 8px;
+}
