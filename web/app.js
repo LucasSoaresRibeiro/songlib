@@ -157,6 +157,11 @@ async function createSongContent(songData) {
             chord.style.display = chordsVisible ? 'block' : 'none';
         });
         
+        // Toggle compact-lyrics class on lyrics elements when chords are hidden
+        document.querySelectorAll('.lyrics').forEach(lyric => {
+            lyric.classList.toggle('compact-lyrics', !chordsVisible);
+        });
+        
         // Update URL while preserving song ID
         const url = new URL(window.location);
         url.searchParams.set('chords', chordsVisible);

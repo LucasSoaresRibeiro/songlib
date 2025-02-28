@@ -55,6 +55,12 @@ h1 {
     margin-bottom: -5px !important;
 }
 
+.chordchart .compact-lyrics {
+    white-space: normal !important;
+    font-size: 13px;
+    line-height: 1.5;
+}
+
 .chordchart .chords {
     color: #2c5282;
     font-weight: bold;
