@@ -1,4 +1,5 @@
 let allSongs = [];
+let chordsVisible = true; // Global variable to track chord visibility
 
 async function loadAllSongs() {
     try {
@@ -34,6 +35,10 @@ function normalizeText(text) {
 function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
+
+    // Initialize global chord visibility from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    chordsVisible = urlParams.get('chords') !== 'false';
 
     // Add logo click handler for home navigation
     const logo = document.querySelector('.logo');
@@ -158,7 +163,7 @@ async function createSongContent(songData) {
         <p class="author">${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="key">Tom: <span>${songData.key}</span></p>
-        <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i> Mostrar Acordes</button>
+        <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
         ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
     `;
@@ -166,16 +171,11 @@ async function createSongContent(songData) {
 
     // Add toggle chords functionality
     const toggleChordsBtn = header.querySelector('#toggleChords');
-    const urlParams = new URLSearchParams(window.location.search);
-    let chordsVisible = urlParams.get('chords') !== 'false';
     
-    // Initialize chord visibility based on URL parameter
-    if (!chordsVisible) {
-        document.querySelectorAll('.chords').forEach(chord => {
-            chord.style.display = 'none';
-        });
-        toggleChordsBtn.textContent = 'Mostrar Acordes';
-    }
+    // Initialize chord visibility based on global state
+    document.querySelectorAll('.chords').forEach(chord => {
+        chord.style.display = chordsVisible ? 'block' : 'none';
+    });
 
     toggleChordsBtn.addEventListener('click', () => {
         chordsVisible = !chordsVisible;
@@ -313,7 +313,7 @@ let songsList = [];
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
     const songsParam = urlParams.get('songs');
-    const showChords = urlParams.get('chords') !== 'false';
+    chordsVisible = urlParams.get('chords') !== 'false'; // Update global state
 
     // Parse songs parameter
     if (songsParam) {
@@ -344,13 +344,9 @@ function handleUrlChange() {
         if (song) {
             createSongContent(song);
             // Update chord visibility after content is created
-            const toggleChordsBtn = document.getElementById('toggleChords');
-            if (toggleChordsBtn) {
-                toggleChordsBtn.textContent = showChords ? 'Ocultar Acordes' : 'Mostrar Acordes';
-                document.querySelectorAll('.chords').forEach(chord => {
-                    chord.style.display = showChords ? 'block' : 'none';
-                });
-            }
+            document.querySelectorAll('.chords').forEach(chord => {
+                chord.style.display = chordsVisible ? 'block' : 'none';
+            });
             // Add song navigation controls
             addSongNavigation();
         }
@@ -369,9 +365,9 @@ function addSongNavigation() {
     const navContainer = document.createElement('div');
     navContainer.className = 'song-navigation';
     navContainer.innerHTML = `
-        <button id="prevSong" ${currentSongIndex === 0 ? 'disabled' : ''}>&lt; Previous</button>
+        <button id="prevSong" ${currentSongIndex === 0 ? 'disabled' : ''}>&lt; Anterior</button>
         <span>${currentSongIndex + 1} / ${songsList.length}</span>
-        <button id="nextSong" ${currentSongIndex === songsList.length - 1 ? 'disabled' : ''}>Next &gt;</button>
+        <button id="nextSong" ${currentSongIndex === songsList.length - 1 ? 'disabled' : ''}>Próxima &gt;</button>
     `;
 
     // Add navigation event listeners
@@ -381,7 +377,23 @@ function addSongNavigation() {
             const urlParams = new URLSearchParams(window.location.search);
             const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
             if (song) {
+                // Close YouTube modal if open
+                const modal = document.getElementById('youtubeModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    const container = document.getElementById('youtube-container');
+                    if (container) container.innerHTML = '';
+                }
                 createSongContent(song);
+                // Update chord visibility after content is created
+                document.querySelectorAll('.chords').forEach(chord => {
+                    chord.style.display = chordsVisible ? 'block' : 'none';
+                });
+                // Update toggle button text
+                const toggleChordsBtn = document.getElementById('toggleChords');
+                if (toggleChordsBtn) {
+                    toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
+                }
                 addSongNavigation();
             }
         }
@@ -393,7 +405,23 @@ function addSongNavigation() {
             const urlParams = new URLSearchParams(window.location.search);
             const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
             if (song) {
+                // Close YouTube modal if open
+                const modal = document.getElementById('youtubeModal');
+                if (modal) {
+                    modal.style.display = 'none';
+                    const container = document.getElementById('youtube-container');
+                    if (container) container.innerHTML = '';
+                }
                 createSongContent(song);
+                // Update chord visibility after content is created
+                document.querySelectorAll('.chords').forEach(chord => {
+                    chord.style.display = chordsVisible ? 'block' : 'none';
+                });
+                // Update toggle button text
+                const toggleChordsBtn = document.getElementById('toggleChords');
+                if (toggleChordsBtn) {
+                    toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
+                }
                 addSongNavigation();
             }
         }
