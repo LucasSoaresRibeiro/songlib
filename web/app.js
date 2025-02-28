@@ -179,7 +179,8 @@ async function createSongContent(songData) {
 
     toggleChordsBtn.addEventListener('click', () => {
         chordsVisible = !chordsVisible;
-        toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
+        // toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
+        toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
         document.querySelectorAll('.chords').forEach(chord => {
             chord.style.display = chordsVisible ? 'block' : 'none';
         });
