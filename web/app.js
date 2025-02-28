@@ -93,20 +93,43 @@ function displaySearchResults(songs) {
             ${song.author ? `<br>por ${song.author}` : ''}
             ${song.key ? `<br>Tom: ${song.key}` : ''}
             ${matchedPhrase ? `<br><span class="matched-phrase">...${matchedPhrase}...</span>` : ''}
+            <div class="search-result-actions">
+                <button class="add-to-list"><i class="fas fa-plus"></i> Add to List</button>
+            </div>
         `;
+
+        // Make the entire result item clickable
+        resultItem.style.cursor = 'pointer';
         resultItem.addEventListener('click', (e) => {
-            if (!e.target.classList.contains('share-link')) {
+            // Don't trigger if clicking the Add to List button
+            if (!e.target.closest('.add-to-list')) {
                 createSongContent(song);
                 searchResults.style.display = 'none';
                 document.getElementById('searchInput').value = '';
-                // Update URL with song information and set chords to true
                 const url = new URL(window.location);
                 url.searchParams.set('songs', song.id);
                 url.searchParams.set('chords', 'true');
                 window.history.pushState({}, '', url);
-                handleUrlChange(); // Call handleUrlChange after updating URL
+                handleUrlChange();
             }
         });
+
+        // Add to List button click handler
+        resultItem.querySelector('.add-to-list').addEventListener('click', (e) => {
+            e.stopPropagation();
+            const url = new URL(window.location);
+            const currentSongs = url.searchParams.get('songs');
+            const songIds = currentSongs ? currentSongs.split(',') : [];
+            
+            if (!songIds.includes(song.id)) {
+                songIds.push(song.id);
+                url.searchParams.set('songs', songIds.join(','));
+                url.searchParams.set('chords', 'true');
+                window.history.pushState({}, '', url);
+                handleUrlChange();
+            }
+        });
+
         searchResults.appendChild(resultItem);
     });
 }
