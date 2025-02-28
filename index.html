@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Músicas Maranata</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="web/chordsheetjs.bundle.min.js"></script>
     <link rel="stylesheet" href="formatacao/songlib.css">
     <link rel="stylesheet" href="web/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <script src="web/app.js" defer></script>
+    <script src="web/transpose.js" type="module" defer></script>
     <style>
         body {
             font-family: "Martian Mono", "Roboto Mono", monospace;
@@ -91,6 +93,32 @@
         }
         .search-result-item:last-child {
             border-bottom: none;
+        }
+
+        .transpose-container {
+            margin: 10px 0;
+            font-family: inherit;
+        }
+
+        .transpose-select {
+            padding: 5px;
+            border: 2px solid #ccc;
+            border-radius: 4px;
+            font-family: inherit;
+            font-size: 14px;
+            margin-left: 5px;
+            background-color: white;
+            cursor: pointer;
+        }
+
+        .transpose-select:hover {
+            border-color: #0675bc;
+        }
+
+        .transpose-select:focus {
+            outline: none;
+            border-color: #0675bc;
+            box-shadow: 0 0 3px rgba(6, 117, 188, 0.3);
         }
     </style>
 </head>

@@ -104,6 +104,28 @@ async function loadSongData() {
     }
 }
 
+function handleKeyChange(event, originalKey) {
+    const newKey = event.target.value;
+    const chordChart = document.querySelector('.chordchart');
+    if (!chordChart) return;
+
+    const semitones = calculateSemitones(originalKey, newKey);
+    const transposer = new SongTransposer();
+    transposer.transposeSong(chordChart, semitones);
+}
+
+function calculateSemitones(fromKey, toKey) {
+    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+    const fromIndex = notes.indexOf(fromKey);
+    const toIndex = notes.indexOf(toKey);
+    if (fromIndex === -1 || toIndex === -1) return 0;
+
+    let semitones = toIndex - fromIndex;
+    if (semitones < -6) semitones += 12;
+    if (semitones > 6) semitones -= 12;
+    return semitones;
+}
+
 async function createSongContent(songData) {
     const songContent = document.getElementById('songContent');
     // Clear existing content before displaying new song
@@ -118,7 +140,15 @@ async function createSongContent(songData) {
     header.innerHTML = `
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
-        <p class="key">Key: <span>${songData.key}</span></p>
+        <div class="key-controls">
+            <p class="key">Tom: 
+                <select id="keySelect" class="key-select" onchange="handleKeyChange(event, '${songData.key}')">
+                    ${['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'].map(k => 
+                        `<option value="${k}" ${k === songData.key ? 'selected' : ''}>${k}</option>`
+                    ).join('')}
+                </select>
+            </p>
+        </div>
         <button id="toggleChords" class="toggle-chords">Ocultar Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')">Compartilhar</button>
     `;

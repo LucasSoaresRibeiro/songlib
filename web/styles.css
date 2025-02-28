@@ -118,3 +118,45 @@ h1 {
     border-radius: 4px;
     transition: background-color 0.3s;
 }
+.key-select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 16px;
+    margin-left: 8px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.key-select:hover {
+    border-color: #888;
+}
+
+.key-controls {
+    margin: 10px 0;
+}
+
+.key-select {
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+    background-color: white;
+    cursor: pointer;
+}
+
+.key-select:hover {
+    border-color: #666;
+}
+
+.key-select:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 0 0 2px rgba(0,123,255,.25);
+}
+.key {
+    margin: 0;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+}
