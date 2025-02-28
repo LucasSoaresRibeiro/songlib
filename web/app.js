@@ -177,13 +177,9 @@ async function createSongContent(songData) {
         chord.style.display = chordsVisible ? 'block' : 'none';
     });
 
-    // Initialize compact-lyrics class based on global state
-    document.querySelectorAll('.lyrics').forEach(lyric => {
-        lyric.classList.toggle('compact-lyrics', !chordsVisible);
-    });
-
     toggleChordsBtn.addEventListener('click', () => {
         chordsVisible = !chordsVisible;
+        // toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
         toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
         document.querySelectorAll('.chords').forEach(chord => {
             chord.style.display = chordsVisible ? 'block' : 'none';
@@ -352,6 +348,10 @@ function handleUrlChange() {
             document.querySelectorAll('.chords').forEach(chord => {
                 chord.style.display = chordsVisible ? 'block' : 'none';
             });
+            // Update lyrics compact class
+            document.querySelectorAll('.lyrics').forEach(lyric => {
+                lyric.classList.toggle('compact-lyrics', !chordsVisible);
+            });
             // Add song navigation controls
             addSongNavigation();
         }
@@ -394,6 +394,10 @@ function addSongNavigation() {
                 document.querySelectorAll('.chords').forEach(chord => {
                     chord.style.display = chordsVisible ? 'block' : 'none';
                 });
+                // Update lyrics compact class
+                document.querySelectorAll('.lyrics').forEach(lyric => {
+                    lyric.classList.toggle('compact-lyrics', !chordsVisible);
+                });
                 // Update toggle button text
                 const toggleChordsBtn = document.getElementById('toggleChords');
                 if (toggleChordsBtn) {
@@ -421,6 +425,10 @@ function addSongNavigation() {
                 // Update chord visibility after content is created
                 document.querySelectorAll('.chords').forEach(chord => {
                     chord.style.display = chordsVisible ? 'block' : 'none';
+                });
+                // Update lyrics compact class
+                document.querySelectorAll('.lyrics').forEach(lyric => {
+                    lyric.classList.toggle('compact-lyrics', !chordsVisible);
                 });
                 // Update toggle button text
                 const toggleChordsBtn = document.getElementById('toggleChords');
