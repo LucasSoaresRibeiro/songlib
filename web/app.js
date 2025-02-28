@@ -61,12 +61,8 @@ function displaySearchResults(songs) {
         resultItem.className = 'search-result-item';
         resultItem.innerHTML = `
             <strong>${song.title}</strong>
-            ${song.author ? `<br>by ${song.author}` : ''}
-            ${song.key ? `<br>Key: ${song.key}` : ''}
-            <br><small>
-                Share: <a href="?song=${song.id}" class="share-link">Direct Link</a> | 
-                <a href="https://wa.me/?text=${encodeURIComponent(`${song.title}${song.author ? ' por ' + song.author : ''} - ${window.location.origin}${window.location.pathname}?song=${song.id}`)}" target="_blank" class="whatsapp-share">Share on WhatsApp</a>
-            </small>
+            ${song.author ? `<br>por ${song.author}` : ''}
+            ${song.key ? `<br>Tom: ${song.key}` : ''}
         `;
         resultItem.addEventListener('click', (e) => {
             if (!e.target.classList.contains('share-link')) {
@@ -101,7 +97,10 @@ async function createSongContent(songData) {
     header.innerHTML = `
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
-        <p class="key">Tom: <span>${songData.key}</span></p>
+        <p class="key">Key: <span>${songData.key}</span></p>
+        <p class="share-options">
+            <a href="https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.origin}${window.location.pathname}?song=${songData.id}`)}" target="_blank" class="whatsapp-share">Compartilhar via WhatsApp</a>
+        </p>
     `;
     songContent.appendChild(header);
 
