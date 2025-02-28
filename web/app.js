@@ -16,6 +16,16 @@ async function loadAllSongs() {
 
         allSongs = await Promise.all(songPromises);
         setupSearch();
+        
+        // Check for song ID in URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const songId = urlParams.get('song');
+        if (songId) {
+            const song = allSongs.find(s => s.id === songId);
+            if (song) {
+                createSongContent(song);
+            }
+        }
     } catch (error) {
         console.error('Error loading songs:', error);
     }
@@ -53,11 +63,14 @@ function displaySearchResults(songs) {
             <strong>${song.title}</strong>
             ${song.author ? `<br>by ${song.author}` : ''}
             ${song.key ? `<br>Key: ${song.key}` : ''}
+            <br><small>Share: <a href="?song=${song.id}" class="share-link">Direct Link</a></small>
         `;
-        resultItem.addEventListener('click', () => {
-            createSongContent(song);
-            searchResults.style.display = 'none';
-            document.getElementById('searchInput').value = '';
+        resultItem.addEventListener('click', (e) => {
+            if (!e.target.classList.contains('share-link')) {
+                createSongContent(song);
+                searchResults.style.display = 'none';
+                document.getElementById('searchInput').value = '';
+            }
         });
         searchResults.appendChild(resultItem);
     });
