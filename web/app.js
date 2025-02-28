@@ -91,23 +91,23 @@ async function createSongContent(songData) {
 
     // Create chord chart content
     const chordChart = document.createElement('div');
-    chordChart.className = 'chord-chart';
+    chordChart.className = 'chordchart';
     
     const lines = songData.chord_chart.split('\n');
     lines.forEach(line => {
-        const lineElement = document.createElement('div');
+        const lineElement = document.createElement('pre');
         
         if (line.trim() === '') {
             lineElement.className = 'empty-line';
             lineElement.innerHTML = '&nbsp;';
         } else if (line.match(/^\[.*\]$/)) {
-            lineElement.className = 'section-header';
+            lineElement.className = 'heading';
             lineElement.textContent = line.toUpperCase();
         } else if (line.startsWith('.')) {
-            lineElement.className = 'chord-line';
+            lineElement.className = 'chords';
             lineElement.textContent = line.substring(1);
         } else {
-            lineElement.className = 'lyric-line';
+            lineElement.className = 'lyrics';
             lineElement.textContent = line.toUpperCase();
         }
         
@@ -145,6 +145,7 @@ async function createSongContent(songData) {
         }
     };
     
+    /*
     try {
         // Create a temporary container for PDF generation
         const tempContainer = songContent.cloneNode(true);
@@ -169,6 +170,7 @@ async function createSongContent(songData) {
         console.error('Error generating PDF:', error);
         songContent.style.display = 'block';
     }
+    */
 }
 
 // Load song data when the page loads
