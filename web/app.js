@@ -99,7 +99,7 @@ function displaySearchResults(songs) {
             ${song.key ? `<br>Tom: ${song.key}` : ''}
             ${matchedPhrase ? `<br><span class="matched-phrase">...${matchedPhrase}...</span>` : ''}
             <div class="search-result-actions">
-                <button class="add-to-list"><i class="fas fa-plus"></i> Add to List</button>
+                <button class="add-to-list"><i class="fas fa-plus"></i> Adicionar na Lista</button>
             </div>
         `;
 
