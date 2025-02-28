@@ -85,6 +85,10 @@ function displaySearchResults(songs) {
                 createSongContent(song);
                 searchResults.style.display = 'none';
                 document.getElementById('searchInput').value = '';
+                // Update URL with song information
+                const url = new URL(window.location);
+                url.searchParams.set('song', song.id);
+                window.history.pushState({}, '', url);
             }
         });
         searchResults.appendChild(resultItem);
