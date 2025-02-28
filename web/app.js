@@ -1,7 +1,7 @@
 let allSongs = [];
 
 async function loadAllSongs() {
-    
+
     try {
         const response = await fetch('../songs/');
         const files = await response.text();
@@ -13,7 +13,7 @@ async function loadAllSongs() {
             .filter(href => href && href.endsWith('.json'));
 
         const songPromises = jsonFiles.map(async file => {
-            const response = await fetch(`../songs/${file}`);
+            const response = await fetch(`../${file}`);
             return await response.json();
         });
 
