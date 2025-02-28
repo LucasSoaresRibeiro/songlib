@@ -257,11 +257,23 @@ document.body.appendChild(modal);
 
 // Function to show YouTube modal
 function showYoutubeModal(url) {
-    const videoId = url.split('v=')[1]?.split('&')[0] || url.split('youtu.be/')[1]?.split('?')[0];
+    const urlObj = new URL(url);
+    let videoId;
+    
+    if (urlObj.hostname.includes('youtube.com')) {
+        videoId = urlObj.searchParams.get('v');
+    } else if (urlObj.hostname.includes('youtu.be')) {
+        videoId = urlObj.pathname.substring(1);
+    }
+    
     if (!videoId) return;
+    
+    // Get additional parameters
+    const t = urlObj.searchParams.get('t');
+    const startTime = t ? `?start=${t.replace(/[^0-9]/g, '')}` : '';
 
     const container = document.getElementById('youtube-container');
-    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${videoId}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${videoId}${startTime}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
     
     const modal = document.getElementById('youtubeModal');
     modal.style.display = 'block';
