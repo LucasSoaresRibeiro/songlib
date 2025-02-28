@@ -91,14 +91,14 @@ h1 {
 }.toggle-chords, .toggle-share, .toggle-youtube {
     border: none;
     color: #ffffff;
-    padding: 8px 15px;
+    padding: 6px 12px;
     text-align: center;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 16px;
-    margin: 4px 2px;
+    gap: 6px;
+    font-size: 14px;
+    margin: 3px 2px;
     cursor: pointer;
     border-radius: 4px;
     transition: all 0.3s ease;
@@ -129,7 +129,7 @@ h1 {
 }
 
 .toggle-chords i, .toggle-share i, .toggle-youtube i {
-    font-size: 16px;
+    font-size: 14px;
 }
 
 .modal {
