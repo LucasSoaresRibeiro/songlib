@@ -100,6 +100,7 @@ function displaySearchResults(songs) {
                 url.searchParams.set('song', song.id);
                 url.searchParams.set('chords', 'true');
                 window.history.pushState({}, '', url);
+                handleUrlChange(); // Call handleUrlChange after updating URL
             }
         });
         searchResults.appendChild(resultItem);
@@ -257,4 +258,51 @@ function showYoutubeModal(url) {
     };
 }
 
-document.addEventListener('DOMContentLoaded', loadSongData);
+// Function to handle URL changes and reload application state
+function handleUrlChange() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const songId = urlParams.get('song');
+    const showChords = urlParams.get('chords') !== 'false';
+
+    // Close YouTube modal if open
+    const modal = document.getElementById('youtubeModal');
+    if (modal) {
+        modal.style.display = 'none';
+        const container = document.getElementById('youtube-container');
+        if (container) container.innerHTML = '';
+    }
+
+    // Clear search results and input
+    const searchResults = document.getElementById('searchResults');
+    const searchInput = document.getElementById('searchInput');
+    if (searchResults) searchResults.style.display = 'none';
+    if (searchInput) searchInput.value = '';
+
+    // If songs are loaded, update the display
+    if (allSongs.length > 0) {
+        if (songId) {
+            const song = allSongs.find(s => s.id === songId);
+            if (song) {
+                createSongContent(song);
+                // Update chord visibility after content is created
+                const toggleChordsBtn = document.getElementById('toggleChords');
+                if (toggleChordsBtn) {
+                    toggleChordsBtn.textContent = showChords ? 'Ocultar Acordes' : 'Mostrar Acordes';
+                    document.querySelectorAll('.chords').forEach(chord => {
+                        chord.style.display = showChords ? 'block' : 'none';
+                    });
+                }
+            }
+        } else {
+            // Clear song content if no song ID in URL
+            const songContent = document.getElementById('songContent');
+            if (songContent) songContent.innerHTML = '';
+        }
+    }
+}
+
+// Add event listeners for URL changes and initial load
+window.addEventListener('popstate', handleUrlChange);
+document.addEventListener('DOMContentLoaded', () => {
+    loadSongData().then(() => handleUrlChange());
+});
