@@ -39,8 +39,8 @@ h1 {
 }
 
 .chordchart pre {
-    margin: 0;
     white-space: pre !important;
+    margin: 0;
     word-wrap: break-word;
     max-width: 100%;
     overflow-x: visible;
