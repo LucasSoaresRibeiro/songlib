@@ -40,7 +40,7 @@ h1 {
 
 .chordchart pre {
     margin: 0;
-    white-space: pre-wrap;
+    white-space: pre !important;
     word-wrap: break-word;
     max-width: 100%;
     overflow-x: visible;
