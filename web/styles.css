@@ -1,3 +1,9 @@
+h1 {
+    font-size: 24px;
+    line-height: 2rem;
+    margin-bottom: 10px;
+}
+
 .chords {
     -webkit-text-size-adjust: 100%;
     --highlight-bg-color: #42b983;
@@ -22,4 +28,64 @@
     line-height: 16.5px;
     letter-spacing: -2px;
     margin-top: 2px;
+}
+.chordchart {
+    font-family: monospace;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    overflow-x: hidden;
+    padding: 10px;
+}
+
+.chordchart pre {
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    max-width: 100%;
+    overflow-x: hidden;
+}
+
+.chordchart .lyrics {
+    font-size: 1rem !important;
+    line-height: 1.3;
+    margin-bottom: 0.5rem;
+    margin-left: 0px !important;
+    letter-spacing: -0.13rem;
+    margin-bottom: -5px !important;
+}
+
+.chordchart .chords {
+    color: #2c5282;
+    font-weight: bold;
+    font-size: 1rem !important;
+    line-height: 1.1;
+    margin-left: 0px !important;
+    letter-spacing: -0.13rem;
+}
+
+.chordchart .heading {
+    font-weight: bold;
+    margin-top: 1rem;
+    margin-bottom: 0.5rem;
+    color: #4a5568;
+}
+
+.chordchart .empty-line {
+    height: 1rem;
+}
+
+@media screen and (max-width: 768px) {
+    .chordchart {
+        font-size: 0.9rem;
+        padding: 5px;
+    }
+
+    .chordchart .lyrics {
+        font-size: 0.9rem;
+    }
+
+    .chordchart .chords {
+        font-size: 0.8rem;
+    }
 }

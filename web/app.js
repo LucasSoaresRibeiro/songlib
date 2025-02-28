@@ -115,7 +115,7 @@ async function createSongContent(songData) {
             lineElement.innerHTML = '&nbsp;';
         } else if (line.match(/^\[.*\]$/)) {
             lineElement.className = 'heading';
-            lineElement.textContent = line.toUpperCase();
+            lineElement.textContent = line.slice(1, -1).toUpperCase();
         } else if (line.startsWith('.')) {
             lineElement.className = 'chords';
             lineElement.textContent = line.substring(1);
