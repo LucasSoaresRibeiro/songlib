@@ -16,16 +16,6 @@ async function loadAllSongs() {
 
         allSongs = await Promise.all(songPromises);
         setupSearch();
-        
-        // Check for song ID in URL parameters
-        const urlParams = new URLSearchParams(window.location.search);
-        const songId = urlParams.get('song');
-        if (songId) {
-            const song = allSongs.find(s => s.id === songId);
-            if (song) {
-                createSongContent(song);
-            }
-        }
     } catch (error) {
         console.error('Error loading songs:', error);
     }
@@ -55,7 +45,7 @@ function setupSearch() {
         searchResults.style.display = 'none';
         // Update URL to remove song parameter
         const url = new URL(window.location);
-        url.searchParams.delete('song');
+        url.searchParams.delete('songs');
         window.history.pushState({}, '', url);
     });
 
@@ -111,7 +101,7 @@ function displaySearchResults(songs) {
                 document.getElementById('searchInput').value = '';
                 // Update URL with song information and set chords to true
                 const url = new URL(window.location);
-                url.searchParams.set('song', song.id);
+                url.searchParams.set('songs', song.id);
                 url.searchParams.set('chords', 'true');
                 window.history.pushState({}, '', url);
                 handleUrlChange(); // Call handleUrlChange after updating URL
@@ -293,11 +283,23 @@ function showYoutubeModal(url) {
     };
 }
 
+let currentSongIndex = 0;
+let songsList = [];
+
 // Function to handle URL changes and reload application state
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
-    const songId = urlParams.get('song');
+    const songsParam = urlParams.get('songs');
     const showChords = urlParams.get('chords') !== 'false';
+
+    // Parse songs parameter
+    if (songsParam) {
+        songsList = songsParam.split(',');
+        currentSongIndex = 0;
+    } else {
+        songsList = [];
+        currentSongIndex = 0;
+    }
 
     // Close YouTube modal if open
     const modal = document.getElementById('youtubeModal');
@@ -314,25 +316,69 @@ function handleUrlChange() {
     if (searchInput) searchInput.value = '';
 
     // If songs are loaded, update the display
-    if (allSongs.length > 0) {
-        if (songId) {
-            const song = allSongs.find(s => s.id === songId);
+    if (allSongs.length > 0 && songsList.length > 0) {
+        const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
+        if (song) {
+            createSongContent(song);
+            // Update chord visibility after content is created
+            const toggleChordsBtn = document.getElementById('toggleChords');
+            if (toggleChordsBtn) {
+                toggleChordsBtn.textContent = showChords ? 'Ocultar Acordes' : 'Mostrar Acordes';
+                document.querySelectorAll('.chords').forEach(chord => {
+                    chord.style.display = showChords ? 'block' : 'none';
+                });
+            }
+            // Add song navigation controls
+            addSongNavigation();
+        }
+    } else {
+        // Clear song content if no songs in URL
+        const songContent = document.getElementById('songContent');
+        if (songContent) songContent.innerHTML = '';
+    }
+}
+
+function addSongNavigation() {
+    const songContent = document.getElementById('songContent');
+    const header = songContent.querySelector('header') || songContent.querySelector('h1').parentElement;
+
+    // Create navigation container
+    const navContainer = document.createElement('div');
+    navContainer.className = 'song-navigation';
+    navContainer.innerHTML = `
+        <button id="prevSong" ${currentSongIndex === 0 ? 'disabled' : ''}>&lt; Previous</button>
+        <span>${currentSongIndex + 1} / ${songsList.length}</span>
+        <button id="nextSong" ${currentSongIndex === songsList.length - 1 ? 'disabled' : ''}>Next &gt;</button>
+    `;
+
+    // Add navigation event listeners
+    navContainer.querySelector('#prevSong').addEventListener('click', () => {
+        if (currentSongIndex > 0) {
+            currentSongIndex--;
+            const urlParams = new URLSearchParams(window.location.search);
+            const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
             if (song) {
                 createSongContent(song);
-                // Update chord visibility after content is created
-                const toggleChordsBtn = document.getElementById('toggleChords');
-                if (toggleChordsBtn) {
-                    toggleChordsBtn.textContent = showChords ? 'Ocultar Acordes' : 'Mostrar Acordes';
-                    document.querySelectorAll('.chords').forEach(chord => {
-                        chord.style.display = showChords ? 'block' : 'none';
-                    });
-                }
+                addSongNavigation();
             }
-        } else {
-            // Clear song content if no song ID in URL
-            const songContent = document.getElementById('songContent');
-            if (songContent) songContent.innerHTML = '';
         }
+    });
+
+    navContainer.querySelector('#nextSong').addEventListener('click', () => {
+        if (currentSongIndex < songsList.length - 1) {
+            currentSongIndex++;
+            const urlParams = new URLSearchParams(window.location.search);
+            const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
+            if (song) {
+                createSongContent(song);
+                addSongNavigation();
+            }
+        }
+    });
+
+    // Insert navigation after the header
+    if (songsList.length > 1) {
+        header.insertAdjacentElement('beforebegin', navContainer);
     }
 }
 

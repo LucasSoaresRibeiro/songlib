@@ -3,7 +3,39 @@ h1 {
     line-height: 2rem;
     margin-bottom: 10px;
 }
+.song-navigation {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0;
+    padding: 0.5rem;
+}
 
+.song-navigation button {
+    padding: 0.5rem 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    background-color: #fff;
+    cursor: pointer;
+    font-family: inherit;
+    transition: all 0.2s ease;
+}
+
+.song-navigation button:hover:not([disabled]) {
+    background-color: #f0f0f0;
+    border-color: #999;
+}
+
+.song-navigation button[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.song-navigation span {
+    font-size: 0.9rem;
+    color: #666;
+}
 .chords {
     -webkit-text-size-adjust: 100%;
     --highlight-bg-color: #42b983;
