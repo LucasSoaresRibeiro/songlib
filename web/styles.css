@@ -38,12 +38,12 @@ h1 {
     padding: 10px;
 }
 
-.chordchart pre {
-    white-space: pre !important;
+pre {
     margin: 0;
     word-wrap: break-word;
     max-width: 100%;
     overflow-x: visible;
+    white-space: pre !important;
 }
 
 .chordchart .lyrics {
