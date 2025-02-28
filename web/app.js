@@ -13,6 +13,8 @@ async function loadAllSongs() {
         const relationshipsResponse = await fetch('web/song_relationships.txt');
         const relationshipsContent = await relationshipsResponse.text();
         const relationships = relationshipsContent.trim().split('\n');
+
+        console.log(relationshipsResponse);
         
         // Parse relationships into a map
         relationships.forEach(line => {
