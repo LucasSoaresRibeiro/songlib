@@ -3,7 +3,7 @@ let allSongs = [];
 async function loadAllSongs() {
 
     try {
-        const response = await fetch('../songs/');
+        const response = await fetch('songs/');
         const files = await response.text();
         const parser = new DOMParser();
         const doc = parser.parseFromString(files, 'text/html');
