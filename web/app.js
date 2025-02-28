@@ -44,7 +44,8 @@ function setupSearch() {
 
         const filteredSongs = allSongs.filter(song => 
             song.title.toLowerCase().includes(query) ||
-            song.author.toLowerCase().includes(query)
+            song.author.toLowerCase().includes(query) ||
+            (song.chord_chart && song.chord_chart.toLowerCase().includes(query))
         );
 
         displaySearchResults(filteredSongs);
@@ -56,13 +57,28 @@ function displaySearchResults(songs) {
     searchResults.innerHTML = '';
     searchResults.style.display = songs.length ? 'block' : 'none';
 
+    const query = document.getElementById('searchInput').value.toLowerCase();
+
     songs.forEach(song => {
         const resultItem = document.createElement('div');
         resultItem.className = 'search-result-item';
+        
+        let matchedPhrase = '';
+        if (song.chord_chart && query.length >= 2) {
+            const lines = song.chord_chart.split('\n');
+            for (const line of lines) {
+                if (line.toLowerCase().includes(query) && !line.startsWith('.') && !line.match(/^\[.*\]$/)) {
+                    matchedPhrase = line.trim();
+                    break;
+                }
+            }
+        }
+
         resultItem.innerHTML = `
             <strong>${song.title}</strong>
             ${song.author ? `<br>por ${song.author}` : ''}
             ${song.key ? `<br>Tom: ${song.key}` : ''}
+            ${matchedPhrase ? `<br><span class="matched-phrase">...${matchedPhrase}...</span>` : ''}
         `;
         resultItem.addEventListener('click', (e) => {
             if (!e.target.classList.contains('share-link')) {
