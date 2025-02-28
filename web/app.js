@@ -1,20 +1,17 @@
 let allSongs = [];
 
 async function loadAllSongs() {
-
     try {
-        const response = await fetch('songs/');
-        const files = await response.text();
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(files, 'text/html');
-        const links = Array.from(doc.querySelectorAll('a'));
-        const jsonFiles = links
-            .map(link => link.getAttribute('href'))
-            .filter(href => href && href.endsWith('.json'));
-
-        const songPromises = jsonFiles.map(async file => {
-            const response = await fetch(`../${file}`);
-            return await response.json();
+        // Load song file list from song_files.txt
+        const response = await fetch('web/song_files.txt');
+        const fileContent = await response.text();
+        const songFiles = fileContent.trim().split('\n');
+        
+        // Load full song data for each song file
+        const songPromises = songFiles.map(async fileName => {
+            const response = await fetch(`songs/${fileName}`);
+            const songData = await response.json();
+            return songData;
         });
 
         allSongs = await Promise.all(songPromises);
