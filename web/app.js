@@ -31,21 +31,31 @@ async function loadAllSongs() {
     }
 }
 
+function normalizeText(text) {
+    return text
+        .toLowerCase()
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '') // Remove diacritics
+        .replace(/[^a-z0-9\s]/g, '') // Remove special characters
+        .replace(/\s+/g, ' ') // Normalize spaces
+        .trim();
+}
+
 function setupSearch() {
     const searchInput = document.getElementById('searchInput');
     const searchResults = document.getElementById('searchResults');
 
     searchInput.addEventListener('input', () => {
-        const query = searchInput.value.toLowerCase();
+        const query = normalizeText(searchInput.value);
         if (query.length < 2) {
             searchResults.style.display = 'none';
             return;
         }
 
         const filteredSongs = allSongs.filter(song => 
-            song.title.toLowerCase().includes(query) ||
-            song.author.toLowerCase().includes(query) ||
-            (song.chord_chart && song.chord_chart.toLowerCase().includes(query))
+            normalizeText(song.title).includes(query) ||
+            normalizeText(song.author || '').includes(query) ||
+            (song.chord_chart && normalizeText(song.chord_chart).includes(query))
         );
 
         displaySearchResults(filteredSongs);
@@ -223,7 +233,7 @@ document.body.appendChild(modal);
 
 // Function to show YouTube modal
 function showYoutubeModal(url) {
-    const videoId = url.match(/(?:youtube\.com\/(?:[^\/]+\/.+\/|(?:v|e(?:mbed)?)\/|.*[?&]v=)|youtu\.be\/)([^"&?\/]{11})/i)?.[1];
+    const videoId = url.split('v=')[1]?.split('&')[0] || url.split('youtu.be/')[1]?.split('?')[0];
     if (!videoId) return;
 
     const container = document.getElementById('youtube-container');
