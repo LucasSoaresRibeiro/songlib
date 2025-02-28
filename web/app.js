@@ -144,7 +144,7 @@ async function createSongContent(songData) {
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
-        <p class="key">Key: <span>${songData.key}</span></p>
+        <p class="key">Tom: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i> Mostrar Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
         ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
@@ -193,7 +193,7 @@ async function createSongContent(songData) {
         if (line.trim() === '') {
             lineElement.className = 'empty-line';
             lineElement.innerHTML = '&nbsp;';
-        } else if (line.match(/^\[.*\]\s*$/)) {
+        } else if (line.match(/^\s*\[.*\]\s*$/)) {
             lineElement.textContent = line.trim().slice(1, -1).toUpperCase();
             if (line.trim().endsWith('...]')) {
                 lineElement.className = 'heading-repetition';
