@@ -1,6 +1,7 @@
 let allSongs = [];
 
 async function loadAllSongs() {
+    
     try {
         const response = await fetch('../songs/');
         const files = await response.text();
