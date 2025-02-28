@@ -73,6 +73,8 @@ async function loadSongData() {
 
 async function createSongContent(songData) {
     const songContent = document.getElementById('songContent');
+    // Clear existing content before displaying new song
+    songContent.innerHTML = '';
     songContent.style.display = 'block';
     songContent.style.visibility = 'visible';
     songContent.style.position = 'relative';
