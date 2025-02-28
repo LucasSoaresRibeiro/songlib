@@ -88,50 +88,48 @@ h1 {
     .chordchart .chords {
         font-size: 0.8rem;
     }
-}
-.toggle-chords {
-    background-color: #b9b9b9;
+}.toggle-chords, .toggle-share, .toggle-youtube {
     border: none;
     color: #ffffff;
-    padding: 5px 10px;
+    padding: 8px 15px;
     text-align: center;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 4px;
-    transition: background-color 0.3s;
+    transition: all 0.3s ease;
+}
+
+.toggle-chords {
+    background-color: #b9b9b9;
+}
+
+.toggle-chords:hover {
+    background-color: #a0a0a0;
 }
 
 .toggle-share {
     background-color: #4CAF50;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
+}
+
+.toggle-share:hover {
+    background-color: #45a049;
 }
 
 .toggle-youtube {
     background-color: #FF0000;
-    border: none;
-    color: white;
-    padding: 5px 10px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
+}
+
+.toggle-youtube:hover {
+    background-color: #cc0000;
+}
+
+.toggle-chords i, .toggle-share i, .toggle-youtube i {
     font-size: 16px;
-    margin: 4px 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: background-color 0.3s;
 }
 
 .modal {
