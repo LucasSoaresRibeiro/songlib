@@ -140,14 +140,17 @@ async function createSongContent(songData) {
     header.innerHTML = `
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
+        <p class="key">Tom: <span>${songData.key}</span></p>
         <div class="key-controls">
-            <p class="key">Tom: 
-                <select id="keySelect" class="key-select" onchange="handleKeyChange(event, '${songData.key}')">
-                    ${['A', 'A#', 'B', 'C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#'].map(k => 
-                        `<option value="${k}" ${k === songData.key ? 'selected' : ''}>${k}</option>`
-                    ).join('')}
-                </select>
-            </p>
+            <div class="transpose-container">
+                <label>Transpose: 
+                    <select class="transpose-select" onchange="handleTranspose(event)">
+                        ${Array.from({length: 13}, (_, i) => i - 6).map(i => 
+                            `<option value="${i}">${i === 0 ? 'Original Key' : (i > 0 ? `+${i}` : i)}</option>`
+                        ).join('')}
+                    </select>
+                </label>
+            </div>
         </div>
         <button id="toggleChords" class="toggle-chords">Ocultar Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')">Compartilhar</button>
