@@ -81,7 +81,14 @@ def salvar_backup(site_url):
 
     driver.quit()
 
+    # Update song_files.txt with the current list of songs
+    song_files = [f"{song['id']}.json" for song in songs]
+    song_files.sort()
+    with open('web/song_files.txt', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(song_files))
+
     print(f'Total de musicas cadastradas: {len(songs)}')
+    print('song_files.txt atualizado com sucesso!')
 
 # Exemplo de uso
 URL_DO_SONGLIB = 'https://songlib.com/songs/4297/'
