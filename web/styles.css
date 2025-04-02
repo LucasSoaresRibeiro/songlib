@@ -359,8 +359,13 @@ pre {
         display: none !important;
     }
 
+    .author {
+        color: rgb(51, 51, 51) !important;
+    }
+
     .link {
         padding-top: 6px;
+        color: rgb(51, 51, 51) !important;
     }
     
     #songContent {
