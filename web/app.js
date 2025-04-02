@@ -579,3 +579,38 @@ window.addEventListener('popstate', handleUrlChange);
 document.addEventListener('DOMContentLoaded', () => {
     loadSongData().then(() => handleUrlChange());
 });
+
+
+function setupTransposeCombobox() {
+    const transposeContainer = document.createElement('div');
+    transposeContainer.className = 'transpose-container';
+    transposeContainer.innerHTML = '<label for="transpose">Transpor:</label>';
+
+    const transposeSelect = document.createElement('select');
+    transposeSelect.id = 'transpose';
+    ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].forEach(key => {
+        const option = document.createElement('option');
+        option.value = key;
+        option.textContent = key;
+        transposeSelect.appendChild(option);
+    });
+
+    transposeSelect.addEventListener('change', () => {
+        const selectedKey = transposeSelect.value;
+        transposeSong(selectedKey);
+    });
+
+    transposeContainer.appendChild(transposeSelect);
+    document.getElementById('songContent').prepend(transposeContainer);
+}
+
+function transposeSong(key) {
+    // Use ChordSheetJS library to transpose song
+    const chordChart = document.querySelector('.chordchart');
+    const transposedChart = ChordSheetJS.transpose(chordChart.textContent, key);
+    chordChart.textContent = transposedChart;
+}
+
+// Call setupTransposeCombobox when song content is created
+createSongContent(songData);
+setupTransposeCombobox();
