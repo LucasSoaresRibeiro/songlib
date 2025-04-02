@@ -190,9 +190,10 @@ async function createSongContent(songData) {
     header.innerHTML = `
         <button id="backToTable" class="back-button"><i class="fas fa-arrow-left"></i> Voltar</button>
         <h1>${songData.title}</h1>
-        <p class="author">${songData.author}</p>
+        <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
-        <p class="key">Tom: <span>${songData.key}</span></p>
+        <p class="link">REFERÊNCIA: <span>${songData.url}</span></p>
+        <p class="author key">Tom: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 

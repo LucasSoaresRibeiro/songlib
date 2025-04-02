@@ -358,6 +358,10 @@ pre {
     .song-navigation, .modal, .close-button, .back-button, .related-songs {
         display: none !important;
     }
+
+    .link {
+        padding-top: 6px;
+    }
     
     #songContent {
         width: 100% !important;
