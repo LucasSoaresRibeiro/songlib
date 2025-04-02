@@ -286,7 +286,25 @@ pre {
         background: white;
         transform: scale(1.5);
         transform-origin: top left;
+        position: relative;
     }
+    
+    /* body::after {
+        content: "";
+        position: fixed;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 100%;
+        height: 100%;
+        background-image: url('../images/logo.png');
+        background-repeat: no-repeat;
+        background-position: center center;
+        background-size: 30%;
+        opacity: 0.1;
+        z-index: -1;
+        pointer-events: none;
+    } */
     
     #landingPage, .search-container, #searchInput, #searchResults, 
     .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, 
@@ -319,12 +337,12 @@ pre {
     }
     
     .chordchart .lyrics {
-        font-size: 1.8rem !important;
+        font-size: 1.6rem !important;
         /* line-height: 2.7; */
     }
     
     .chordchart .chords {
-        font-size: 1.8rem !important;
+        font-size: 1.6rem !important;
         /* line-height: 1.62rem; */
     }
     
