@@ -308,7 +308,7 @@ pre {
     
     #landingPage, .search-container, #searchInput, #searchResults, 
     .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, 
-    .song-navigation, .modal, .close-button, .back-button {
+    .song-navigation, .modal, .close-button, .back-button, .related-songs {
         display: none !important;
     }
     

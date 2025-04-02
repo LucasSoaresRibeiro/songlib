@@ -213,6 +213,8 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
         const url = new URL(window.location);
         url.searchParams.delete('songs');
         window.history.pushState({}, '', url);
+        // Display all songs in the table when returning to home
+        displaySongsTable(allSongs);
     });
 
     // Add related songs section if available
