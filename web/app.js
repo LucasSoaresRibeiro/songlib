@@ -66,22 +66,34 @@ function setupSearch() {
         const url = new URL(window.location);
         url.searchParams.delete('songs');
         window.history.pushState({}, '', url);
+        
+        // Display all songs in the table when returning to home
+        displaySongsTable(allSongs);
     });
+
+    // Display all songs in the table initially
+    displaySongsTable(allSongs);
 
     searchInput.addEventListener('input', () => {
         const query = normalizeText(searchInput.value);
-        if (query.length < 2) {
-            searchResults.style.display = 'none';
-            return;
-        }
-
+        
+        // Filter songs based on search query
         const filteredSongs = allSongs.filter(song => 
             normalizeText(song.title).includes(query) ||
             normalizeText(song.author || '').includes(query) ||
             (song.chord_chart && normalizeText(song.chord_chart).includes(query))
         );
-
-        displaySearchResults(filteredSongs);
+        
+        // Update the table with filtered songs
+        displaySongsTable(filteredSongs);
+        
+        // Show dropdown results only if query has at least 2 characters
+        if (query.length < 2) {
+            searchResults.style.display = 'none';
+            return;
+        }
+        
+        // displaySearchResults(filteredSongs);
     });
 }
 
@@ -356,6 +368,51 @@ function showYoutubeModal(url) {
 
 let currentSongIndex = 0;
 let songsList = [];
+
+// Function to display songs in a table
+function displaySongsTable(songs) {
+    const songsTableBody = document.getElementById('songsTableBody');
+    const noResults = document.getElementById('noResults');
+    
+    // Clear existing table content
+    songsTableBody.innerHTML = '';
+    
+    // Check if there are songs to display
+    if (songs.length === 0) {
+        noResults.style.display = 'block';
+        return;
+    }
+    
+    noResults.style.display = 'none';
+    
+    // Sort songs alphabetically by title
+    const sortedSongs = [...songs].sort((a, b) => {
+        return a.title.localeCompare(b.title, 'pt-BR');
+    });
+    
+    // Add each song to the table
+    sortedSongs.forEach(song => {
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td>${song.title}</td>
+            <td>${song.author || '-'}</td>
+            <td>${song.key || '-'}</td>
+        `;
+        
+        // Add click event to open the song
+        row.addEventListener('click', () => {
+            createSongContent(song);
+            // Update URL with song ID
+            const url = new URL(window.location);
+            url.searchParams.set('songs', song.id);
+            url.searchParams.set('chords', 'true');
+            window.history.pushState({}, '', url);
+            handleUrlChange();
+        });
+        
+        songsTableBody.appendChild(row);
+    });
+}
 
 // Function to handle URL changes and reload application state
 function handleUrlChange() {
