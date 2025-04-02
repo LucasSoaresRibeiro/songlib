@@ -124,9 +124,9 @@ pre {
     }
 
     .chordchart .chords {
-        font-size: 0.8rem;
+        font-size: 0.9rem;
     }
-}.toggle-chords, .toggle-share, .toggle-youtube {
+}.toggle-chords, .toggle-share, .toggle-youtube, .toggle-print {
     border: none;
     color: #ffffff;
     padding: 6px 12px;
@@ -166,7 +166,15 @@ pre {
     background-color: #cc0000;
 }
 
-.toggle-chords i, .toggle-share i, .toggle-youtube i {
+.toggle-print {
+    background-color: #007bff;
+}
+
+.toggle-print:hover {
+    background-color: #0056b3;
+}
+
+.toggle-chords i, .toggle-share i, .toggle-youtube i, .toggle-print i {
     font-size: 14px;
 }
 
@@ -267,4 +275,60 @@ pre {
 .related-song-button:active {
     background-color: #ced4da;
     transform: translateY(0);
+}
+
+
+/* Print styles */
+@media print {
+    body {
+        margin: 0;
+        padding: 0;
+        background: white;
+        transform: scale(1.5);
+        transform-origin: top left;
+    }
+    
+    #landingPage, .search-container, #searchInput, #searchResults, 
+    .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, 
+    .song-navigation, .modal, .close-button {
+        display: none !important;
+    }
+    
+    #songContent {
+        width: 100% !important;
+        max-width: none !important;
+        padding: 0 !important;
+        margin: 0 !important;
+        box-shadow: none !important;
+    }
+    
+    .chordchart {
+        page-break-inside: avoid;
+        font-size: 12pt;
+    }
+    
+    h1 {
+        font-size: 22pt;
+        line-height: 2.7;
+        margin-top: 20;
+    }
+    
+    .author, .time-sig, .key {
+        font-size: 15pt; /* 12pt * 1.8 */
+        margin: 9px 0; /* 5px * 1.8 */
+    }
+    
+    .chordchart .lyrics {
+        font-size: 1.8rem !important;
+        /* line-height: 2.7; */
+    }
+    
+    .chordchart .chords {
+        font-size: 1.8rem !important;
+        /* line-height: 1.62rem; */
+    }
+    
+    .chordchart .heading {
+        /* font-size: 1.8rem !important; */
+    }
 }

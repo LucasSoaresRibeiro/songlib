@@ -178,8 +178,11 @@ async function createSongContent(songData) {
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="key">Tom: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
-        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})\n\n${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
+
+${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
         ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
+        <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
     `;
     songContent.appendChild(header);
 
