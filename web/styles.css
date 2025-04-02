@@ -36,6 +36,11 @@ h1 {
     font-size: 0.9rem;
     color: #666;
 }
+
+.table-container {
+    font-size: 0.9em;
+}
+
 .chords {
     -webkit-text-size-adjust: 100%;
     --highlight-bg-color: #42b983;
@@ -126,7 +131,13 @@ pre {
     .chordchart .chords {
         font-size: 0.9rem;
     }
-}.toggle-chords, .toggle-share, .toggle-youtube, .toggle-print {
+    .table-container {
+        font-size: 0.8em;
+    }
+
+}
+
+.toggle-chords, .toggle-share, .toggle-youtube, .toggle-print {
     border: none;
     color: #ffffff;
     padding: 6px 12px;
@@ -392,5 +403,11 @@ pre {
     
     .chordchart .heading {
         /* font-size: 1.8rem !important; */
+        background-color: #fd8000 !important;
+        color: #ffffff !important;
+        border-left-width: 3px !important;
+        border-left-style: solid !important;
+        -webkit-print-color-adjust: exact !important;
+        print-color-adjust: exact !important;
     }
 }
