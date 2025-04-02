@@ -308,7 +308,7 @@ pre {
     
     #landingPage, .search-container, #searchInput, #searchResults, 
     .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, 
-    .song-navigation, .modal, .close-button {
+    .song-navigation, .modal, .close-button, .back-button {
         display: none !important;
     }
     
@@ -349,4 +349,27 @@ pre {
     .chordchart .heading {
         /* font-size: 1.8rem !important; */
     }
+}
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    background-color: #0675bc;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: 14px;
+    margin-bottom: 1rem;
+    transition: background-color 0.2s ease;
+}
+
+.back-button:hover {
+    background-color: #055a8e;
+}
+
+.back-button i {
+    font-size: 12px;
 }

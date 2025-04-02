@@ -182,9 +182,13 @@ async function createSongContent(songData) {
     songContent.style.position = 'relative';
     songContent.style.overflow = 'visible';
     
+    // Hide the landing page (table) when showing a song
+    document.getElementById('landingPage').style.display = 'none';
+    
     // Create song header
     const header = document.createElement('div');
     header.innerHTML = `
+        <button id="backToTable" class="back-button"><i class="fas fa-arrow-left"></i> Voltar</button>
         <h1>${songData.title}</h1>
         <p class="author">${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
@@ -197,6 +201,19 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
     `;
     songContent.appendChild(header);
+
+    // Add back button functionality
+    const backButton = header.querySelector('#backToTable');
+    backButton.addEventListener('click', () => {
+        // Show the landing page (table)
+        document.getElementById('landingPage').style.display = 'flex';
+        // Hide song content
+        songContent.style.display = 'none';
+        // Update URL to remove song parameter
+        const url = new URL(window.location);
+        url.searchParams.delete('songs');
+        window.history.pushState({}, '', url);
+    });
 
     // Add related songs section if available
     const songFileName = `${songData.id}.json`;
@@ -424,9 +441,13 @@ function handleUrlChange() {
     if (songsParam) {
         songsList = songsParam.split(',');
         currentSongIndex = 0;
+        // Hide landing page when a song is in the URL
+        document.getElementById('landingPage').style.display = 'none';
     } else {
         songsList = [];
         currentSongIndex = 0;
+        // Show landing page when no song is in the URL
+        document.getElementById('landingPage').style.display = 'flex';
     }
 
     // Close YouTube modal if open
