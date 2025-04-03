@@ -1,7 +1,60 @@
+:root {
+    --bg-color: #ffffff;
+    --text-color: #000000;
+    --border-color: #ccc;
+    --hover-bg: #f0f0f0;
+    --chord-color: #0675bc;
+    --heading-bg: #fd8000;
+    --heading-color: #ffffff;
+}
+
+.dark-mode {
+    --bg-color: #1a1a1a;
+    /* --text-color: #ffffff; */
+    --border-color: #444;
+    --hover-bg: #2a2a2a;
+    --chord-color: #42b983;
+    --heading-bg: #fd8000;
+    --heading-color: #ffffff;
+}
+
+body {
+    background-color: var(--bg-color);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    /* background-color: var(--bg-color); */
+    border: 1px solid var(--border-color);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.theme-toggle:hover {
+    background-color: var(--hover-bg);
+}
+
+.theme-toggle i {
+    font-size: 20px;
+    color: var(--text-color);
+}
+
 h1 {
     font-size: 24px;
     line-height: 2rem;
     margin-bottom: 10px;
+    color: var(--text-color);
 }
 .song-navigation {
     display: flex;
@@ -111,7 +164,10 @@ pre {
     font-weight: bold;
     margin-top: 1rem;
     margin-bottom: 0.5rem;
-    color: #4a5568;
+    background-color: var(--heading-bg);
+    color: var(--heading-color);
+    border-left-width: 3px;
+    border-left-style: solid;
 }
 
 .chordchart .empty-line {

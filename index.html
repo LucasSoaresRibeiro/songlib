@@ -16,6 +16,35 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <script src="web/app.js" defer></script>
     <script src="web/chordsheet.bundle.min.js" defer></script>
+    <script>
+        // Theme toggle functionality
+        function toggleTheme() {
+            const body = document.body;
+            const themeToggle = document.querySelector('.theme-toggle i');
+            const isDarkMode = body.classList.toggle('dark-mode');
+            
+            // Update icon and save preference
+            themeToggle.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
+            localStorage.setItem('darkMode', isDarkMode);
+            
+            // Apply dark mode styles consistently
+            if (isDarkMode) {
+                document.documentElement.style.filter = 'invert(1)';
+            } else {
+                document.documentElement.style.filter = '';
+            }
+        }
+
+        // Check for saved theme preference
+        document.addEventListener('DOMContentLoaded', () => {
+            const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            if (isDarkMode) {
+                document.body.classList.add('dark-mode');
+                document.documentElement.style.filter = 'invert(1)';
+                document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+            }
+        });
+    </script>
     <style>
         body {
             font-family: "Martian Mono", "Roboto Mono", monospace;
@@ -171,6 +200,9 @@
     </style>
 </head>
 <body>
+    <button class="theme-toggle" onclick="toggleTheme()" title="Toggle dark mode">
+        <i class="fas fa-moon"></i>
+    </button>
     <div id="landingPage">
         <div class="logo-container">
             <img src="images/logo.png" alt="Maranata Logo" class="logo" />
