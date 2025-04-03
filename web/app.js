@@ -2,6 +2,7 @@ let allSongs = [];
 let chordsVisible = true; // Global variable to track chord visibility
 let songRelationships = {}; // Store song relationships
 let currentSongData = null; // Store current song data
+let originalKey = null; // Store original key for reset functionality
 
 async function loadAllSongs() {
     try {
@@ -194,10 +195,11 @@ async function createSongContent(songData) {
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="link">REFERÊNCIA: <span>${songData.url}</span></p>
-        <p class="author key">Tom: <span>${songData.key}</span></p>
+        <p class="author key">Tom: <span id="song-key">${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
+        <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 
 ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
@@ -210,8 +212,21 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     const transposeUpBtn = header.querySelector('#transposeUp');
     const transposeDownBtn = header.querySelector('#transposeDown');
     
+    // Store original key when song is loaded
+    originalKey = songData.key;
+
     transposeUpBtn.addEventListener('click', () => transpose('up'));
     transposeDownBtn.addEventListener('click', () => transpose('down'));
+    
+    // Add reset key functionality
+    const resetKeyBtn = header.querySelector('#resetKey');
+    resetKeyBtn.addEventListener('click', () => {
+        if (currentSongData['chord_chart_original']) {
+            currentSongData['key'] = currentSongData['key_original'];
+            currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
+        }
+        createSongContent(currentSongData);
+    });
 
     // Add back button functionality
     const backButton = header.querySelector('#backToTable');
@@ -597,6 +612,11 @@ function transpose(direction) {
     const formatter = new ChordSheetJS.TextFormatter();
 
     let chordChart = currentSongData['chord_chart'];
+
+    if (!currentSongData['chord_chart_original']) {
+        currentSongData['chord_chart_original'] = chordChart;
+        currentSongData['key_original'] = currentSongData['key'];
+    }
     const lines = chordChart.split('\n');
     
     const transposedLines = lines.map(line => {
@@ -685,5 +705,6 @@ function transpose(direction) {
     
     const transposedChart = transposedLines.join('\n');
     currentSongData['chord_chart'] = transposedChart;
+    currentSongData['key'] = direction === 'up' ? formatter.format(parser.parse(currentSongData['key']).transposeUp()): formatter.format(parser.parse(currentSongData['key']).transposeDown());
     createSongContent(currentSongData);
 }
