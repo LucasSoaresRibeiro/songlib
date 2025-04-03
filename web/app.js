@@ -592,26 +592,6 @@ document.addEventListener('DOMContentLoaded', () => {
     loadSongData().then(() => handleUrlChange());
 });
 
-
-function setupTransposeButtons() {
-    const transposeContainer = document.createElement('div');
-    transposeContainer.className = 'transpose-container';
-    
-    const transposeUpBtn = document.createElement('button');
-    transposeUpBtn.className = 'transpose-btn';
-    transposeUpBtn.innerHTML = '<i class="fas fa-arrow-up"></i> Transpor ½ Tom Acima';
-    transposeUpBtn.addEventListener('click', () => transpose('up'));
-    
-    const transposeDownBtn = document.createElement('button');
-    transposeDownBtn.className = 'transpose-btn';
-    transposeDownBtn.innerHTML = '<i class="fas fa-arrow-down"></i> Transpor ½ Tom Abaixo';
-    transposeDownBtn.addEventListener('click', () => transpose('down'));
-    
-    transposeContainer.appendChild(transposeUpBtn);
-    transposeContainer.appendChild(transposeDownBtn);
-    document.getElementsByClassName('chordchart')[0].prepend(transposeContainer);
-}
-
 function transpose(direction) {
     const parser = new ChordSheetJS.ChordsOverWordsParser();
     const formatter = new ChordSheetJS.TextFormatter();
@@ -623,20 +603,32 @@ function transpose(direction) {
         if (line.startsWith('.')) {
             // Remove the dot prefix for parsing
             const chordLine = line.substring(1);
-            // Split the chord line by spaces and handle each chord individually
-            const chords = chordLine.split(" ");
-            const transposedChords = chords.map(chord => {
-                if (!chord.trim()) return chord; // Preserve empty spaces
+            // Split the chord line by spaces while preserving spacing
+            const chordSegments = chordLine.match(/\S+\s*/g) || [];
+            
+            // Process each chord segment (chord + following spaces)
+            const transposedSegments = chordSegments.map(segment => {
+                const chord = segment.trim();
+                const spaces = segment.match(/\s*$/)[0];
+                const originalLength = chord.length;
+                
+                if (!chord) return segment; // Preserve empty segments
+                
                 const chordData = parser.parse(chord);
-                return direction === 'up' ? 
+                const transposedChord = direction === 'up' ? 
                     chordData.transposeUp() : 
                     chordData.transposeDown();
+                const formattedChord = formatter.format(transposedChord);
+                
+                // Adjust spacing to maintain alignment
+                const lengthDiff = originalLength - formattedChord.length;
+                const adjustedSpaces = ' '.repeat(Math.max(1, spaces.length + lengthDiff));
+                
+                return formattedChord + adjustedSpaces;
             });
             
-            // Join the chords back together and add the dot prefix
-            return '.' + transposedChords.map(chord => 
-                typeof chord === 'string' ? chord : formatter.format(chord)
-            ).join(' ');
+            // Join the segments and add the dot prefix
+            return '.' + transposedSegments.join('');
         }
         return line; // Return non-chord lines unchanged
     });
