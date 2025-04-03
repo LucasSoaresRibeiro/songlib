@@ -605,28 +605,69 @@ function transpose(direction) {
             const leadingSpaces = line.match(/^\.\s*/)[0].substring(1);
             // Remove the dot prefix and leading spaces for parsing
             const chordLine = line.substring(leadingSpaces.length + 1);
-            // Split the chord line by spaces while preserving spacing
-            const chordSegments = chordLine.match(/\S+\s*/g) || [];
+            // Split the chord line by spaces while preserving original spacing
+            const chordSegments = chordLine.split(/(?<=\s)(?=\S)/); // Split between whitespace and non-whitespace
             
-            // Process each chord segment (chord + following spaces)
+            // Process each chord segment
             const transposedSegments = chordSegments.map(segment => {
                 const chord = segment.trim();
-                const spaces = segment.match(/\s*$/)[0];
-                const originalLength = chord.length;
+                const originalSpacing = segment.match(/\s*$/)[0];
                 
-                if (!chord) return segment; // Preserve empty segments
+                if (!chord) return originalSpacing; // Return original spacing for empty segments
+
+                // Handle complex chord notations
+                let processedChord = chord;
+                let hasPlus = processedChord.includes('+');
+                processedChord = processedChord.replace(/\+/g, ''); // Remove + temporarily
+
+                // Extract additional chord information
+                const chordMatch = processedChord.match(/^([A-G][b#]?)(.*)$/);
+                let baseChord = processedChord;
+                let chordSuffix = '';
+                let bassNote = '';
+
+                if (chordMatch) {
+                    baseChord = chordMatch[1];
+                    chordSuffix = chordMatch[2];
+                }
                 
-                const chordData = parser.parse(chord);
-                const transposedChord = direction === 'up' ? 
+                // Handle bass note
+                if (processedChord.includes('/')) {
+                    const [chordWithSuffix, bassNote] = processedChord.split('/');
+                    
+                    // Extract base chord and suffix before the slash
+                    const baseMatch = chordWithSuffix.match(/^([A-G][b#]?)(.*)$/);
+                    if (baseMatch) {
+                        baseChord = baseMatch[1];
+                        chordSuffix = baseMatch[2];
+                    }
+
+                    // Process base chord with suffix
+                    let chordData = parser.parse(baseChord);
+                    let transposedBase = direction === 'up' ? 
+                        chordData.transposeUp() : 
+                        chordData.transposeDown();
+                    let formattedChord = formatter.format(transposedBase) + chordSuffix;
+
+                    // Process bass note
+                    chordData = parser.parse(bassNote);
+                    let transposedBass = direction === 'up' ? 
+                        chordData.transposeUp() : 
+                        chordData.transposeDown();
+                    formattedChord += '/' + formatter.format(transposedBass);
+
+                    // Add plus if needed and preserve spacing
+                    return (hasPlus ? formattedChord + '+' : formattedChord) + originalSpacing;
+                }
+
+                // Process regular chord
+                let chordData = parser.parse(baseChord);
+                let transposedBase = direction === 'up' ? 
                     chordData.transposeUp() : 
                     chordData.transposeDown();
-                const formattedChord = formatter.format(transposedChord);
-                
-                // Adjust spacing to maintain alignment
-                const lengthDiff = originalLength - formattedChord.length;
-                const adjustedSpaces = ' '.repeat(Math.max(1, spaces.length + lengthDiff));
-                
-                return formattedChord + adjustedSpaces;
+                let formattedChord = formatter.format(transposedBase) + chordSuffix;
+                formattedChord = hasPlus ? formattedChord + '+' : formattedChord;
+                return formattedChord + originalSpacing;
             });
             
             // Join the segments and add the dot prefix with original leading spaces
