@@ -169,9 +169,32 @@ function displaySearchResults(songs) {
 
 async function loadSongData() {
     try {
+        // Show loading indicator
+        const landingPage = document.getElementById('landingPage');
+        const loadingIndicator = document.createElement('div');
+        loadingIndicator.className = 'loading-indicator';
+        loadingIndicator.innerHTML = `
+            <div class="loading-spinner"></div>
+            <p>Carregando músicas...</p>
+        `;
+        landingPage.appendChild(loadingIndicator);
+        
+        // Load songs data
         await loadAllSongs();
+        
+        // Remove loading indicator after data is loaded
+        loadingIndicator.remove();
     } catch (error) {
         console.error('Error loading song data:', error);
+        // Show error message to user
+        const landingPage = document.getElementById('landingPage');
+        const errorMessage = document.createElement('div');
+        errorMessage.className = 'error-message';
+        errorMessage.innerHTML = `
+            <p>Erro ao carregar as músicas. Por favor, tente novamente.</p>
+            <button onclick="location.reload()">Recarregar</button>
+        `;
+        landingPage.appendChild(errorMessage);
     }
 }
 
@@ -679,11 +702,13 @@ function transpose(direction) {
                     // Process base chord with suffix
                     let chordData = parser.parse(baseChord);
                     let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
+                    transposedBase.useModifier('#');
                     let formattedChord = formatter.format(transposedBase) + chordSuffix;
 
                     // Process bass note
                     chordData = parser.parse(bassNote);
                     let transposedBass = chordData.transpose(currentSongData['key_accumulation']);
+                    transposedBass.useModifier('#');
                     formattedChord += '/' + formatter.format(transposedBass);
 
                     // Add numeric modifier if present and adjust spacing
@@ -698,6 +723,7 @@ function transpose(direction) {
                 // Process regular chord
                 let chordData = parser.parse(baseChord);
                 let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
+                transposedBase.useModifier('#');
                 let formattedChord = formatter.format(transposedBase) + chordSuffix;
                 formattedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
                 // Calculate length difference and adjust spacing
