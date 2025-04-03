@@ -9,7 +9,7 @@
 }
 
 .dark-mode {
-    --bg-color: #1a1a1a;
+    /* --bg-color: #1a1a1a; */
     /* --text-color: #ffffff; */
     --border-color: #444;
     --hover-bg: #2a2a2a;
@@ -172,6 +172,10 @@ pre {
 
 .chordchart .empty-line {
     height: 1rem;
+}
+
+p {
+    line-height: normal !important;
 }
 
 @media screen and (max-width: 768px) {
@@ -392,8 +396,8 @@ pre {
         transform-origin: top left;
         position: relative;
         background-color: white;
-        page-break-before: avoid;
-        page-break-after: avoid;
+        /* page-break-before: avoid; */
+        /* page-break-after: avoid; */
     }
     
     /* body::after {
@@ -415,7 +419,7 @@ pre {
     
     #landingPage, .search-container, #searchInput, #searchResults, 
     .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, 
-    .song-navigation, .modal, .close-button, .back-button, .related-songs {
+    .song-navigation, .modal, .close-button, .back-button, .related-songs, .theme-toggle {
         display: none !important;
     }
 
@@ -434,15 +438,15 @@ pre {
         padding: 0 !important;
         margin: 0 auto !important;
         box-shadow: none !important;
-        page-break-before: avoid;
-        page-break-after: avoid;
+        /* page-break-before: avoid; */
+        /* page-break-after: avoid; */
         overflow: visible;
     }
     
     .chordchart {
-        page-break-inside: avoid;
-        page-break-before: avoid;
-        page-break-after: avoid;
+        /* page-break-inside: avoid; */
+        /* page-break-before: avoid; */
+        /* page-break-after: avoid; */
         font-size: 12pt;
         margin: 0;
         padding-top: 0;
@@ -456,17 +460,23 @@ pre {
     }
     
     .author, .time-sig, .key {
-        font-size: 15pt; /* 12pt * 1.8 */
-        margin: 9px 0; /* 5px * 1.8 */
+        font-size: 12pt; /* 12pt * 1.8 */
+        margin: 7px 0; /* 5px * 1.8 */
     }
     
     .chordchart .lyrics {
         font-size: 1.6rem !important;
         /* line-height: 2.7; */
+        page-break-inside: avoid;
+        page-break-before: avoid;
+        page-break-after: avoid;
     }
     
     .chordchart .chords {
         font-size: 1.6rem !important;
+        page-break-inside: avoid;
+        page-break-before: avoid;
+        page-break-after: avoid;
         /* line-height: 1.62rem; */
     }
     

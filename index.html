@@ -27,22 +27,29 @@
             // Update icon and save preference
             themeToggle.className = isDarkMode ? 'fas fa-sun' : 'fas fa-moon';
             localStorage.setItem('darkMode', isDarkMode);
+            const container = document.getElementById('youtube-container');
             
             // Apply dark mode styles consistently
             if (isDarkMode) {
                 document.documentElement.style.filter = 'invert(1)';
+                container.style.filter = 'invert(1)';
             } else {
                 document.documentElement.style.filter = '';
+                container.style.filter = '';
             }
         }
 
         // Check for saved theme preference
         document.addEventListener('DOMContentLoaded', () => {
             const isDarkMode = localStorage.getItem('darkMode') === 'true';
+            const container = document.getElementById('youtube-container');
             if (isDarkMode) {
                 document.body.classList.add('dark-mode');
                 document.documentElement.style.filter = 'invert(1)';
+                container.style.filter = 'invert(1)';
                 document.querySelector('.theme-toggle i').className = 'fas fa-sun';
+            } else {
+                container.style.filter = '';
             }
         });
     </script>
