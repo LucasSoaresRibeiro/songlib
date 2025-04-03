@@ -224,6 +224,7 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
         if (currentSongData['chord_chart_original']) {
             currentSongData['key'] = currentSongData['key_original'];
             currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
+            currentSongData['key_accumulation'] = 0;
         }
         createSongContent(currentSongData);
     });
@@ -689,7 +690,8 @@ function transpose(direction) {
                     let transposedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
                     // Calculate length difference and adjust spacing
                     const lengthDiff = chord.length - transposedChord.length;
-                    const adjustedSpacing = originalSpacing + ' '.repeat(Math.max(0, lengthDiff));
+                    let adjustedSpacing = lengthDiff > 0 ? originalSpacing + ' '.repeat(Math.max(0, lengthDiff)) : originalSpacing.substring(0, originalSpacing.length+lengthDiff);
+                    adjustedSpacing = adjustedSpacing == '' ? ' ' : adjustedSpacing;
                     return transposedChord + adjustedSpacing;
                 }
 
@@ -700,7 +702,8 @@ function transpose(direction) {
                 formattedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
                 // Calculate length difference and adjust spacing
                 const lengthDiff = chord.length - formattedChord.length;
-                const adjustedSpacing = originalSpacing + ' '.repeat(Math.max(0, lengthDiff));
+                let adjustedSpacing = lengthDiff > 0 ? originalSpacing + ' '.repeat(Math.max(0, lengthDiff)) : originalSpacing.substring(0, originalSpacing.length+lengthDiff);
+                adjustedSpacing = adjustedSpacing == '' ? ' ' : adjustedSpacing;
                 return formattedChord + adjustedSpacing;
             });
             
