@@ -1,6 +1,7 @@
 let allSongs = [];
 let chordsVisible = true; // Global variable to track chord visibility
 let songRelationships = {}; // Store song relationships
+let currentSongData = null; // Store current song data
 
 async function loadAllSongs() {
     try {
@@ -421,6 +422,7 @@ function displaySongsTable(songs) {
         
         // Add click event to open the song
         row.addEventListener('click', () => {
+            currentSongData = song;
             createSongContent(song);
             // Update URL with song ID
             const url = new URL(window.location);
@@ -471,6 +473,7 @@ function handleUrlChange() {
     if (allSongs.length > 0 && songsList.length > 0) {
         const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
         if (song) {
+            currentSongData = song;
             createSongContent(song);
             // Update chord visibility after content is created
             document.querySelectorAll('.chords').forEach(chord => {
@@ -581,36 +584,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-function setupTransposeCombobox() {
+function setupTransposeButtons() {
     const transposeContainer = document.createElement('div');
     transposeContainer.className = 'transpose-container';
-    transposeContainer.innerHTML = '<label for="transpose">Transpor:</label>';
-
-    const transposeSelect = document.createElement('select');
-    transposeSelect.id = 'transpose';
-    ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'].forEach(key => {
-        const option = document.createElement('option');
-        option.value = key;
-        option.textContent = key;
-        transposeSelect.appendChild(option);
-    });
-
-    transposeSelect.addEventListener('change', () => {
-        const selectedKey = transposeSelect.value;
-        transposeSong(selectedKey);
-    });
-
-    transposeContainer.appendChild(transposeSelect);
-    document.getElementById('songContent').prepend(transposeContainer);
+    
+    const transposeUpBtn = document.createElement('button');
+    transposeUpBtn.className = 'transpose-btn';
+    transposeUpBtn.innerHTML = '<i class="fas fa-arrow-up"></i> Transpor ½ Tom Acima';
+    transposeUpBtn.addEventListener('click', () => transpose('up'));
+    
+    const transposeDownBtn = document.createElement('button');
+    transposeDownBtn.className = 'transpose-btn';
+    transposeDownBtn.innerHTML = '<i class="fas fa-arrow-down"></i> Transpor ½ Tom Abaixo';
+    transposeDownBtn.addEventListener('click', () => transpose('down'));
+    
+    transposeContainer.appendChild(transposeUpBtn);
+    transposeContainer.appendChild(transposeDownBtn);
+    document.getElementsByClassName('chordchart')[0].prepend(transposeContainer);
 }
 
-function transposeSong(key) {
-    // Use ChordSheetJS library to transpose song
+function transpose(direction) {
     const chordChart = document.querySelector('.chordchart');
-    const transposedChart = ChordSheetJS.transpose(chordChart.textContent, key);
+    const parser = new ChordSheetJS.ChordProParser();
+    const formatter = new ChordSheetJS.ChordProFormatter();
+    
+    const chord = parser.parse(currentSongData['chord_chart']);
+    let chordTransposed;
+    if (direction === 'up') {
+        chordTransposed = chord.transposeUp();
+    } else {
+        chordTransposed = chord.transposeDown();
+    }
+    const transposedChart = formatter.format(chordTransposed);
     chordChart.textContent = transposedChart;
 }
 
 // Call setupTransposeCombobox when song content is created
-createSongContent(songData);
-setupTransposeCombobox();
+// createSongContent(songData);
+// setTimeout(() => {
+//     setupTransposeButtons();
+// }, 1000);
