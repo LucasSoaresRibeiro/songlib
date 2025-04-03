@@ -602,7 +602,7 @@ function transpose(direction) {
     const transposedLines = lines.map(line => {
         if (line.startsWith('.')) {
             // Get leading spaces before the first chord
-            const leadingSpaces = line.match(/^\.\s*/)[0].substring(1);
+            const leadingSpaces = line.match(/^\.s*/)[0].substring(1);
             // Remove the dot prefix and leading spaces for parsing
             const chordLine = line.substring(leadingSpaces.length + 1);
             // Split the chord line by spaces while preserving original spacing
@@ -615,11 +615,18 @@ function transpose(direction) {
                 
                 if (!chord) return originalSpacing; // Return original spacing for empty segments
 
+                // Skip transposition if chord contains only numbers and special characters
+                if (/^[0-9+\-\s]*$/.test(chord)) {
+                    return chord + originalSpacing;
+                }
+
                 // Handle complex chord notations
                 let processedChord = chord;
-                let hasPlus = processedChord.includes('+');
-                processedChord = processedChord.replace(/\+/g, ''); // Remove + temporarily
-
+                
+                // Extract numeric modifiers (like '5+') and preserve them
+                const numericModifier = processedChord.match(/([0-9]+\+?)$/)?.[0] || '';
+                processedChord = processedChord.replace(/[0-9]+\+?$/, '');
+                
                 // Extract additional chord information
                 const chordMatch = processedChord.match(/^([A-G][b#]?)(.*)$/);
                 let baseChord = processedChord;
@@ -656,8 +663,8 @@ function transpose(direction) {
                         chordData.transposeDown();
                     formattedChord += '/' + formatter.format(transposedBass);
 
-                    // Add plus if needed and preserve spacing
-                    return (hasPlus ? formattedChord + '+' : formattedChord) + originalSpacing;
+                    // Add numeric modifier if present and preserve spacing
+                    return (numericModifier ? formattedChord + numericModifier : formattedChord) + originalSpacing;
                 }
 
                 // Process regular chord
@@ -666,7 +673,7 @@ function transpose(direction) {
                     chordData.transposeUp() : 
                     chordData.transposeDown();
                 let formattedChord = formatter.format(transposedBase) + chordSuffix;
-                formattedChord = hasPlus ? formattedChord + '+' : formattedChord;
+                formattedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
                 return formattedChord + originalSpacing;
             });
             
