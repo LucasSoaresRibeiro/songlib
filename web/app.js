@@ -196,6 +196,8 @@ async function createSongContent(songData) {
         <p class="link">REFERÊNCIA: <span>${songData.url}</span></p>
         <p class="author key">Tom: <span>${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
+        <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
+        <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 
 ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
@@ -203,6 +205,13 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
     `;
     songContent.appendChild(header);
+
+    // Add transpose button functionality
+    const transposeUpBtn = header.querySelector('#transposeUp');
+    const transposeDownBtn = header.querySelector('#transposeDown');
+    
+    transposeUpBtn.addEventListener('click', () => transpose('up'));
+    transposeDownBtn.addEventListener('click', () => transpose('down'));
 
     // Add back button functionality
     const backButton = header.querySelector('#backToTable');
@@ -604,23 +613,35 @@ function setupTransposeButtons() {
 }
 
 function transpose(direction) {
-    const chordChart = document.querySelector('.chordchart');
-    const parser = new ChordSheetJS.ChordProParser();
-    const formatter = new ChordSheetJS.ChordProFormatter();
-    
-    const chord = parser.parse(currentSongData['chord_chart']);
-    let chordTransposed;
-    if (direction === 'up') {
-        chordTransposed = chord.transposeUp();
-    } else {
-        chordTransposed = chord.transposeDown();
-    }
-    const transposedChart = formatter.format(chordTransposed);
-    chordChart.textContent = transposedChart;
-}
+    const parser = new ChordSheetJS.ChordsOverWordsParser();
+    const formatter = new ChordSheetJS.TextFormatter();
 
-// Call setupTransposeCombobox when song content is created
-// createSongContent(songData);
-// setTimeout(() => {
-//     setupTransposeButtons();
-// }, 1000);
+    let chordChart = currentSongData['chord_chart'];
+    const lines = chordChart.split('\n');
+    
+    const transposedLines = lines.map(line => {
+        if (line.startsWith('.')) {
+            // Remove the dot prefix for parsing
+            const chordLine = line.substring(1);
+            // Split the chord line by spaces and handle each chord individually
+            const chords = chordLine.split(" ");
+            const transposedChords = chords.map(chord => {
+                if (!chord.trim()) return chord; // Preserve empty spaces
+                const chordData = parser.parse(chord);
+                return direction === 'up' ? 
+                    chordData.transposeUp() : 
+                    chordData.transposeDown();
+            });
+            
+            // Join the chords back together and add the dot prefix
+            return '.' + transposedChords.map(chord => 
+                typeof chord === 'string' ? chord : formatter.format(chord)
+            ).join(' ');
+        }
+        return line; // Return non-chord lines unchanged
+    });
+    
+    const transposedChart = transposedLines.join('\n');
+    currentSongData['chord_chart'] = transposedChart;
+    createSongContent(currentSongData);
+}

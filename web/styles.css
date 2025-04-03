@@ -157,6 +157,10 @@ pre {
     background-color: #b9b9b9;
 }
 
+.transpose-btn {
+    background-color: #e0b337;
+}
+
 .toggle-chords:hover {
     background-color: #a0a0a0;
 }
