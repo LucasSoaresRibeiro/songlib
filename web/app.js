@@ -611,12 +611,18 @@ function transpose(direction) {
     const parser = new ChordSheetJS.ChordsOverWordsParser();
     const formatter = new ChordSheetJS.TextFormatter();
 
-    let chordChart = currentSongData['chord_chart'];
-
+    let chordChart;
+    
     if (!currentSongData['chord_chart_original']) {
+        chordChart = currentSongData['chord_chart'];
         currentSongData['chord_chart_original'] = chordChart;
         currentSongData['key_original'] = currentSongData['key'];
+        currentSongData['key_accumulation'] = direction === 'up' ? 1 : -1;
+    } else {
+        chordChart = currentSongData['chord_chart_original'];
+        currentSongData['key_accumulation'] = direction === 'up' ? ++currentSongData['key_accumulation'] : --currentSongData['key_accumulation'];
     }
+    console.log(currentSongData['key_accumulation']);
     const lines = chordChart.split('\n');
     
     const transposedLines = lines.map(line => {
@@ -671,30 +677,31 @@ function transpose(direction) {
 
                     // Process base chord with suffix
                     let chordData = parser.parse(baseChord);
-                    let transposedBase = direction === 'up' ? 
-                        chordData.transposeUp() : 
-                        chordData.transposeDown();
+                    let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
                     let formattedChord = formatter.format(transposedBase) + chordSuffix;
 
                     // Process bass note
                     chordData = parser.parse(bassNote);
-                    let transposedBass = direction === 'up' ? 
-                        chordData.transposeUp() : 
-                        chordData.transposeDown();
+                    let transposedBass = chordData.transpose(currentSongData['key_accumulation']);
                     formattedChord += '/' + formatter.format(transposedBass);
 
-                    // Add numeric modifier if present and preserve spacing
-                    return (numericModifier ? formattedChord + numericModifier : formattedChord) + originalSpacing;
+                    // Add numeric modifier if present and adjust spacing
+                    let transposedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
+                    // Calculate length difference and adjust spacing
+                    const lengthDiff = chord.length - transposedChord.length;
+                    const adjustedSpacing = originalSpacing + ' '.repeat(Math.max(0, lengthDiff));
+                    return transposedChord + adjustedSpacing;
                 }
 
                 // Process regular chord
                 let chordData = parser.parse(baseChord);
-                let transposedBase = direction === 'up' ? 
-                    chordData.transposeUp() : 
-                    chordData.transposeDown();
+                let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
                 let formattedChord = formatter.format(transposedBase) + chordSuffix;
                 formattedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
-                return formattedChord + originalSpacing;
+                // Calculate length difference and adjust spacing
+                const lengthDiff = chord.length - formattedChord.length;
+                const adjustedSpacing = originalSpacing + ' '.repeat(Math.max(0, lengthDiff));
+                return formattedChord + adjustedSpacing;
             });
             
             // Join the segments and add the dot prefix with original leading spaces
