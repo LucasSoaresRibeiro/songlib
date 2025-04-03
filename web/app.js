@@ -601,8 +601,10 @@ function transpose(direction) {
     
     const transposedLines = lines.map(line => {
         if (line.startsWith('.')) {
-            // Remove the dot prefix for parsing
-            const chordLine = line.substring(1);
+            // Get leading spaces before the first chord
+            const leadingSpaces = line.match(/^\.\s*/)[0].substring(1);
+            // Remove the dot prefix and leading spaces for parsing
+            const chordLine = line.substring(leadingSpaces.length + 1);
             // Split the chord line by spaces while preserving spacing
             const chordSegments = chordLine.match(/\S+\s*/g) || [];
             
@@ -627,8 +629,8 @@ function transpose(direction) {
                 return formattedChord + adjustedSpaces;
             });
             
-            // Join the segments and add the dot prefix
-            return '.' + transposedSegments.join('');
+            // Join the segments and add the dot prefix with original leading spaces
+            return '.' + leadingSpaces + transposedSegments.join('');
         }
         return line; // Return non-chord lines unchanged
     });
