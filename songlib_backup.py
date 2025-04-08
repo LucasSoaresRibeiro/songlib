@@ -84,7 +84,7 @@ def salvar_backup(site_url):
     # Update song_files.txt with the current list of songs
     song_files = [f"{song['id']}.json" for song in songs]
     song_files.sort()
-    with open('web/song_files.txt', 'w', encoding='utf-8') as f:
+    with open('web/data/song_files.txt', 'w', encoding='utf-8') as f:
         f.write('\n'.join(song_files))
 
     print(f'Total de musicas cadastradas: {len(songs)}')

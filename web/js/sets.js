@@ -31,7 +31,7 @@ function initSetNavigation() {
 // Function to load set file names from set_files.txt
 async function loadSetFilesList() {
     try {
-        const response = await fetch('web/set_files.txt');
+        const response = await fetch('web/data/set_files.txt');
         if (!response.ok) {
             throw new Error('Failed to load set files list');
         }
@@ -121,9 +121,11 @@ function openSong(songId) {
     // Show the landing page (which will be hidden by the song display)
     document.getElementById('landingPage').style.display = 'flex';
     
-    // Update navigation links active state
-    document.getElementById('songsLink').classList.add('active');
-    document.getElementById('setsLink').classList.remove('active');
+    // Hide navigation menu
+    const navMenu = document.querySelector('.nav-menu');
+    if (navMenu) {
+        navMenu.style.display = 'none';
+    }
     
     // Update URL to load the song
     const url = new URL(window.location);
@@ -153,9 +155,11 @@ function loadAllSongsInSet(setData) {
     // Show the landing page (which will be hidden by the song display)
     document.getElementById('landingPage').style.display = 'flex';
     
-    // Update navigation links active state
-    document.getElementById('songsLink').classList.add('active');
-    document.getElementById('setsLink').classList.remove('active');
+    // Hide navigation menu
+    const navMenu = document.querySelector('.nav-menu');
+    if (navMenu) {
+        navMenu.style.display = 'none';
+    }
     
     // Update URL to load all songs
     const url = new URL(window.location);
@@ -291,5 +295,22 @@ async function displaySetCard(container, setData, fileName) {
     container.appendChild(setCard);
 }
 
-// Initialize navigation when DOM is loaded
-document.addEventListener('DOMContentLoaded', initSetNavigation);
+// Function to listen for the back button in song view
+// This should restore the nav menu visibility
+function initBackButtonListener() {
+    document.addEventListener('click', function(e) {
+        if (e.target && (e.target.id === 'backToTable' || e.target.closest('#backToTable'))) {
+            // Show navigation menu again when returning to song list
+            const navMenu = document.querySelector('.nav-menu');
+            if (navMenu) {
+                navMenu.style.display = 'flex';
+            }
+        }
+    });
+}
+
+// Initialize navigation and back button listener when DOM is loaded
+document.addEventListener('DOMContentLoaded', function() {
+    initSetNavigation();
+    initBackButtonListener();
+});
