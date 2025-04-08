@@ -6,8 +6,8 @@ import json
 import time
 import os
 
-REPROCESSAR_MUSICAS = False
-REPROCESSAR_SETS = False
+REPROCESSAR_MUSICAS = True
+REPROCESSAR_SETS = True
 
 def init(site_url):
 
@@ -178,6 +178,6 @@ def salvar_backup_sets(driver, site_url):
 URL_SONGLIB_SONGS = 'https://songlib.com/songs/4297'
 URL_SONGLIB_SETS = 'https://songlib.com/sets/4297'
 driver = init(URL_SONGLIB_SONGS)
-salvar_backup_sets(driver, URL_SONGLIB_SETS)
 salvar_backup_musicas(driver, URL_SONGLIB_SONGS)
+salvar_backup_sets(driver, URL_SONGLIB_SETS)
 finish()
