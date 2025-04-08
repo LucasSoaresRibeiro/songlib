@@ -45,12 +45,6 @@
 11865.json
 11866.json
 11938.json
-11938.json
-11938.json
-11938.json
-11938.json
-11938.json
-11938.json
 12003.json
 85077.json
 85654.json

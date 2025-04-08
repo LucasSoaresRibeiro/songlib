@@ -169,7 +169,7 @@ def salvar_backup_sets(driver, site_url):
     set_files = [f"{data_set['id']}.json" for data_set in data_sets]
     set_files.sort()
     with open('web/data/set_files.txt', 'w', encoding='utf-8') as f:
-        f.write('\n'.join(set_files))
+        f.write('\n'.join(set(set_files)))
 
     print(f'Total de repertórios cadastrados: {len(data_sets)}')
     print('set_files.txt atualizado com sucesso!')
