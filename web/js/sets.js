@@ -113,7 +113,6 @@ async function loadAllSets() {
     
     // Sort sets by date in descending order
     sets.sort((a, b) => {
-        console.log('Sorting sets:', a, b);
         const parseDate = (dateStr) => {
             if (!dateStr) return new Date(0);
             const [day, month, year] = dateStr.split('/').map(Number);
