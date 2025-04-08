@@ -63,13 +63,12 @@ async function createSongContent(songData) {
         <p class="link">REFERÊNCIA: <span>${songData.url}</span></p>
         <p class="author key">Tom: <span id="song-key">${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
+${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
+        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
-        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
-
-${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
     `;
     songContent.appendChild(header);
