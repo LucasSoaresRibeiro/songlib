@@ -552,3 +552,30 @@ p {
 .error-message button:hover {
     background-color: #b71c1c;
 }
+
+.set-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin: 10px 0;
+}
+
+.load-set-button {
+    background-color: #3498db;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 8px 15px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    transition: background-color 0.2s;
+}
+
+.load-set-button:hover {
+    background-color: #2980b9;
+}
+
+.load-set-button i {
+    margin-right: 5px;
+}
