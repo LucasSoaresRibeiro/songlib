@@ -1,11 +1,11 @@
 {
-    "id": "12003",
-    "url": "https://songlib.com/sets/4297/12003/",
-    "title": "Banda 2 - Eric",
+    "id": "11075",
+    "url": "https://songlib.com/sets/4297/11075/",
+    "title": "Banda 2 - Pompeu",
     "notes": "",
-    "date": "13/04/2025",
+    "date": "27/10/2024",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 85649,
@@ -15,37 +15,37 @@
             "notes": ""
         },
         {
-            "song_id": 95352,
+            "song_id": 88339,
             "no": "2",
-            "key": "A",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 87483,
-            "no": "3",
             "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 91661,
+            "song_id": 88340,
+            "no": "3",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88036,
             "no": "4",
+            "key": "G",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 88037,
+            "no": "5",
             "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 91663,
-            "no": "5",
-            "key": "E",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 95353,
+            "song_id": 88257,
             "no": "6",
-            "key": "0",
+            "key": "A",
             "use_b": false,
             "notes": ""
         }

@@ -1,0 +1,67 @@
+{
+    "id": "11569",
+    "url": "https://songlib.com/sets/4297/11569/",
+    "title": "Banda 4 - Daniel - 40 Anos Ministério Pr Edison",
+    "notes": "",
+    "date": "02/02/2025",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 92223,
+            "no": "1",
+            "key": "Ab",
+            "use_b": true,
+            "notes": "A versão do link está em Ab e a versão original do Cantor Cristão é em Bb"
+        },
+        {
+            "song_id": 92223,
+            "no": "2",
+            "key": "Bb (+2)",
+            "use_b": true,
+            "notes": "A versão do link está em Ab e a versão original do Cantor Cristão é em Bb"
+        },
+        {
+            "song_id": 85078,
+            "no": "3",
+            "key": "Ab (-2)",
+            "use_b": true,
+            "notes": "Tom do link está em C# mas a cifra está intencionalmente em Bb"
+        },
+        {
+            "song_id": 90787,
+            "no": "4",
+            "key": "Bb",
+            "use_b": true,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 92169,
+            "no": "5",
+            "key": "D",
+            "use_b": false,
+            "notes": "Pão"
+        },
+        {
+            "song_id": 85742,
+            "no": "6",
+            "key": "C",
+            "use_b": false,
+            "notes": "Cálice"
+        },
+        {
+            "song_id": 92168,
+            "no": "7",
+            "key": "Bb",
+            "use_b": true,
+            "notes": ""
+        },
+        {
+            "song_id": 92167,
+            "no": "8",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

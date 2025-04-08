@@ -1,0 +1,60 @@
+{
+    "id": "10934",
+    "url": "https://songlib.com/sets/4297/10934/",
+    "title": "Banda 1 - Theo",
+    "notes": "",
+    "date": "22/09/2024",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 87473,
+            "no": "1",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87475,
+            "no": "2",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85745,
+            "no": "3",
+            "key": "Bb",
+            "use_b": true,
+            "notes": ""
+        },
+        {
+            "song_id": 85274,
+            "no": "4",
+            "key": "Bb",
+            "use_b": true,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 87474,
+            "no": "5",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87476,
+            "no": "6",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87477,
+            "no": "7",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

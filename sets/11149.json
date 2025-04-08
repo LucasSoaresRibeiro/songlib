@@ -1,53 +1,53 @@
 {
-    "id": "11938",
-    "url": "https://songlib.com/sets/4297/11938/",
-    "title": "Banda 1 - Pompeu",
+    "id": "11149",
+    "url": "https://songlib.com/sets/4297/11149/",
+    "title": "Banda 3 - Eric",
     "notes": "",
-    "date": "06/04/2025",
+    "date": "03/11/2024",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 94930,
+            "song_id": 88503,
             "no": "1",
-            "key": "E",
+            "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 85077,
+            "song_id": 87067,
             "no": "2",
-            "key": "E",
+            "key": "D",
             "use_b": false,
             "notes": "Oferta"
         },
         {
-            "song_id": 85791,
-            "no": "3",
-            "key": "E",
-            "use_b": false,
-            "notes": "Pão"
-        },
-        {
             "song_id": 85654,
-            "no": "4",
+            "no": "3",
             "key": "D",
             "use_b": false,
             "notes": "Cálice"
         },
         {
-            "song_id": 87490,
-            "no": "5",
-            "key": "C",
+            "song_id": 88505,
+            "no": "4",
+            "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 94929,
-            "no": "6",
-            "key": "0",
+            "song_id": 88504,
+            "no": "5",
+            "key": "D",
             "use_b": false,
             "notes": ""
+        },
+        {
+            "song_id": 88506,
+            "no": "6",
+            "key": "A",
+            "use_b": false,
+            "notes": "Especial"
         }
     ]
 }

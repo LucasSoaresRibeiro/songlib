@@ -1,23 +1,23 @@
 {
-    "id": "11938",
-    "url": "https://songlib.com/sets/4297/11938/",
-    "title": "Banda 1 - Pompeu",
+    "id": "10818",
+    "url": "https://songlib.com/sets/4297/10818/",
+    "title": "Banda 2 - Pompeu (Ceia)",
     "notes": "",
-    "date": "06/04/2025",
+    "date": "01/09/2024",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 94930,
+            "song_id": 85741,
             "no": "1",
-            "key": "E",
+            "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 85077,
+            "song_id": 85745,
             "no": "2",
-            "key": "E",
+            "key": "A (-1)",
             "use_b": false,
             "notes": "Oferta"
         },
@@ -29,23 +29,23 @@
             "notes": "Pão"
         },
         {
-            "song_id": 85654,
+            "song_id": 87035,
             "no": "4",
-            "key": "D",
+            "key": "C",
             "use_b": false,
             "notes": "Cálice"
         },
         {
-            "song_id": 87490,
+            "song_id": 85743,
             "no": "5",
-            "key": "C",
+            "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 94929,
+            "song_id": 87023,
             "no": "6",
-            "key": "0",
+            "key": "A",
             "use_b": false,
             "notes": ""
         }

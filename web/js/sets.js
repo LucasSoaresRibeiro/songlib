@@ -85,23 +85,42 @@ async function loadSongDataForSet(songId) {
 // Function to load all sets
 async function loadAllSets() {
     const setsContainer = document.getElementById('setsContainer');
-    setsContainer.innerHTML = '<p>Loading sets...</p>';
+    setsContainer.innerHTML = '<p>Carregando repertórios...</p>';
     
     const setFilesList = await loadSetFilesList();
     if (setFilesList.length === 0) {
-        setsContainer.innerHTML = '<p>No sets found.</p>';
+        setsContainer.innerHTML = '<p>Repertório não encontrado.</p>';
         return;
     }
     
     // Clear container
     setsContainer.innerHTML = '';
     
-    // Load each set file and display it
-    for (const fileName of setFilesList) {
-        const setData = await loadSetFile(fileName);
-        if (setData) {
-            await displaySetCard(setsContainer, setData, fileName);
+    // Load all set files first
+    const setsPromises = setFilesList.map(fileName => loadSetFile(fileName));
+    const setsResults = await Promise.all(setsPromises);
+    
+    // Create an array of objects with set data and file name
+    const sets = [];
+    for (let i = 0; i < setsResults.length; i++) {
+        if (setsResults[i]) {
+            sets.push({
+                data: setsResults[i],
+                fileName: setFilesList[i]
+            });
         }
+    }
+    
+    // Sort sets by date in descending order
+    sets.sort((a, b) => {
+        const dateA = a.data.date ? new Date(a.data.date) : new Date(0);
+        const dateB = b.data.date ? new Date(b.data.date) : new Date(0);
+        return dateB - dateA; // Descending order (newest first)
+    });
+    
+    // Display each set in the sorted order
+    for (const set of sets) {
+        await displaySetCard(setsContainer, set.data, set.fileName);
     }
 }
 

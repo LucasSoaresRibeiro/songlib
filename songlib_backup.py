@@ -7,8 +7,9 @@ import time
 import os
 
 REPROCESSAR_MUSICAS = True
+REPROCESSAR_SETS = True
 
-def salvar_backup(site_url):
+def init(site_url):
 
     # Configuração do Selenium WebDriver
     driver = webdriver.Chrome()  # Certifique-se de ter o chromedriver instalado e no PATH
@@ -21,8 +22,16 @@ def salvar_backup(site_url):
     driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/form/div[4]/button").click()
     time.sleep(2)
 
+    return driver
+
+def finish():
+    driver.quit()
+
+def salvar_backup_musicas(driver, site_url):
+
     # abre a biblioteca
     driver.get(site_url)
+    time.sleep(2)
     driver.find_element(By.XPATH, '//*[@id="songbrowser"]/form/div/div[2]/div/button[2]').click()
     time.sleep(3)
     
@@ -45,7 +54,7 @@ def salvar_backup(site_url):
 
         counter += 1
         print('-'*20)
-        print(f'Processando {counter}/{len(songs)} ...')
+        print(f'Processando Musicas {counter}/{len(songs)} ...')
 
         file_name = f"songs\{song['id']}.json"
 
@@ -79,8 +88,6 @@ def salvar_backup(site_url):
         except Exception as e:
             print(e)
 
-    driver.quit()
-
     # Update song_files.txt with the current list of songs
     song_files = [f"{song['id']}.json" for song in songs]
     song_files.sort()
@@ -90,6 +97,87 @@ def salvar_backup(site_url):
     print(f'Total de musicas cadastradas: {len(songs)}')
     print('song_files.txt atualizado com sucesso!')
 
+def salvar_backup_sets(driver, site_url):
+
+    # abre a biblioteca
+    driver.get(site_url)
+    time.sleep(3)
+    
+    # lê todas as músicas da biblioteca
+    set_elements = driver.find_elements(By.CSS_SELECTOR, 'table tbody tr td a[href]')
+
+    data_sets = []
+    for set_element in set_elements:
+        data_sets.append({
+            "id": set_element.get_attribute('href').split('/')[-2],
+            "url": set_element.get_attribute('href'), 
+        })
+    
+    # salva músicas
+    counter = 0
+    for data_set in data_sets:
+
+        counter += 1
+        print('-'*20)
+        print(f'Processando Sets {counter}/{len(data_sets)} ...')
+        
+        file_name = f"sets\{data_set['id']}.json"
+
+        if (os.path.isfile(file_name) and not REPROCESSAR_SETS):
+            continue
+
+        try:
+
+            driver.get(data_set['url'])
+            time.sleep(2)
+
+            # salvar meta dados
+            data_set['title'] = driver.find_element(By.ID, 'id_title').get_attribute('value')
+            data_set['notes'] = driver.find_element(By.ID, 'id_notes').get_attribute('value')
+            data_set['date'] = driver.find_element(By.ID, 'id_date').get_attribute('value')
+            data_set['leader'] = driver.find_element(By.ID, 'id_leader').get_attribute('value')
+            data_set['is_draft'] = driver.find_element(By.ID, 'id_draft').is_selected()
+            
+            data_set['songs'] = []
+
+            song_elements_song_id = driver.find_elements(By.CSS_SELECTOR, 'input.songid')
+            song_elements_href = driver.find_elements(By.CSS_SELECTOR, 'a')
+            song_elements_no = driver.find_elements(By.CSS_SELECTOR, 'td.songno')
+            song_elements_key = driver.find_elements(By.CSS_SELECTOR, 'select[name$="-key"] option[selected]')
+            song_elements_use_b = driver.find_elements(By.CSS_SELECTOR, 'select[name$="-key_style"] option[selected]')
+
+            music_counter = 0
+            for song_element_song_id in song_elements_song_id:
+                song = {}
+                song['song_id'] = int(song_elements_song_id[music_counter].get_attribute('value'))
+                song['no'] = song_elements_no[music_counter].text
+                song['key'] = song_elements_key[music_counter].text
+                song['use_b'] = song_elements_use_b[music_counter].text == 'Use ♭'
+                song['notes'] = driver.find_element(By.ID, f'id_song-{music_counter}-notes').get_attribute('value')
+
+                data_set['songs'].append(song)
+                music_counter += 1
+
+            # salvar musica
+            with open(file_name, 'w', encoding='utf-8') as f:
+                json.dump(data_set, f, ensure_ascii=False, indent=4)
+
+        except Exception as e:
+            print(e)
+
+    # Update song_files.txt with the current list of songs
+    set_files = [f"{data_set['id']}.json" for data_set in data_sets]
+    set_files.sort()
+    with open('web/data/set_files.txt', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(set_files))
+
+    print(f'Total de repertórios cadastrados: {len(data_sets)}')
+    print('set_files.txt atualizado com sucesso!')
+
 # Exemplo de uso
-URL_DO_SONGLIB = 'https://songlib.com/songs/4297/'
-salvar_backup(URL_DO_SONGLIB)
+URL_SONGLIB_SONGS = 'https://songlib.com/songs/4297'
+URL_SONGLIB_SETS = 'https://songlib.com/sets/4297'
+driver = init(URL_SONGLIB_SONGS)
+salvar_backup_sets(driver, URL_SONGLIB_SETS)
+salvar_backup_musicas(driver, URL_SONGLIB_SONGS)
+finish()

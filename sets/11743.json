@@ -1,0 +1,67 @@
+{
+    "id": "11743",
+    "url": "https://songlib.com/sets/4297/11743/",
+    "title": "Retiro de Mulheres",
+    "notes": "",
+    "date": "08/03/2025",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 85742,
+            "no": "1",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85078,
+            "no": "2",
+            "key": "Bb",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93679,
+            "no": "3",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93677,
+            "no": "4",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93678,
+            "no": "5",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93680,
+            "no": "6",
+            "key": "F",
+            "use_b": true,
+            "notes": ""
+        },
+        {
+            "song_id": 92020,
+            "no": "7",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87835,
+            "no": "8",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

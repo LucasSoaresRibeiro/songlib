@@ -1,0 +1,60 @@
+{
+    "id": "10697",
+    "url": "https://songlib.com/sets/4297/10697/",
+    "title": "Banda 3 - Geraldo",
+    "notes": "",
+    "date": "11/08/2024",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 85049,
+            "no": "1",
+            "key": "D",
+            "use_b": false,
+            "notes": "Mapa:\nIntro, A, B, C\nIntro, A, B, D\nB, C, Fine"
+        },
+        {
+            "song_id": 85077,
+            "no": "2",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85078,
+            "no": "3",
+            "key": "Bb",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85087,
+            "no": "4",
+            "key": "A",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 85082,
+            "no": "5",
+            "key": "C",
+            "use_b": false,
+            "notes": "Tom original"
+        },
+        {
+            "song_id": 85082,
+            "no": "6",
+            "key": "D (+2)",
+            "use_b": false,
+            "notes": "Tom alternativo"
+        },
+        {
+            "song_id": 85081,
+            "no": "7",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}
