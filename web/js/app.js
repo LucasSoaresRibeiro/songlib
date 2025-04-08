@@ -6,6 +6,66 @@ let originalKey = null; // Store original key for reset functionality
 let currentSongIndex = 0;
 let songsList = [];
 
+/**
+ * Updates the application's visibility states based on the current view.
+ * Centralizes all page visibility logic in one function.
+ * 
+ * @param {string} view - The view to display ('landing', 'song', 'sets')
+ * @param {Object} options - Additional options for the view
+ */
+function updateAppVisibility(view, options = {}) {
+    const landingPage = document.getElementById('landingPage');
+    const songContent = document.getElementById('songContent');
+    const setsPage = document.getElementById('setsPage');
+    const navMenu = document.querySelector('.nav-menu');
+    const songsLink = document.getElementById('songsLink');
+    const setsLink = document.getElementById('setsLink');
+    
+    // Reset search state
+    const searchResults = document.getElementById('searchResults');
+    const searchInput = document.getElementById('searchInput');
+    if (searchResults) searchResults.style.display = 'none';
+    if (searchInput) searchInput.value = '';
+    
+    // Close YouTube modal if open
+    const modal = document.getElementById('youtubeModal');
+    if (modal) {
+        modal.style.display = 'none';
+        const container = document.getElementById('youtube-container');
+        if (container) container.innerHTML = '';
+    }
+    
+    // Update visibility based on view
+    switch(view) {
+        case 'landing':
+            landingPage.style.display = 'flex';
+            songContent.innerHTML = '';
+            setsPage.style.display = 'none';
+            if (navMenu) navMenu.style.display = 'flex';
+            songsLink.classList.add('active');
+            setsLink.classList.remove('active');
+            break;
+            
+        case 'song':
+            landingPage.style.display = 'none';
+            setsPage.style.display = 'none';
+            if (navMenu) navMenu.style.display = 'none';
+            break;
+            
+        case 'sets':
+            landingPage.style.display = 'none';
+            songContent.innerHTML = '';
+            setsPage.style.display = 'flex';
+            if (navMenu) navMenu.style.display = 'flex';
+            setsLink.classList.add('active');
+            songsLink.classList.remove('active');
+            break;
+            
+        default:
+            console.error('Unknown view:', view);
+    }
+}
+
 async function loadAllSongs() {
     try {
         // Load song file list from song_files.txt
@@ -62,10 +122,8 @@ function setupSearch() {
     const logo = document.querySelector('.logo');
     logo.style.cursor = 'pointer';
     logo.addEventListener('click', () => {
-        const songContent = document.getElementById('songContent');
-        songContent.innerHTML = '';
-        searchInput.value = '';
-        searchResults.style.display = 'none';
+        updateAppVisibility('landing');
+        
         // Update URL to remove song parameter
         const url = new URL(window.location);
         url.searchParams.delete('songs');
@@ -225,28 +283,14 @@ function handleUrlChange() {
     if (songsParam) {
         songsList = songsParam.split(',');
         currentSongIndex = 0;
-        // Hide landing page when a song is in the URL
-        document.getElementById('landingPage').style.display = 'none';
+        // Update visibility for song view
+        updateAppVisibility('song');
     } else {
         songsList = [];
         currentSongIndex = 0;
-        // Show landing page when no song is in the URL
-        document.getElementById('landingPage').style.display = 'flex';
+        // Update visibility for landing view
+        updateAppVisibility('landing');
     }
-
-    // Close YouTube modal if open
-    const modal = document.getElementById('youtubeModal');
-    if (modal) {
-        modal.style.display = 'none';
-        const container = document.getElementById('youtube-container');
-        if (container) container.innerHTML = '';
-    }
-
-    // Clear search results and input
-    const searchResults = document.getElementById('searchResults');
-    const searchInput = document.getElementById('searchInput');
-    if (searchResults) searchResults.style.display = 'none';
-    if (searchInput) searchInput.value = '';
 
     // If songs are loaded, update the display
     if (allSongs.length > 0 && songsList.length > 0) {
@@ -265,10 +309,6 @@ function handleUrlChange() {
             // Add song navigation controls
             addSongNavigation();
         }
-    } else {
-        // Clear song content if no songs in URL
-        const songContent = document.getElementById('songContent');
-        if (songContent) songContent.innerHTML = '';
     }
 }
 
@@ -289,7 +329,6 @@ function addSongNavigation() {
     navContainer.querySelector('#prevSong').addEventListener('click', () => {
         if (currentSongIndex > 0) {
             currentSongIndex--;
-            const urlParams = new URLSearchParams(window.location.search);
             const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
             if (song) {
                 // Close YouTube modal if open
@@ -321,7 +360,6 @@ function addSongNavigation() {
     navContainer.querySelector('#nextSong').addEventListener('click', () => {
         if (currentSongIndex < songsList.length - 1) {
             currentSongIndex++;
-            const urlParams = new URLSearchParams(window.location.search);
             const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
             if (song) {
                 // Close YouTube modal if open

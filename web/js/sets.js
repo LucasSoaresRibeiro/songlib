@@ -7,23 +7,15 @@ const songsCache = {};
 function initSetNavigation() {
     const songsLink = document.getElementById('songsLink');
     const setsLink = document.getElementById('setsLink');
-    const landingPage = document.getElementById('landingPage');
-    const setsPage = document.getElementById('setsPage');
     
     songsLink.addEventListener('click', function(e) {
         e.preventDefault();
-        landingPage.style.display = 'flex';
-        setsPage.style.display = 'none';
-        songsLink.classList.add('active');
-        setsLink.classList.remove('active');
+        updateAppVisibility('landing');
     });
     
     setsLink.addEventListener('click', function(e) {
         e.preventDefault();
-        landingPage.style.display = 'none';
-        setsPage.style.display = 'flex';
-        setsLink.classList.add('active');
-        songsLink.classList.remove('active');
+        updateAppVisibility('sets');
         loadAllSets();
     });
 }
@@ -115,17 +107,8 @@ async function loadAllSets() {
 
 // Function to open a song in the main view
 function openSong(songId) {
-    // Hide the sets page
-    document.getElementById('setsPage').style.display = 'none';
-    
-    // Show the landing page (which will be hidden by the song display)
-    document.getElementById('landingPage').style.display = 'flex';
-    
-    // Hide navigation menu
-    const navMenu = document.querySelector('.nav-menu');
-    if (navMenu) {
-        navMenu.style.display = 'none';
-    }
+    // Update visibility state
+    updateAppVisibility('song');
     
     // Update URL to load the song
     const url = new URL(window.location);
@@ -149,17 +132,8 @@ function loadAllSongsInSet(setData) {
     // Extract all song IDs from the set
     const songIds = setData.songs.map(song => song.song_id);
     
-    // Hide the sets page
-    document.getElementById('setsPage').style.display = 'none';
-    
-    // Show the landing page (which will be hidden by the song display)
-    document.getElementById('landingPage').style.display = 'flex';
-    
-    // Hide navigation menu
-    const navMenu = document.querySelector('.nav-menu');
-    if (navMenu) {
-        navMenu.style.display = 'none';
-    }
+    // Update visibility state
+    updateAppVisibility('song');
     
     // Update URL to load all songs
     const url = new URL(window.location);
@@ -226,7 +200,7 @@ async function displaySetCard(container, setData, fileName) {
         
         const loadButton = document.createElement('button');
         loadButton.className = 'load-set-button';
-        loadButton.innerHTML = '<i class="fas fa-music"></i> Carregar';
+        loadButton.innerHTML = '<i class="fas fa-music"></i> Carregar Repertório';
         loadButton.title = 'Carregar todas as músicas deste set';
         
         loadButton.addEventListener('click', () => {
@@ -261,7 +235,7 @@ async function displaySetCard(container, setData, fileName) {
             const songLink = document.createElement('a');
             songLink.href = '#';
             songLink.className = 'song-link';
-            songLink.innerHTML = `<i class="fas fa-music"></i> ${index + 1}. ${songTitle} <span class="song-key">(Key: ${song.key})</span>`;
+            songLink.innerHTML = `${index + 1}. ${songTitle} <span class="song-key">(Tom: ${song.key})</span>`;
             
             // Add click event to open the song
             songLink.addEventListener('click', (e) => {
@@ -296,15 +270,11 @@ async function displaySetCard(container, setData, fileName) {
 }
 
 // Function to listen for the back button in song view
-// This should restore the nav menu visibility
 function initBackButtonListener() {
     document.addEventListener('click', function(e) {
         if (e.target && (e.target.id === 'backToTable' || e.target.closest('#backToTable'))) {
-            // Show navigation menu again when returning to song list
-            const navMenu = document.querySelector('.nav-menu');
-            if (navMenu) {
-                navMenu.style.display = 'flex';
-            }
+            // Update visibility with the landing view
+            updateAppVisibility('landing');
         }
     });
 }
