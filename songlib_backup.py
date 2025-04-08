@@ -6,8 +6,8 @@ import json
 import time
 import os
 
-REPROCESSAR_MUSICAS = True
-REPROCESSAR_SETS = True
+REPROCESSAR_MUSICAS = False
+REPROCESSAR_SETS = False
 
 def init(site_url):
 
