@@ -1,7 +1,7 @@
 # conda deactivate
 # conda activate base
-python songlib_backup.py
-python songlib_relation.py
+& "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\python.exe" "$PSScriptRoot\songlib_backup.py"
+& "C:\Program Files\ArcGIS\Pro\bin\Python\envs\arcgispro-py3\python.exe" "$PSScriptRoot\songlib_relation.py"
 git add *
 git commit -m "feat: Auto backup"
 git push
