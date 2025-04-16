@@ -1,7 +1,17 @@
 # conda deactivate
 # conda activate base
-& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_backup.py"
+
+# Parâmetros para receber credenciais como argumentos externos
+param (
+    [string]$username = "",
+    [string]$password = ""
+)
+
+# Executa o backup com as credenciais como argumentos
+& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_backup.py" --username $username --password $password
 & "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_relation.py"
+
+# Commit e push das alterações
 git add *
 git commit -m "feat: Auto backup"
 git push

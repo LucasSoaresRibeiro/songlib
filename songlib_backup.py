@@ -5,11 +5,13 @@ from selenium.webdriver.support import expected_conditions as EC
 import json
 import time
 import os
+import sys
+import argparse
 
 REPROCESSAR_MUSICAS = True
 REPROCESSAR_SETS = True
 
-def init(site_url):
+def init(site_url, username, password):
 
     # Configuração do Selenium WebDriver
     driver = webdriver.Chrome()  # Certifique-se de ter o chromedriver instalado e no PATH
@@ -17,8 +19,8 @@ def init(site_url):
     time.sleep(2)
 
     # realiza login
-    driver.find_element(By.ID, "id_email").send_keys("lucas.sax@gmail.com")
-    driver.find_element(By.ID, "id_password").send_keys("123456")
+    driver.find_element(By.ID, "id_email").send_keys(username)
+    driver.find_element(By.ID, "id_password").send_keys(password)
     driver.find_element(By.XPATH, "/html/body/div[2]/div[2]/div[1]/form/div[4]/button").click()
     time.sleep(2)
 
@@ -174,10 +176,21 @@ def salvar_backup_sets(driver, site_url):
     print(f'Total de repertórios cadastrados: {len(data_sets)}')
     print('set_files.txt atualizado com sucesso!')
 
-# Exemplo de uso
-URL_SONGLIB_SONGS = 'https://songlib.com/songs/4297'
-URL_SONGLIB_SETS = 'https://songlib.com/sets/4297'
-driver = init(URL_SONGLIB_SONGS)
-salvar_backup_musicas(driver, URL_SONGLIB_SONGS)
-salvar_backup_sets(driver, URL_SONGLIB_SETS)
-finish()
+# Parse command line arguments
+def parse_arguments():
+    parser = argparse.ArgumentParser(description='Backup songs and sets from Songlib')
+    parser.add_argument('--username', required=True, help='Songlib username')
+    parser.add_argument('--password', required=True, help='Songlib password')
+    return parser.parse_args()
+
+# Main execution
+if __name__ == '__main__':
+    args = parse_arguments()
+    
+    URL_SONGLIB_SONGS = 'https://songlib.com/songs/4297'
+    URL_SONGLIB_SETS = 'https://songlib.com/sets/4297'
+    
+    driver = init(URL_SONGLIB_SONGS, args.username, args.password)
+    salvar_backup_musicas(driver, URL_SONGLIB_SONGS)
+    salvar_backup_sets(driver, URL_SONGLIB_SETS)
+    finish()
