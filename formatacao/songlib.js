@@ -144,7 +144,13 @@ htmlHeader += "<hr></hr>";
 htmlHeader += "<h3>Músicas:</h3>";
 for (let index = 0; index < songDatas.length; index++) {
     htmlHeader+= `<p class='cover-music-name'>${songDatas[index].name} - <span class='cover-key'>${songDatas[index].key}</span></p>`;
-    htmlHeader+= `<p><a class="cover-link" href="${songDatas[index].linkRef}" target="_blank"> </a></p>`;
+    if (songDatas[index].linkRef) {
+    	songDatas[index].linkRef.split("|").forEach(link => 
+    		{
+					htmlHeader+= `<p><a class="cover-link" href="${link}" target="_blank"> </a></p>`;
+    		}
+  		)
+    }
     
     whats_msg.push('');
     whats_msg.push(`${songDatas[index].name}`);

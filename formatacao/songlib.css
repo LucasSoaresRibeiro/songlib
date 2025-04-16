@@ -161,7 +161,7 @@ p {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
-    font-size: 15px;
+    font-size: 13px;
     color: #ffffff !important;
     border-left-width: 3px !important;
     border-left-style: solid !important;
@@ -169,13 +169,12 @@ p {
     text-transform: uppercase !important;
     padding-left: 4px !important;
     margin-left: -5px !important;
-    margin-top: 8px !important;
+    margin-top: 1px !important;
     background-color: #fd8000 !important;
     width: min-content !important;
     padding-right: 5px !important;
     padding-top: 2px !important;
-    padding-bottom: 1px !important;
-    font-style: normal;
+    font-style: italic;
 }
 
 .chordchart .heading-bkp-tag-left {
@@ -203,27 +202,30 @@ p {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-style: normal;
+
     font-weight: 700;
     color: #0675bc !important;
     margin-left: 25px;
-    font-size: 18px;
+
+    font-size: 21px;
     line-height: 16.5px;
-    letter-spacing: -1px;
-    margin-top: 4px;
+    letter-spacing: -2px;
+    margin-top: 2px;
 }
 
 .chordchart .lyrics {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-style: normal;
+
     font-weight: 250;
     text-transform: uppercase;
     color: #000000 !important;
     margin-left: 25px;
-    font-size: 18px;
+
+    font-size: 21px;
     line-height: 23px;
-    letter-spacing: -1px;
-    margin-bottom: 4px;
+    letter-spacing: -2px;
 }
 
 .titlebar {
