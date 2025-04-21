@@ -1,0 +1,74 @@
+{
+    "id": "12059",
+    "url": "https://songlib.com/sets/4297/12059/",
+    "title": "Banda 3 - Daniel - Manhã",
+    "notes": "",
+    "date": "20/04/2025",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 95791,
+            "no": "1",
+            "key": "C",
+            "use_b": false,
+            "notes": "Cristo Já Ressuscitou + Ressurgiu"
+        },
+        {
+            "song_id": 95792,
+            "no": "2",
+            "key": "C",
+            "use_b": false,
+            "notes": "Cristo Já Ressuscitou + Ressurgiu"
+        },
+        {
+            "song_id": 85080,
+            "no": "3",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 95793,
+            "no": "4",
+            "key": "G",
+            "use_b": false,
+            "notes": "Ele é o Leão + Eu Celebrarei + Exaltar-Te-Ei"
+        },
+        {
+            "song_id": 95794,
+            "no": "5",
+            "key": "G",
+            "use_b": false,
+            "notes": "Ele é o Leão + Eu Celebrarei + Exaltar-Te-Ei"
+        },
+        {
+            "song_id": 95795,
+            "no": "6",
+            "key": "G (+2)",
+            "use_b": false,
+            "notes": "Ele é o Leão + Eu Celebrarei + Exaltar-Te-Ei"
+        },
+        {
+            "song_id": 95795,
+            "no": "7",
+            "key": "F",
+            "use_b": false,
+            "notes": "Ele é o Leão + Eu Celebrarei + Exaltar-Te-Ei"
+        },
+        {
+            "song_id": 93678,
+            "no": "8",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 95796,
+            "no": "9",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

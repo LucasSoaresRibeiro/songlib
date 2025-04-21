@@ -3,8 +3,8 @@
 
 # Parâmetros para receber credenciais como argumentos externos
 param (
-    [string]$username = "",
-    [string]$password = ""
+    [string]$username = "lucas.sax@gmail.com",
+    [string]$password = "123456"
 )
 
 # Executa o backup com as credenciais como argumentos
