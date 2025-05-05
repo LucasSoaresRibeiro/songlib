@@ -1,0 +1,74 @@
+{
+    "id": "12182",
+    "url": "https://songlib.com/sets/4297/12182/",
+    "title": "Banda 2 - Eric",
+    "notes": "",
+    "date": "05/05/2025",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 85271,
+            "no": "1",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 92020,
+            "no": "2",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88339,
+            "no": "3",
+            "key": "G",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 96363,
+            "no": "4",
+            "key": "C",
+            "use_b": false,
+            "notes": "Pão"
+        },
+        {
+            "song_id": 96363,
+            "no": "5",
+            "key": "E (+4)",
+            "use_b": false,
+            "notes": "Pão\nTom Original"
+        },
+        {
+            "song_id": 96364,
+            "no": "6",
+            "key": "A",
+            "use_b": false,
+            "notes": "Cálice"
+        },
+        {
+            "song_id": 96364,
+            "no": "7",
+            "key": "A# (+1)",
+            "use_b": true,
+            "notes": "Cálice\nTom Original"
+        },
+        {
+            "song_id": 91211,
+            "no": "8",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88684,
+            "no": "9",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

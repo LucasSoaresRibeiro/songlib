@@ -1,52 +1,52 @@
 {
-    "id": "12105",
-    "url": "https://songlib.com/sets/4297/12105/",
-    "title": "Banda 4 - Theo",
+    "id": "12183",
+    "url": "https://songlib.com/sets/4297/12183/",
+    "title": "Banda 3 - Geraldo",
     "notes": "",
-    "date": "27/04/2025",
+    "date": "05/05/2025",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 96017,
+            "song_id": 85400,
             "no": "1",
-            "key": "E",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 96019,
-            "no": "2",
-            "key": "A",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 85743,
-            "no": "3",
-            "key": "A",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 96018,
-            "no": "4",
-            "key": "E",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 85275,
-            "no": "5",
             "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 96016,
-            "no": "6",
+            "song_id": 85049,
+            "no": "2",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 94495,
+            "no": "3",
+            "key": "F",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85274,
+            "no": "4",
+            "key": "Bb",
+            "use_b": true,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 96366,
+            "no": "5",
             "key": "G",
             "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85403,
+            "no": "6",
+            "key": "Bb",
+            "use_b": true,
             "notes": ""
         }
     ]
