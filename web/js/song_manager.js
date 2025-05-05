@@ -52,6 +52,7 @@ async function createSongContent(songData) {
     
     // Hide the landing page (table) when showing a song
     document.getElementById('landingPage').style.display = 'none';
+    document.title = `${songData.title} - Músicas Maranata`;
     
     // Create song header
     const header = document.createElement('div');
@@ -97,6 +98,8 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     // Add back button functionality
     const backButton = header.querySelector('#backToTable');
     backButton.addEventListener('click', () => {
+
+        document.title = 'Músicas Maranata';
         // Show the landing page (table)
         document.getElementById('landingPage').style.display = 'flex';
         // Hide song content
