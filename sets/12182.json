@@ -36,36 +36,22 @@
             "notes": "Pão"
         },
         {
-            "song_id": 96363,
-            "no": "5",
-            "key": "E (+4)",
-            "use_b": false,
-            "notes": "Pão\nTom Original"
-        },
-        {
             "song_id": 96364,
-            "no": "6",
-            "key": "A",
-            "use_b": false,
+            "no": "5",
+            "key": "Bb",
+            "use_b": true,
             "notes": "Cálice"
         },
         {
-            "song_id": 96364,
-            "no": "7",
-            "key": "A# (+1)",
-            "use_b": true,
-            "notes": "Cálice\nTom Original"
-        },
-        {
             "song_id": 91211,
-            "no": "8",
+            "no": "6",
             "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 88684,
-            "no": "9",
+            "no": "7",
             "key": "D",
             "use_b": false,
             "notes": ""
