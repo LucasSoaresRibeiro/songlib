@@ -60,7 +60,7 @@ def salvar_backup_sets_futuros(driver, site_url):
             
             # Skip if not a future date
             if not is_future_date(date):
-                print(f'Processing Future Set finished.')
+                # print(f'Processing Future Set finished.')
                 break
 
             counter += 1
