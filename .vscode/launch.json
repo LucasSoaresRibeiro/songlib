@@ -5,10 +5,17 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "Python Debugger: Current File",
+            "name": "songlib_backup",
             "type": "debugpy",
             "request": "launch",
             "program": "songlib_backup.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "songlib_partial_backup",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "songlib_partial_backup.py",
             "console": "integratedTerminal"
         }
     ]
