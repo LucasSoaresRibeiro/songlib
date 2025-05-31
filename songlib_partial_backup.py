@@ -40,6 +40,7 @@ def salvar_backup_sets_futuros(driver, site_url):
     set_elements = driver.find_elements(By.CSS_SELECTOR, 'table tbody tr td a[href]')
 
     data_sets = []
+    set_file_list = []
     for set_element in set_elements:
         data_sets.append({
             "id": set_element.get_attribute('href').split('/')[-2],
@@ -101,9 +102,17 @@ def salvar_backup_sets_futuros(driver, site_url):
             # Save set
             with open(file_name, 'w', encoding='utf-8') as f:
                 json.dump(data_set, f, ensure_ascii=False, indent=4)
+            
+            # Add to set file list
+            set_file_list.append(f"{data_set['id']}.json")
 
         except Exception as e:
             print(f"Error processing set {data_set['id']}: {e}")
+
+    # Update set_files.txt
+    os.makedirs('web/data', exist_ok=True)
+    with open('web/data/set_files.txt', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(sorted(set_file_list)))
 
     print(f'Total future sets processed: {counter}')
     return future_song_ids
