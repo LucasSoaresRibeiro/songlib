@@ -129,6 +129,7 @@ def salvar_backup_musicas_selecionadas(driver, site_url, song_ids):
     time.sleep(3)
     
     counter = 0
+    song_file_list = []
     for song_id in song_ids:
         counter += 1
         print('-'*20)
@@ -165,9 +166,17 @@ def salvar_backup_musicas_selecionadas(driver, site_url, song_ids):
             # Save song
             with open(file_name, 'w', encoding='utf-8') as f:
                 json.dump(song, f, ensure_ascii=False, indent=4)
+            
+            # Add to song file list
+            song_file_list.append(f"{song_id}.json")
 
         except Exception as e:
             print(f"Error processing song {song_id}: {e}")
+
+    # Update song_files.txt
+    os.makedirs('web/data', exist_ok=True)
+    with open('web/data/song_files.txt', 'w', encoding='utf-8') as f:
+        f.write('\n'.join(sorted(song_file_list)))
 
     print(f'Total songs processed: {counter}')
 
