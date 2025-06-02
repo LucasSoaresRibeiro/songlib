@@ -5,7 +5,7 @@
     "notes": "",
     "date": "22/06/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 87473,
@@ -15,9 +15,37 @@
             "notes": ""
         },
         {
-            "song_id": 85652,
+            "song_id": 97100,
             "no": "2",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 97101,
+            "no": "3",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85652,
+            "no": "4",
             "key": "A",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 97102,
+            "no": "5",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 97104,
+            "no": "6",
+            "key": "C",
             "use_b": false,
             "notes": ""
         }

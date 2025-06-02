@@ -5,7 +5,7 @@
     "notes": "",
     "date": "15/06/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 93187,
@@ -33,7 +33,7 @@
             "no": "4",
             "key": "D",
             "use_b": false,
-            "notes": ""
+            "notes": "Oferta"
         },
         {
             "song_id": 97074,

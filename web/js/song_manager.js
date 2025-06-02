@@ -53,6 +53,8 @@ async function createSongContent(songData) {
     // Hide the landing page (table) when showing a song
     document.getElementById('landingPage').style.display = 'none';
     document.title = `${songData.title} - Músicas Maranata`;
+
+    console.log(songData.url.split('|')[0].trim());
     
     // Create song header
     const header = document.createElement('div');
@@ -61,12 +63,12 @@ async function createSongContent(songData) {
         <h1>${songData.title}</h1>
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
-        <p class="link">REFERÊNCIA: <span>${songData.url}</span></p>
+        <p class="link">REFERÊNCIA: <span>${songData.url.split('|').map(url => url.trim()).join(', ')}</span></p>
         <p class="author key">Tom: <span id="song-key">${songData.key}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
+        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url.split('|')[0].trim()}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
