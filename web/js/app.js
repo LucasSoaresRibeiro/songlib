@@ -277,12 +277,21 @@ function displaySongsTable(songs) {
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
     const songsParam = urlParams.get('songs');
+    const keysParam = urlParams.get('keys');
     chordsVisible = urlParams.get('chords') !== 'false'; // Update global state
 
-    // Parse songs parameter
+    // Parse songs and keys parameters
     if (songsParam) {
         songsList = songsParam.split(',');
+        const keysList = keysParam ? keysParam.split(',') : [];
         currentSongIndex = 0;
+        // Store original keys for each song
+        songsList.forEach((songId, index) => {
+            const song = allSongs.find(s => s.id === songId);
+            if (song && keysList[index]) {
+                song.requested_key = keysList[index];
+            }
+        });
         // Update visibility for song view
         updateAppVisibility('song');
     } else {
@@ -297,7 +306,23 @@ function handleUrlChange() {
         const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
         if (song) {
             currentSongData = song;
-            createSongContent(song);
+            // If there's a requested key different from the original, transpose the song
+            if (song.requested_key && song.requested_key !== song.key) {
+                currentSongData = {...song};
+                currentSongData.chord_chart_original = song.chord_chart;
+                currentSongData.key_original = song.key;
+                // Calculate steps needed for transposition
+                const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+                const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
+                const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
+                if (fromIndex !== -1 && toIndex !== -1) {
+                    let steps = toIndex - fromIndex;
+                    if (steps < -6) steps += 12;
+                    if (steps > 6) steps -= 12;
+                    currentSongData.key_accumulation = steps;
+                }
+            }
+            createSongContent(currentSongData);
             // Update chord visibility after content is created
             document.querySelectorAll('.chords').forEach(chord => {
                 chord.style.display = chordsVisible ? 'block' : 'none';
@@ -325,6 +350,17 @@ function addSongNavigation() {
         <button id="nextSong" ${currentSongIndex === songsList.length - 1 ? 'disabled' : ''}>Próxima &gt;</button>
     `;
 
+    // Helper function to update URL with current song and key
+    const updateUrlWithKey = (song) => {
+        const url = new URL(window.location);
+        const currentKeys = url.searchParams.get('keys') ? url.searchParams.get('keys').split(',') : [];
+        if (song.requested_key) {
+            currentKeys[currentSongIndex] = song.requested_key;
+            url.searchParams.set('keys', currentKeys.join(','));
+        }
+        window.history.pushState({}, '', url);
+    };
+
     // Add navigation event listeners
     navContainer.querySelector('#prevSong').addEventListener('click', () => {
         if (currentSongIndex > 0) {
@@ -338,7 +374,25 @@ function addSongNavigation() {
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
                 }
-                createSongContent(song);
+                // Handle transposition if needed
+                if (song.requested_key && song.requested_key !== song.key) {
+                    currentSongData = {...song};
+                    currentSongData.chord_chart_original = song.chord_chart;
+                    currentSongData.key_original = song.key;
+                    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+                    const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
+                    const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        let steps = toIndex - fromIndex;
+                        if (steps < -6) steps += 12;
+                        if (steps > 6) steps -= 12;
+                        currentSongData.key_accumulation = steps;
+                    }
+                } else {
+                    currentSongData = song;
+                }
+                createSongContent(currentSongData);
+                updateUrlWithKey(currentSongData);
                 // Update chord visibility after content is created
                 document.querySelectorAll('.chords').forEach(chord => {
                     chord.style.display = chordsVisible ? 'block' : 'none';
@@ -369,7 +423,25 @@ function addSongNavigation() {
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
                 }
-                createSongContent(song);
+                // Handle transposition if needed
+                if (song.requested_key && song.requested_key !== song.key) {
+                    currentSongData = {...song};
+                    currentSongData.chord_chart_original = song.chord_chart;
+                    currentSongData.key_original = song.key;
+                    const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
+                    const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
+                    const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
+                    if (fromIndex !== -1 && toIndex !== -1) {
+                        let steps = toIndex - fromIndex;
+                        if (steps < -6) steps += 12;
+                        if (steps > 6) steps -= 12;
+                        currentSongData.key_accumulation = steps;
+                    }
+                } else {
+                    currentSongData = song;
+                }
+                createSongContent(currentSongData);
+                updateUrlWithKey(currentSongData);
                 // Update chord visibility after content is created
                 document.querySelectorAll('.chords').forEach(chord => {
                     chord.style.display = chordsVisible ? 'block' : 'none';

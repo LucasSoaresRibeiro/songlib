@@ -95,14 +95,14 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
             currentSongData['key_accumulation'] = 0;
         }
         createSongContent(currentSongData);
-        // Hide song content
-        songContent.style.display = 'none';
-        // Update URL to remove song parameter
-        const url = new URL(window.location);
-        url.searchParams.delete('songs');
-        window.history.pushState({}, '', url);
-        // Display all songs in the table when returning to home
-        displaySongsTable(allSongs);
+        // // Hide song content
+        // songContent.style.display = 'none';
+        // // Update URL to remove song parameter
+        // const url = new URL(window.location);
+        // url.searchParams.delete('songs');
+        // window.history.pushState({}, '', url);
+        // // Display all songs in the table when returning to home
+        // displaySongsTable(allSongs);
     });
 
     // Add related songs section if available
