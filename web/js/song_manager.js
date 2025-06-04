@@ -95,15 +95,6 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
             currentSongData['key_accumulation'] = 0;
         }
         createSongContent(currentSongData);
-    });
-
-    // Add back button functionality
-    const backButton = header.querySelector('#backToTable');
-    backButton.addEventListener('click', () => {
-
-        document.title = 'Músicas Maranata';
-        // Show the landing page (table)
-        document.getElementById('landingPage').style.display = 'flex';
         // Hide song content
         songContent.style.display = 'none';
         // Update URL to remove song parameter
