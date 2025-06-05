@@ -84,8 +84,8 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     originalKey = songData.key;
 
     if (!isTranposed) {
-        currentSongData['key'] = currentSongData['key_original'];
-        currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
+        // currentSongData['key'] = currentSongData['key_original'];
+        // currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
         currentSongData['key_accumulation'] = 0;
     }
 
