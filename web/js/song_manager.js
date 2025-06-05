@@ -54,6 +54,8 @@ async function createSongContent(songData, isTranposed = false) {
     // Hide the landing page (table) when showing a song
     document.getElementById('landingPage').style.display = 'none';
     document.title = `${songData.title} - Músicas Maranata`;
+
+    const keyAccumulation = currentSongData['key_accumulation'] != 0 ? `(${currentSongData['key_accumulation']})` : "";
     
     // Create song header
     const header = document.createElement('div');
@@ -63,7 +65,7 @@ async function createSongContent(songData, isTranposed = false) {
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="link">REFERÊNCIA: <span>${songData.url.split('|').map(url => url.trim()).join(', ')}</span></p>
-        <p class="author key">Tom: <span id="song-key">${songData.key}</span></p>
+        <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulation}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
@@ -85,11 +87,11 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     // Store original key when song is loaded
     originalKey = songData.key;
 
-    if (!isTranposed) {
-        // currentSongData['key'] = currentSongData['key_original'];
-        // currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
-        currentSongData['key_accumulation'] = 0;
-    }
+    // if (!isTranposed) {
+    //     // currentSongData['key'] = currentSongData['key_original'];
+    //     // currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
+    //     currentSongData['key_accumulation'] = 0;
+    // }
 
     transposeUpBtn.addEventListener('click', () => transpose('up'));
     transposeDownBtn.addEventListener('click', () => transpose('down'));
