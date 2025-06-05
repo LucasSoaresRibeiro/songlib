@@ -41,7 +41,7 @@ async function loadSongData() {
     }
 }
 
-async function createSongContent(songData) {
+async function createSongContent(songData, isTranposed = false) {
     const songContent = document.getElementById('songContent');
     // Clear existing content before displaying new song
     songContent.innerHTML = '';
@@ -83,6 +83,12 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     // Store original key when song is loaded
     originalKey = songData.key;
 
+    if (!isTranposed) {
+        currentSongData['key'] = currentSongData['key_original'];
+        currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
+        currentSongData['key_accumulation'] = 0;
+    }
+
     transposeUpBtn.addEventListener('click', () => transpose('up'));
     transposeDownBtn.addEventListener('click', () => transpose('down'));
     
@@ -95,14 +101,6 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
             currentSongData['key_accumulation'] = 0;
         }
         createSongContent(currentSongData);
-        // // Hide song content
-        // songContent.style.display = 'none';
-        // // Update URL to remove song parameter
-        // const url = new URL(window.location);
-        // url.searchParams.delete('songs');
-        // window.history.pushState({}, '', url);
-        // // Display all songs in the table when returning to home
-        // displaySongsTable(allSongs);
     });
 
     // Add related songs section if available
@@ -192,6 +190,7 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     });
     
     songContent.appendChild(chordChart);
+    addSongNavigation();
 
     // Wait for content to be fully rendered and fonts to load
     await document.fonts.ready;

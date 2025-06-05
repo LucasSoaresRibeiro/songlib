@@ -331,8 +331,6 @@ function handleUrlChange() {
             document.querySelectorAll('.lyrics').forEach(lyric => {
                 lyric.classList.toggle('compact-lyrics', !chordsVisible);
             });
-            // Add song navigation controls
-            addSongNavigation();
         }
     }
 }
@@ -406,7 +404,6 @@ function addSongNavigation() {
                 if (toggleChordsBtn) {
                     toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
                 }
-                addSongNavigation();
             }
         }
     });
@@ -455,7 +452,6 @@ function addSongNavigation() {
                 if (toggleChordsBtn) {
                     toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
                 }
-                addSongNavigation();
             }
         }
     });
