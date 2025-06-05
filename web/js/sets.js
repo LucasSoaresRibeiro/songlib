@@ -346,9 +346,11 @@ function updateKeyAccumulationForSet(songsList) {
             if (songSetConfig['key'].match(/\d+/)) {
                 songData['key_accumulation'] = parseInt(songSetConfig['key'].match(/\d+/)[0]);
                 songData['chord_chart'] = transposeChordChart(songData['chord_chart_original'], songData['key_accumulation']);
+                songData['key'] = formatter.format(parser.parse(songData['key']).transpose(songData['key_accumulation']))
             } else {
                 songData['key_accumulation'] = 0;
                 songData['chord_chart'] = songData['chord_chart_original'];
+                songData['key'] = songData['key_original'];
             }
         }
     }

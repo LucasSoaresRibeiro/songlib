@@ -92,12 +92,6 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
     // Store original key when song is loaded
     originalKey = songData.key;
 
-    // if (!isTranposed) {
-    //     // currentSongData['key'] = currentSongData['key_original'];
-    //     // currentSongData['chord_chart'] = currentSongData['chord_chart_original'];
-    //     currentSongData['key_accumulation'] = 0;
-    // }
-
     transposeUpBtn.addEventListener('click', () => transpose('up'));
     transposeDownBtn.addEventListener('click', () => transpose('down'));
     
