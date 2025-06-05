@@ -298,8 +298,20 @@ async function displaySetCard(container, setData, fileName) {
 function initBackButtonListener() {
     document.addEventListener('click', function(e) {
         if (e.target && (e.target.id === 'backToTable' || e.target.closest('#backToTable'))) {
-            // Update visibility with the landing view
-            updateAppVisibility('landing');
+
+            // if "set" on url, go back to sets
+            const url = new URL(window.location);
+            if (url.searchParams.get('set')) {
+                updateAppVisibility('sets');''
+            } else {
+                // if not, go back to landing
+                updateAppVisibility('landing');
+            }
+
+            // remove set parameter from url
+            url.searchParams.delete('set');
+            url.searchParams.delete('songs');
+            window.history.pushState({}, '', url);
         }
     });
 }
@@ -311,8 +323,6 @@ document.addEventListener('DOMContentLoaded', function() {
 });
 
 function updateKeyAccumulationForSet(songsList) {
-
-    console.log(songsList);
 
     // check if set parameter is present
     const url = new URL(window.location);
