@@ -42,6 +42,7 @@ async function loadSongData() {
 }
 
 async function createSongContent(songData, isTranposed = false) {
+
     const songContent = document.getElementById('songContent');
     // Clear existing content before displaying new song
     songContent.innerHTML = '';
@@ -53,8 +54,6 @@ async function createSongContent(songData, isTranposed = false) {
     // Hide the landing page (table) when showing a song
     document.getElementById('landingPage').style.display = 'none';
     document.title = `${songData.title} - Músicas Maranata`;
-
-    console.log(songData.url.split('|')[0].trim());
     
     // Create song header
     const header = document.createElement('div');
@@ -75,6 +74,9 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
     `;
     songContent.appendChild(header);
+
+    // Scroll to top of page
+    window.scrollTo(0, 0);
 
     // Add transpose button functionality
     const transposeUpBtn = header.querySelector('#transposeUp');
