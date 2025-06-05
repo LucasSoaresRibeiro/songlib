@@ -13,7 +13,7 @@ function transpose(direction) {
         chordChart = currentSongData['chord_chart_original'];
         currentSongData['key_accumulation'] = direction === 'up' ? ++currentSongData['key_accumulation'] : --currentSongData['key_accumulation'];
     }
-    console.log(currentSongData['key_accumulation']);
+    // console.log(currentSongData['key_accumulation']);
     const lines = chordChart.split('\n');
     
     const transposedLines = lines.map(line => {
