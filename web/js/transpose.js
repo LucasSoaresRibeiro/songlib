@@ -1,6 +1,7 @@
+const parser = new ChordSheetJS.ChordsOverWordsParser();
+const formatter = new ChordSheetJS.TextFormatter();
+
 function transpose(direction) {
-    const parser = new ChordSheetJS.ChordsOverWordsParser();
-    const formatter = new ChordSheetJS.TextFormatter();
 
     let chordChart;
     
@@ -13,7 +14,15 @@ function transpose(direction) {
         chordChart = currentSongData['chord_chart_original'];
         currentSongData['key_accumulation'] = direction === 'up' ? ++currentSongData['key_accumulation'] : --currentSongData['key_accumulation'];
     }
-    // console.log(currentSongData['key_accumulation']);
+    currentSongData['chord_chart'] = transposeChordChart(chordChart, currentSongData['key_accumulation']);
+    currentSongData['key'] = direction === 'up' ? formatter.format(parser.parse(currentSongData['key']).transposeUp()): formatter.format(parser.parse(currentSongData['key']).transposeDown());
+
+    const isTranposed = true;
+    createSongContent(currentSongData, isTranposed);
+}
+
+function transposeChordChart(chordChart, steps) {
+
     const lines = chordChart.split('\n');
     
     const transposedLines = lines.map(line => {
@@ -68,13 +77,13 @@ function transpose(direction) {
 
                     // Process base chord with suffix
                     let chordData = parser.parse(baseChord);
-                    let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
+                    let transposedBase = chordData.transpose(steps);
                     transposedBase.useModifier('#');
                     let formattedChord = formatter.format(transposedBase) + chordSuffix;
 
                     // Process bass note
                     chordData = parser.parse(bassNote);
-                    let transposedBass = chordData.transpose(currentSongData['key_accumulation']);
+                    let transposedBass = chordData.transpose(steps);
                     transposedBass.useModifier('#');
                     formattedChord += '/' + formatter.format(transposedBass);
 
@@ -89,7 +98,7 @@ function transpose(direction) {
 
                 // Process regular chord
                 let chordData = parser.parse(baseChord);
-                let transposedBase = chordData.transpose(currentSongData['key_accumulation']);
+                let transposedBase = chordData.transpose(steps);
                 transposedBase.useModifier('#');
                 let formattedChord = formatter.format(transposedBase) + chordSuffix;
                 formattedChord = numericModifier ? formattedChord + numericModifier : formattedChord;
@@ -107,9 +116,6 @@ function transpose(direction) {
     });
     
     const transposedChart = transposedLines.join('\n');
-    currentSongData['chord_chart'] = transposedChart;
-    currentSongData['key'] = direction === 'up' ? formatter.format(parser.parse(currentSongData['key']).transposeUp()): formatter.format(parser.parse(currentSongData['key']).transposeDown());
+    return transposedChart;
 
-    const isTranposed = true;
-    createSongContent(currentSongData, isTranposed);
 }

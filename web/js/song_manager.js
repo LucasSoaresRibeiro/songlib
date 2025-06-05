@@ -55,7 +55,12 @@ async function createSongContent(songData, isTranposed = false) {
     document.getElementById('landingPage').style.display = 'none';
     document.title = `${songData.title} - Músicas Maranata`;
 
-    const keyAccumulation = currentSongData['key_accumulation'] != 0 ? `(${currentSongData['key_accumulation']})` : "";
+    let keyAccumulationLabel = "";
+    if (currentSongData['key_accumulation'] > 0) {
+        keyAccumulationLabel = `(+${currentSongData['key_accumulation']})`;
+    } else if (currentSongData['key_accumulation'] < 0) {
+        keyAccumulationLabel = currentSongData['key_accumulation'];
+    }
     
     // Create song header
     const header = document.createElement('div');
@@ -65,7 +70,7 @@ async function createSongContent(songData, isTranposed = false) {
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
         <p class="link">REFERÊNCIA: <span>${songData.url.split('|').map(url => url.trim()).join(', ')}</span></p>
-        <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulation}</span></p>
+        <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulationLabel}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
 ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>

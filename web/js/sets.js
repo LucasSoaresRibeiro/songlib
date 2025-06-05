@@ -16,7 +16,7 @@ function initSetNavigation() {
     setsLink.addEventListener('click', function(e) {
         e.preventDefault();
         updateAppVisibility('sets');
-        loadAllSets();
+        // loadAllSets();
     });
 }
 
@@ -101,10 +101,9 @@ async function loadAllSets() {
     const setsResults = await Promise.all(setsPromises);
     
     // Create an array of objects with set data and file name
-    const sets = [];
     for (let i = 0; i < setsResults.length; i++) {
         if (setsResults[i]) {
-            sets.push({
+            setList.push({
                 data: setsResults[i],
                 fileName: setFilesList[i]
             });
@@ -112,7 +111,7 @@ async function loadAllSets() {
     }
     
     // Sort sets by date in descending order
-    sets.sort((a, b) => {
+    setList.sort((a, b) => {
         const parseDate = (dateStr) => {
             if (!dateStr) return new Date(0);
             const [day, month, year] = dateStr.split('/').map(Number);
@@ -125,7 +124,7 @@ async function loadAllSets() {
     });
     
     // Display each set in the sorted order
-    for (const set of sets) {
+    for (const set of setList) {
         await displaySetCard(setsContainer, set.data, set.fileName);
     }
 }
@@ -163,6 +162,7 @@ function loadAllSongsInSet(setData) {
     // Update URL to load all songs
     const url = new URL(window.location);
     url.searchParams.set('songs', songIds.join(','));
+    url.searchParams.set('set', setData.id);
     url.searchParams.set('chords', 'true');
     window.history.pushState({}, '', url);
     
@@ -309,3 +309,37 @@ document.addEventListener('DOMContentLoaded', function() {
     initSetNavigation();
     initBackButtonListener();
 });
+
+function updateKeyAccumulationForSet(songsList) {
+
+    console.log(songsList);
+
+    // check if set parameter is present
+    const url = new URL(window.location);
+    if (!url.searchParams.get('set')) {
+        return;
+    }
+
+    // get set info
+    const setId = url.searchParams.get('set');
+    const set = setList.find(s => s.data.id === setId);
+    if (!set) {
+        return;
+    }
+
+    // update song key accumulation
+    for (let i = 0; i < songsList.length; i++) {
+        const songId = songsList[i];
+        const songData = allSongs.find(s => s.id === songId);
+        if (songData) {
+            const songSetConfig = set.data.songs.find(s => s.song_id === parseInt(songData.id));
+            if (songSetConfig['key'].match(/\d+/)) {
+                songData['key_accumulation'] = parseInt(songSetConfig['key'].match(/\d+/)[0]);
+                songData['chord_chart'] = transposeChordChart(songData['chord_chart_original'], songData['key_accumulation']);
+            } else {
+                songData['key_accumulation'] = 0;
+                songData['chord_chart'] = songData['chord_chart_original'];
+            }
+        }
+    }
+}

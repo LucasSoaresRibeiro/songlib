@@ -5,6 +5,7 @@ let currentSongData = null; // Store current song data
 let originalKey = null; // Store original key for reset functionality
 let currentSongIndex = 0;
 let songsList = [];
+let setList = [];
 
 /**
  * Updates the application's visibility states based on the current view.
@@ -92,6 +93,7 @@ async function loadAllSongs() {
             const songData = await response.json();
 
             songData['key_original'] = songData['key'];
+            songData['chord_chart_original'] = songData['chord_chart'];
             songData['key_accumulation'] = 0;
 
             return songData;
@@ -307,25 +309,10 @@ function handleUrlChange() {
 
     // If songs are loaded, update the display
     if (allSongs.length > 0 && songsList.length > 0) {
+        updateKeyAccumulationForSet(songsList);
         const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
         if (song) {
             currentSongData = song;
-            // // If there's a requested key different from the original, transpose the song
-            // if (song.requested_key && song.requested_key !== song.key) {
-            //     currentSongData = {...song};
-            //     currentSongData.chord_chart_original = song.chord_chart;
-            //     currentSongData.key_original = song.key;
-            //     // Calculate steps needed for transposition
-            //     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-            //     const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
-            //     const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
-            //     if (fromIndex !== -1 && toIndex !== -1) {
-            //         let steps = toIndex - fromIndex;
-            //         if (steps < -6) steps += 12;
-            //         if (steps > 6) steps -= 12;
-            //         currentSongData.key_accumulation = steps;
-            //     }
-            // }
             createSongContent(currentSongData);
             // Update chord visibility after content is created
             document.querySelectorAll('.chords').forEach(chord => {
@@ -376,23 +363,6 @@ function addSongNavigation() {
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
                 }
-                // // Handle transposition if needed
-                // if (song.requested_key && song.requested_key !== song.key) {
-                //     currentSongData = {...song};
-                //     currentSongData.chord_chart_original = song.chord_chart;
-                //     currentSongData.key_original = song.key;
-                //     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-                //     const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
-                //     const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
-                //     if (fromIndex !== -1 && toIndex !== -1) {
-                //         let steps = toIndex - fromIndex;
-                //         if (steps < -6) steps += 12;
-                //         if (steps > 6) steps -= 12;
-                //         currentSongData.key_accumulation = steps;
-                //     }
-                // } else {
-                //     currentSongData = song;
-                // }
                 currentSongData = song;
                 createSongContent(currentSongData);
                 updateUrlWithKey(currentSongData);
@@ -425,23 +395,6 @@ function addSongNavigation() {
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
                 }
-                // // Handle transposition if needed
-                // if (song.requested_key && song.requested_key !== song.key) {
-                //     currentSongData = {...song};
-                //     currentSongData.chord_chart_original = song.chord_chart;
-                //     currentSongData.key_original = song.key;
-                //     const notes = ['C', 'C#', 'D', 'D#', 'E', 'F', 'F#', 'G', 'G#', 'A', 'A#', 'B'];
-                //     const fromIndex = notes.indexOf(song.key.replace(/m$/, ''));
-                //     const toIndex = notes.indexOf(song.requested_key.replace(/m$/, ''));
-                //     if (fromIndex !== -1 && toIndex !== -1) {
-                //         let steps = toIndex - fromIndex;
-                //         if (steps < -6) steps += 12;
-                //         if (steps > 6) steps -= 12;
-                //         currentSongData.key_accumulation = steps;
-                //     }
-                // } else {
-                //     currentSongData = song;
-                // }
                 currentSongData = song;
                 createSongContent(currentSongData);
                 updateUrlWithKey(currentSongData);
@@ -470,6 +423,8 @@ function addSongNavigation() {
 
 // Add event listeners for URL changes and initial load
 window.addEventListener('popstate', handleUrlChange);
-document.addEventListener('DOMContentLoaded', () => {
-    loadSongData().then(() => handleUrlChange());
+document.addEventListener('DOMContentLoaded', async () => {
+    await loadSongData();
+    await loadAllSets();
+    handleUrlChange();
 });
