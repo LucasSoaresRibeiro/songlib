@@ -59,7 +59,7 @@ async function createSongContent(songData, isTranposed = false) {
     if (currentSongData['key_accumulation'] > 0) {
         keyAccumulationLabel = `(+${currentSongData['key_accumulation']})`;
     } else if (currentSongData['key_accumulation'] < 0) {
-        keyAccumulationLabel = currentSongData['key_accumulation'];
+        keyAccumulationLabel = `(${currentSongData['key_accumulation']})`;
     }
     
     // Create song header
