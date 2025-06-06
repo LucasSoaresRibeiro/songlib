@@ -302,7 +302,7 @@ function initBackButtonListener() {
             // if "set" on url, go back to sets
             const url = new URL(window.location);
             if (url.searchParams.get('set')) {
-                updateAppVisibility('sets');''
+                updateAppVisibility('sets');
             } else {
                 // if not, go back to landing
                 updateAppVisibility('landing');

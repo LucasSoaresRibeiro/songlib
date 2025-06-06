@@ -65,7 +65,6 @@ async function createSongContent(songData, isTranposed = false) {
     // Create song header
     const header = document.createElement('div');
     header.innerHTML = `
-        <button id="backToTable" class="back-button"><i class="fas fa-arrow-left"></i> Voltar</button>
         <h1>${songData.title}</h1>
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>

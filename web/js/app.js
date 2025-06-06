@@ -18,9 +18,11 @@ function updateAppVisibility(view, options = {}) {
     const landingPage = document.getElementById('landingPage');
     const songContent = document.getElementById('songContent');
     const setsPage = document.getElementById('setsPage');
+    const navControls = document.querySelector('.nav-controls');
     const navMenu = document.querySelector('.nav-menu');
     const songsLink = document.getElementById('songsLink');
     const setsLink = document.getElementById('setsLink');
+    const logoContainer = document.querySelector('.logo-container');
     
     // Reset search state
     const searchResults = document.getElementById('searchResults');
@@ -43,14 +45,18 @@ function updateAppVisibility(view, options = {}) {
             songContent.innerHTML = '';
             setsPage.style.display = 'none';
             if (navMenu) navMenu.style.display = 'flex';
+            if (navControls) navControls.style.display = 'none';
             songsLink.classList.add('active');
             setsLink.classList.remove('active');
+            if (logoContainer) logoContainer.style.display = 'flex';
             break;
             
         case 'song':
             landingPage.style.display = 'none';
             setsPage.style.display = 'none';
             if (navMenu) navMenu.style.display = 'none';
+            if (navControls) navControls.style.display = 'flex';
+            if (logoContainer) logoContainer.style.display = 'none';
             break;
             
         case 'sets':
@@ -58,8 +64,10 @@ function updateAppVisibility(view, options = {}) {
             songContent.innerHTML = '';
             setsPage.style.display = 'flex';
             if (navMenu) navMenu.style.display = 'flex';
+            if (navControls) navControls.style.display = 'none';
             setsLink.classList.add('active');
             songsLink.classList.remove('active');
+            if (logoContainer) logoContainer.style.display = 'flex';
             break;
             
         default:
@@ -330,6 +338,23 @@ function addSongNavigation() {
     const songContent = document.getElementById('songContent');
     const header = songContent.querySelector('header') || songContent.querySelector('h1').parentElement;
 
+    // Create set container
+    const setContainer = document.createElement('div');
+    setContainer.className ='set-header';
+    setContainer.style.gap = '10px';
+    setContainer.style.width = '100%';
+    setContainer.style.marginTop = '20px';
+
+    // Add set name if a set is loaded
+    const url = new URL(window.location);
+    const setId = url.searchParams.get('set');
+    if (setId && setList) {
+        const set = setList.find(s => s.data.id === setId);
+        if (set) {
+            setContainer.innerHTML = `<div class="set-title">${set.data.title}</div><div class="set-date">${set.data.date}</div>`;
+        }
+    }
+
     // Create navigation container
     const navContainer = document.createElement('div');
     navContainer.className = 'song-navigation';
@@ -417,6 +442,7 @@ function addSongNavigation() {
 
     // Insert navigation after the header
     if (songsList.length > 1) {
+        header.insertAdjacentElement('beforebegin', setContainer);
         header.insertAdjacentElement('beforebegin', navContainer);
     }
 }
