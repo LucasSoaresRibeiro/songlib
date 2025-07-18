@@ -1,7 +1,7 @@
 {
     "id": "12523",
     "url": "https://songlib.com/sets/4297/12523/",
-    "title": "Banda 5 - Pompeu",
+    "title": "Banda 5 - Geraldo",
     "notes": "",
     "date": "13/07/2025",
     "leader": "",
@@ -45,8 +45,8 @@
         {
             "song_id": 91211,
             "no": "6",
-            "key": "A",
-            "use_b": false,
+            "key": "A# (+1)",
+            "use_b": true,
             "notes": ""
         }
     ]

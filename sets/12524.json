@@ -15,22 +15,36 @@
             "notes": ""
         },
         {
-            "song_id": 85402,
+            "song_id": 98776,
             "no": "2",
-            "key": "F",
+            "key": "C",
             "use_b": false,
             "notes": "Oferta"
         },
         {
-            "song_id": 94495,
+            "song_id": 98776,
             "no": "3",
+            "key": "A# (-2)",
+            "use_b": true,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 94495,
+            "no": "4",
             "key": "F",
             "use_b": false,
             "notes": ""
         },
         {
+            "song_id": 94495,
+            "no": "5",
+            "key": "G (+2)",
+            "use_b": false,
+            "notes": ""
+        },
+        {
             "song_id": 98505,
-            "no": "4",
+            "no": "6",
             "key": "A",
             "use_b": false,
             "notes": ""
