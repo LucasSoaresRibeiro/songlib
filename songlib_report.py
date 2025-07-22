@@ -20,6 +20,8 @@ def generate_report():
     total_songs_used = 0
     all_songs_in_sets = []
     all_authors_in_sets = []
+    all_first_songs_in_sets = []
+    all_last_songs_in_sets = []
     singers = Counter()
     singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
 
@@ -36,7 +38,15 @@ def generate_report():
                 set_data = json.load(f)
                 title = set_data.get('title', '')
                 total_songs_used += len(set_data.get('songs', []))
-                for song in set_data.get('songs', []):
+                songs_in_set = set_data.get('songs', [])
+                if songs_in_set:
+                    first_song_id = songs_in_set[0]['song_id']
+                    last_song_id = songs_in_set[-1]['song_id']
+                    # Store first and last song IDs for later processing
+                    all_first_songs_in_sets.append(first_song_id)
+                    all_last_songs_in_sets.append(last_song_id)
+
+                for song in songs_in_set:
 
                     # Look up song title from songs directory
                     song_file = os.path.join(SONGS_DIR, f"{song['song_id']}.json")
@@ -76,6 +86,28 @@ def generate_report():
         top_authors_with_titles.append((author_name, count))
 
     top_authors = top_authors_with_titles # Get top 10 authors
+
+    # Process first songs
+    first_song_titles = []
+    for song_id in all_first_songs_in_sets:
+        song_file = os.path.join(SONGS_DIR, f"{song_id}.json")
+        if os.path.exists(song_file):
+            with open(song_file, 'r', encoding='utf-8') as sf:
+                song_data = json.load(sf)
+                first_song_titles.append(song_data['title'])
+    first_song_occurrence_counts = Counter(first_song_titles)
+    top_first_songs = first_song_occurrence_counts.most_common(10)
+
+    # Process last songs
+    last_song_titles = []
+    for song_id in all_last_songs_in_sets:
+        song_file = os.path.join(SONGS_DIR, f"{song_id}.json")
+        if os.path.exists(song_file):
+            with open(song_file, 'r', encoding='utf-8') as sf:
+                song_data = json.load(sf)
+                last_song_titles.append(song_data['title'])
+    last_song_occurrence_counts = Counter(last_song_titles)
+    top_last_songs = last_song_occurrence_counts.most_common(10)
 
     # Prepare data for Singer Keys Chart
     all_unique_keys = set()
@@ -145,6 +177,16 @@ def generate_report():
             <canvas id="singerKeysChart"></canvas>
         </div>
 
+        <div class="container">
+            <h2>Músicas Mais Escolhidas como Início de Culto</h2>
+            <canvas id="firstSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Mais Escolhidas como Final de Culto</h2>
+            <canvas id="lastSongsChart"></canvas>
+        </div>
+
         <script>
             // Data for Singers Chart
             const singersData = {{
@@ -182,6 +224,8 @@ def generate_report():
                 }}
             }});
 
+
+
             // Data for Top Songs Chart
             const topSongsData = {{
                 labels: {json.dumps([f"{title}" for title, count in top_songs])},
@@ -198,6 +242,78 @@ def generate_report():
             new Chart(topSongsCtx, {{
                 type: 'bar',
                 data: topSongsData,
+                options: {{
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {{
+                        datalabels: {{
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {{
+                                return value;
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        x: {{
+                            beginAtZero: true
+                        }}
+                    }}
+                }}
+            }});
+
+            // Data for Top First Songs Chart
+            const firstSongsData = {{
+                labels: {json.dumps([f"{title}" for title, count in top_first_songs])},
+                datasets: [{{
+                    label: 'Quantidade',
+                    data: {json.dumps([count for _, count in top_first_songs])},
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }}]
+            }};
+
+            const firstSongsCtx = document.getElementById('firstSongsChart').getContext('2d');
+            new Chart(firstSongsCtx, {{
+                type: 'bar',
+                data: firstSongsData,
+                options: {{
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {{
+                        datalabels: {{
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {{
+                                return value;
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        x: {{
+                            beginAtZero: true
+                        }}
+                    }}
+                }}
+            }});
+
+            // Data for Top Last Songs Chart
+            const lastSongsData = {{
+                labels: {json.dumps([f"{title}" for title, count in top_last_songs])},
+                datasets: [{{
+                    label: 'Quantidade',
+                    data: {json.dumps([count for _, count in top_last_songs])},
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }}]
+            }};
+
+            const lastSongsCtx = document.getElementById('lastSongsChart').getContext('2d');
+            new Chart(lastSongsCtx, {{
+                type: 'bar',
+                data: lastSongsData,
                 options: {{
                     responsive: true,
                     indexAxis: 'y',

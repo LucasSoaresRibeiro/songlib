@@ -20,8 +20,8 @@
             <p>- Período: De 11/08/2024 até 27/07/2025</p>
             <p>- Músicas cadastradas: 184</p>
             <p>- Número de cultos/programações: 64</p>
-            <p>- Média de músicas cantadas por programações: 6</p>
-            <p>- Total de músicas cantadas: 380</p>
+            <p>- Média de músicas cantadas por programação: 6</p>
+            <p>- Total de execuções de música: 380</p>
         </div>
 
         <div class="container">
@@ -42,6 +42,16 @@
         <div class="container">
             <h2>Tonalidades Preferidas por Dirigente</h2>
             <canvas id="singerKeysChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Mais Escolhidas como Início de Culto</h2>
+            <canvas id="firstSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Mais Escolhidas como Final de Culto</h2>
+            <canvas id="lastSongsChart"></canvas>
         </div>
 
         <script>
@@ -81,6 +91,8 @@
                 }
             });
 
+
+
             // Data for Top Songs Chart
             const topSongsData = {
                 labels: ["Vem Glorificar a Deus", "Reden\u00e7\u00e3o", "Glorificar", "Senhor Tu \u00c9s Bom", "Eu Te Louvarei Meu Bom Jesus", "Grande e Eterno Deus", "Perto Quero Estar (Te Louvarei)", "Bondade de Deus", "\u00c9 Teu Povo (IPALPHA)", "Eu Sou Grato (Tributo a Yehovah)"],
@@ -97,6 +109,78 @@
             new Chart(topSongsCtx, {
                 type: 'bar',
                 data: topSongsData,
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Data for Top First Songs Chart
+            const firstSongsData = {
+                labels: ["Senhor Tu \u00c9s Bom", "Somos Convidados", "Salvo Pela Gra\u00e7a", "Vem Glorificar a Deus", "Reden\u00e7\u00e3o", "Ao Deus de Abra\u00e3o Louvai", "Eu Te Louvarei Meu Bom Jesus", "Aleluia, Hosana", "Grande e Eterno Deus", "Cantai Perto Est\u00e1 o Senhor"],
+                datasets: [{
+                    label: 'Quantidade',
+                    data: [5, 4, 4, 4, 3, 3, 3, 3, 3, 3],
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const firstSongsCtx = document.getElementById('firstSongsChart').getContext('2d');
+            new Chart(firstSongsCtx, {
+                type: 'bar',
+                data: firstSongsData,
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Data for Top Last Songs Chart
+            const lastSongsData = {
+                labels: ["Marcharemos", "Amigo de Deus", "Perto Quero Estar (Te Louvarei)", "S\u00f3 em Jesus (Confiarei)", "Fala \u00d3 Deus (Vers\u00e3o Baixo/Guitarra)", "Isa\u00edas 53", "Ao \u00danico", "Ele Me Guardar\u00e1", "N\u00e3o Tenhas Sobre Ti", "At\u00e9 Te Ver Face a Face"],
+                datasets: [{
+                    label: 'Quantidade',
+                    data: [5, 3, 3, 2, 2, 2, 2, 2, 2, 1],
+                    backgroundColor: 'rgba(54, 162, 235, 0.6)',
+                    borderColor: 'rgba(54, 162, 235, 1)',
+                    borderWidth: 1
+                }]
+            };
+
+            const lastSongsCtx = document.getElementById('lastSongsChart').getContext('2d');
+            new Chart(lastSongsCtx, {
+                type: 'bar',
+                data: lastSongsData,
                 options: {
                     responsive: true,
                     indexAxis: 'y',
@@ -156,7 +240,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "Bb", "C", "D", "E", "G"],
-                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(132, 181, 253, 0.6)", "borderColor": "rgba(132, 181, 253, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(156, 85, 239, 0.6)", "borderColor": "rgba(156, 85, 239, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(132, 96, 131, 0.6)", "borderColor": "rgba(132, 96, 131, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(106, 70, 230, 0.6)", "borderColor": "rgba(106, 70, 230, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(60, 131, 126, 0.6)", "borderColor": "rgba(60, 131, 126, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(41, 30, 48, 0.6)", "borderColor": "rgba(41, 30, 48, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(157, 140, 10, 0.6)", "borderColor": "rgba(157, 140, 10, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(214, 103, 51, 0.6)", "borderColor": "rgba(214, 103, 51, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(6, 108, 44, 0.6)", "borderColor": "rgba(6, 108, 44, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(83, 90, 130, 0.6)", "borderColor": "rgba(83, 90, 130, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
