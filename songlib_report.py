@@ -119,6 +119,25 @@ def generate_report():
     last_song_occurrence_counts = Counter(last_song_titles)
     top_last_songs = last_song_occurrence_counts.most_common(10)
 
+    # Process least used songs
+    all_song_titles = []
+    for filename in os.listdir(SONGS_DIR):
+        if filename.endswith('.json'):
+            filepath = os.path.join(SONGS_DIR, filename)
+            with open(filepath, 'r', encoding='utf-8') as f:
+                song_data = json.load(f)
+                all_song_titles.append(song_data['title'])
+
+    least_used_songs_counts = Counter(all_song_titles)
+    # Subtract songs that have been used in sets
+    for song_title in all_songs_in_sets:
+        if song_title in least_used_songs_counts:
+            least_used_songs_counts[song_title] -= 1
+
+    # Filter out songs that have been used at least once (count > 0 after subtraction)
+    # And then get the 10 least used songs (those with the lowest counts, including 0)
+    least_used_songs = sorted([item for item in least_used_songs_counts.items() if item[1] >= 0], key=lambda item: item[1])[:10]
+
     # Prepare data for Singer Keys Chart
     all_unique_keys = set()
     for singer_name, key_counts in singer_song_keys.items():
@@ -170,6 +189,11 @@ def generate_report():
         <div class="container">
             <h2>Músicas Mais Cantadas</h2>
             <canvas id="topSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Menos Cantadas</h2>
+            <canvas id="leastUsedSongsChart"></canvas>
         </div>
 
         <div class="container">
@@ -509,6 +533,40 @@ def generate_report():
             new Chart(wineSongsCtx, {{
                 type: 'bar',
                 data: wineSongsData,
+                options: {json.dumps({
+                    "responsive": True,
+                    "indexAxis": 'y',
+                    "plugins": {
+                        "datalabels": {
+                            "anchor": 'end',
+                            "align": 'start',
+                            "formatter": "(value, context) => { return value; }"
+                        }
+                    },
+                    "scales": {
+                        "x": {
+                            "beginAtZero": True
+                        }
+                    }
+                })}
+            }});
+
+            // Data for Least Used Songs Chart
+            const leastUsedSongsData = {json.dumps({
+                "labels": [item[0] for item in least_used_songs],
+                "datasets": [{
+                    "label": 'Quantidade',
+                    "data": [item[1] for item in least_used_songs],
+                    "backgroundColor": 'rgba(255, 206, 86, 0.6)',
+                    "borderColor": 'rgba(255, 206, 86, 1)',
+                    "borderWidth": 1
+                }]
+            })};
+
+            const leastUsedSongsCtx = document.getElementById('leastUsedSongsChart').getContext('2d');
+            new Chart(leastUsedSongsCtx, {{
+                type: 'bar',
+                data: leastUsedSongsData,
                 options: {json.dumps({
                     "responsive": True,
                     "indexAxis": 'y',

@@ -69,6 +69,11 @@
             <canvas id="wineSongsChart"></canvas>
         </div>
 
+        <div class="container">
+            <h2>Músicas Menos Cantadas</h2>
+            <canvas id="leastUsedSongsChart"></canvas>
+        </div>
+
         <script>
             // Data for Singers Chart
             const singersData = {
@@ -255,7 +260,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "Bb", "C", "D", "E", "G"],
-                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(28, 71, 107, 0.6)", "borderColor": "rgba(28, 71, 107, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(11, 166, 209, 0.6)", "borderColor": "rgba(11, 166, 209, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(147, 206, 74, 0.6)", "borderColor": "rgba(147, 206, 74, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(236, 99, 17, 0.6)", "borderColor": "rgba(236, 99, 17, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(61, 71, 134, 0.6)", "borderColor": "rgba(61, 71, 134, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(247, 115, 20, 0.6)", "borderColor": "rgba(247, 115, 20, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(154, 138, 138, 0.6)", "borderColor": "rgba(154, 138, 138, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(10, 195, 159, 0.6)", "borderColor": "rgba(10, 195, 159, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(184, 5, 108, 0.6)", "borderColor": "rgba(184, 5, 108, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(244, 129, 143, 0.6)", "borderColor": "rgba(244, 129, 143, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
@@ -309,6 +314,16 @@
             new Chart(wineSongsCtx, {
                 type: 'bar',
                 data: wineSongsData,
+                options: {"responsive": true, "indexAxis": "y", "plugins": {"datalabels": {"anchor": "end", "align": "start", "formatter": "(value, context) => { return value; }"}}, "scales": {"x": {"beginAtZero": true}}}
+            });
+
+            // Data for Least Used Songs Chart
+            const leastUsedSongsData = {"labels": ["At\u00e9 Te Ver Face a Face", "Deus est\u00e1 aqui", "N\u00e3o H\u00e1 Deus Maior", "Que Alegria Neste Dia (HCC 611)", "Saudai o Nome de Jesus (HCC 56)", "Clamo Jesus", "Deus Forte", "Senhor Te Quero", "Deus Eu Te Exaltarei", "Grandioso \u00c9s Tu"], "datasets": [{"label": "Quantidade", "data": [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], "backgroundColor": "rgba(255, 206, 86, 0.6)", "borderColor": "rgba(255, 206, 86, 1)", "borderWidth": 1}]};
+
+            const leastUsedSongsCtx = document.getElementById('leastUsedSongsChart').getContext('2d');
+            new Chart(leastUsedSongsCtx, {
+                type: 'bar',
+                data: leastUsedSongsData,
                 options: {"responsive": true, "indexAxis": "y", "plugins": {"datalabels": {"anchor": "end", "align": "start", "formatter": "(value, context) => { return value; }"}}, "scales": {"x": {"beginAtZero": true}}}
             });
         </script>
