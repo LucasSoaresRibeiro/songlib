@@ -8,7 +8,7 @@ SONGS_DIR = 'c:\\Lucas\\Repos\\pessoal\\github\\songlib\\songs'
 SINGERS = {
     "Geraldo": 0,
     "Eric": 0,
-    "Amanda": 0,
+    # "Amanda": 0,
     "Theo": 0,
     "Daniel": 0,
     "Pompeu": 0,
@@ -21,6 +21,7 @@ def generate_report():
     all_songs_in_sets = []
     all_authors_in_sets = []
     singers = Counter()
+    singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
 
     # Process song files
     total_songs = len(os.listdir(SONGS_DIR))
@@ -33,6 +34,7 @@ def generate_report():
             filepath = os.path.join(SETS_DIR, filename)
             with open(filepath, 'r', encoding='utf-8') as f:
                 set_data = json.load(f)
+                title = set_data.get('title', '')
                 total_songs_used += len(set_data.get('songs', []))
                 for song in set_data.get('songs', []):
 
@@ -42,10 +44,12 @@ def generate_report():
                         with open(song_file, 'r', encoding='utf-8') as sf:
                             song_data = json.load(sf)
                             all_songs_in_sets.append(song_data['title'])
-                            if 'author' in song_data:
+                            if 'author' in song_data and song_data['author'] != '':
                                 all_authors_in_sets.append(song_data['author'])
-                
-                title = set_data.get('title', '')
+                            if 'key' in song_data and song_data['key'] != '':
+                                current_singer = next((s for s in SINGERS.keys() if s in title or s in title.upper()), None)
+                                if current_singer:
+                                    singer_song_keys[current_singer][song_data['key']] += 1
                 for singer in SINGERS.keys():
                     if singer in title or singer in title.upper():
                         SINGERS[singer] += 1
@@ -73,13 +77,33 @@ def generate_report():
 
     top_authors = top_authors_with_titles # Get top 10 authors
 
+    # Prepare data for Singer Keys Chart
+    all_unique_keys = set()
+    for singer_name, key_counts in singer_song_keys.items():
+        for key, _ in key_counts.most_common(5):
+            all_unique_keys.add(key)
+
+    sorted_unique_keys = sorted(list(all_unique_keys))
+
+    singer_keys_chart_datasets = []
+    for singer_name in SINGERS.keys():
+        data = []
+        for key in sorted_unique_keys:
+            data.append(singer_song_keys[singer_name].get(key, 0))
+        singer_keys_chart_datasets.append({
+            'label': singer_name,
+            'data': data,
+            'backgroundColor': f'rgba({hash(singer_name) % 256}, {hash(singer_name + "a") % 256}, {hash(singer_name + "b") % 256}, 0.6)',
+            'borderColor': f'rgba({hash(singer_name) % 256}, {hash(singer_name + "a") % 256}, {hash(singer_name + "b") % 256}, 1)',
+            'borderWidth': 1
+        })
+
     # Generate HTML report
     html_content = f"""
     <!DOCTYPE html>
     <html>
     <head>
         <title>Relatório SongLib</title>
-        <link rel="stylesheet" href="formatacao/songlib.css">
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -92,21 +116,34 @@ def generate_report():
         </div>
         <h1>Relatório Ministério de Louvor</h1>
 
-        <h2>Resumo:</h2>
-        {f'<p>- Período: De {min(set_dates).strftime("%d/%m/%Y")} até {max(set_dates).strftime("%d/%m/%Y")}</p>' if set_dates else ''}
-        <p>- Músicas cadastradas: {total_songs}</p>
-        <p>- Número de cultos/programações: {total_sets}</p>
-        <p>- Média de músicas cantadas por programações: {int(round(total_songs_used/total_sets, 0))}</p>
-        <p>- Total de músicas cantadas: {total_songs_used}</p>
+        <div class="container">
+            <h2>Resumo:</h2>
+            {f'<p>- Período: De {min(set_dates).strftime("%d/%m/%Y")} até {max(set_dates).strftime("%d/%m/%Y")}</p>' if set_dates else ''}
+            <p>- Músicas cadastradas: {total_songs}</p>
+            <p>- Número de cultos/programações: {total_sets}</p>
+            <p>- Média de músicas cantadas por programação: {int(round(total_songs_used/total_sets, 0))}</p>
+            <p>- Total de execuções de música: {total_songs_used}</p>
+        </div>
 
-        <h2>Cultos por Dirigente</h2>
-        <canvas id="singersChart"></canvas>
+        <div class="container">
+            <h2>Músicas Mais Cantadas</h2>
+            <canvas id="topSongsChart"></canvas>
+        </div>
 
-        <h2>Músicas Mais Cantadas</h2>
-        <canvas id="topSongsChart"></canvas>
+        <div class="container">
+            <h2>Autores/Intérpretes Mais Frequentes</h2>
+            <canvas id="topAuthorsChart"></canvas>
+        </div>
 
-        <h2>Autores/Intérpretes Mais Frequentes</h2>
-        <canvas id="topAuthorsChart"></canvas>
+        <div class="container">
+            <h2>Cultos por Dirigente</h2>
+            <canvas id="singersChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <canvas id="singerKeysChart"></canvas>
+        </div>
 
         <script>
             // Data for Singers Chart
@@ -197,6 +234,36 @@ def generate_report():
             new Chart(topAuthorsCtx, {{
                 type: 'bar',
                 data: topAuthorsData,
+                options: {{
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {{
+                        datalabels: {{
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {{
+                                return value;
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        x: {{
+                            beginAtZero: true
+                        }}
+                    }}
+                }}
+            }});
+
+            // Data for Singer Keys Chart
+            const singerKeysData = {{
+                labels: {json.dumps(sorted_unique_keys)},
+                datasets: {json.dumps(singer_keys_chart_datasets)}
+            }};
+
+            const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
+            new Chart(singerKeysCtx, {{
+                type: 'bar',
+                data: singerKeysData,
                 options: {{
                     responsive: true,
                     indexAxis: 'y',

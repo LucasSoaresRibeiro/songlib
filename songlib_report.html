@@ -3,7 +3,6 @@
     <html>
     <head>
         <title>Relatório SongLib</title>
-        <link rel="stylesheet" href="formatacao/songlib.css">
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -16,29 +15,42 @@
         </div>
         <h1>Relatório Ministério de Louvor</h1>
 
-        <h2>Resumo:</h2>
-        <p>- Período: De 11/08/2024 até 27/07/2025</p>
-        <p>- Músicas cadastradas: 184</p>
-        <p>- Número de cultos/programações: 64</p>
-        <p>- Média de músicas cantadas por programações: 6</p>
-        <p>- Total de músicas cantadas: 380</p>
+        <div class="container">
+            <h2>Resumo:</h2>
+            <p>- Período: De 11/08/2024 até 27/07/2025</p>
+            <p>- Músicas cadastradas: 184</p>
+            <p>- Número de cultos/programações: 64</p>
+            <p>- Média de músicas cantadas por programações: 6</p>
+            <p>- Total de músicas cantadas: 380</p>
+        </div>
 
-        <h2>Cultos por Dirigente</h2>
-        <canvas id="singersChart"></canvas>
+        <div class="container">
+            <h2>Músicas Mais Cantadas</h2>
+            <canvas id="topSongsChart"></canvas>
+        </div>
 
-        <h2>Músicas Mais Cantadas</h2>
-        <canvas id="topSongsChart"></canvas>
+        <div class="container">
+            <h2>Autores/Intérpretes Mais Frequentes</h2>
+            <canvas id="topAuthorsChart"></canvas>
+        </div>
 
-        <h2>Autores Mais Frequentes</h2>
-        <canvas id="topAuthorsChart"></canvas>
+        <div class="container">
+            <h2>Cultos por Dirigente</h2>
+            <canvas id="singersChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <canvas id="singerKeysChart"></canvas>
+        </div>
 
         <script>
             // Data for Singers Chart
             const singersData = {
-                labels: ["Daniel", "Pompeu", "Theo", "Eric", "Geraldo", "Amanda"],
+                labels: ["Daniel", "Pompeu", "Theo", "Eric", "Geraldo"],
                 datasets: [{
                     label: 'Quantidade',
-                    data: [15, 13, 12, 10, 7, 1],
+                    data: [15, 13, 12, 10, 7],
                     backgroundColor: 'rgba(75, 192, 192, 0.6)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -107,10 +119,10 @@
 
             // Data for Top Authors Chart
             const topAuthorsData = {
-                labels: ["Vineyard", "", "Paulo C\u00e9sar Baruk", "Projeto Sola", "Fernandinho", "IPALPHA", "Gracia Soberana M\u00fasica", "Hin\u00e1rio para o Culto Crist\u00e3o (HCC)", "Cantor Crist\u00e3o", "Chris Tomlin"],
+                labels: ["Vineyard", "Paulo C\u00e9sar Baruk", "Projeto Sola", "Fernandinho", "IPALPHA", "Gracia Soberana M\u00fasica", "Hin\u00e1rio para o Culto Crist\u00e3o (HCC)", "Cantor Crist\u00e3o", "Chris Tomlin", "Daniel Souza"],
                 datasets: [{
                     label: 'Quantidade',
-                    data: [26, 23, 20, 19, 11, 11, 11, 11, 11, 9],
+                    data: [26, 20, 19, 11, 11, 11, 11, 11, 9, 9],
                     backgroundColor: 'rgba(255, 99, 132, 0.6)',
                     borderColor: 'rgba(255, 99, 132, 1)',
                     borderWidth: 1
@@ -121,6 +133,36 @@
             new Chart(topAuthorsCtx, {
                 type: 'bar',
                 data: topAuthorsData,
+                options: {
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {
+                        datalabels: {
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {
+                                return value;
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+
+            // Data for Singer Keys Chart
+            const singerKeysData = {
+                labels: ["A", "Bb", "C", "D", "E", "G"],
+                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(132, 181, 253, 0.6)", "borderColor": "rgba(132, 181, 253, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(156, 85, 239, 0.6)", "borderColor": "rgba(156, 85, 239, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(132, 96, 131, 0.6)", "borderColor": "rgba(132, 96, 131, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(106, 70, 230, 0.6)", "borderColor": "rgba(106, 70, 230, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(60, 131, 126, 0.6)", "borderColor": "rgba(60, 131, 126, 1)", "borderWidth": 1}]
+            };
+
+            const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
+            new Chart(singerKeysCtx, {
+                type: 'bar',
+                data: singerKeysData,
                 options: {
                     responsive: true,
                     indexAxis: 'y',
