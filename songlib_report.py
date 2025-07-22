@@ -31,6 +31,7 @@ def generate_report():
     wine_songs = []
     singers = Counter()
     singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
+    singer_top_songs = {singer: Counter() for singer in SINGERS.keys()}
 
     # Process song files
     total_songs = len(os.listdir(SONGS_DIR))
@@ -77,6 +78,8 @@ def generate_report():
                                     if key in ['F#', 'Gb']:
                                         key = 'F# / Gb'
                                     singer_song_keys[current_singer][key] += 1
+                                if current_singer:
+                                    singer_top_songs[current_singer][get_song_title(song_data)] += 1
                             if 'notes' in song and 'Oferta' in song['notes']:
                                 offering_songs.append(get_song_title(song_data))
                             if 'notes' in song and 'Pão' in song['notes']:
@@ -153,6 +156,12 @@ def generate_report():
 
     # Prepare data for Singer Keys Chart
     all_unique_keys = set()
+
+    # Prepare data for Singer Top Songs Chart
+    singer_top_songs_chart_data = {}
+    for singer_name, song_counts in singer_top_songs.items():
+        singer_top_songs_chart_data[singer_name] = song_counts.most_common(10)
+
     for singer_name, key_counts in singer_song_keys.items():
         for key, _ in key_counts.most_common(1000):
         # for key, _ in key_counts:
@@ -215,23 +224,14 @@ def generate_report():
             <canvas id="topAuthorsChart"></canvas>
         </div>
 
-        <div class="container">
-            <h2>Cultos por Dirigente</h2>
-            <canvas id="singersChart"></canvas>
-        </div>
-
-        <div class="container-limited-height">
-            <h2>Tonalidades Preferidas por Dirigente</h2>
-            <canvas id="singerKeysChart"></canvas>
-        </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início de Culto</h2>
+            <h2>Músicas Mais Escolhidas como Início</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final de Culto</h2>
+            <h2>Músicas Mais Escolhidas como Final</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
@@ -248,6 +248,21 @@ def generate_report():
         <div class="container">
             <h2>Músicas Mais Escolhidas para Cálice</h2>
             <canvas id="wineSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Cultos por Dirigente</h2>
+            <canvas id="singersChart"></canvas>
+        </div>
+
+        <div class="container-limited-height">
+            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <canvas id="singerKeysChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Top 10 Músicas por Dirigente</h2>
+            <canvas id="singerTopSongsChart"></canvas>
         </div>
 
         <script>
@@ -598,6 +613,54 @@ def generate_report():
                     }
                 })}
             }});
+
+            // Data for Singer Top Songs Chart
+            const singerTopSongsData = {json.dumps(singer_top_songs_chart_data)};
+            const singerTopSongsContainer = document.getElementById('singerTopSongsChart');
+            
+            for (const singerName in singerTopSongsData) {{
+                const songs = singerTopSongsData[singerName];
+                if (songs.length > 0) {{
+                    const chartDiv = document.createElement('div');
+                    chartDiv.className = 'singer-top-songs-chart';
+                    chartDiv.innerHTML = `<h3>${{singerName}}</h3><canvas id="singerTopSongsChart_${{singerName}}"></canvas>`;
+                    singerTopSongsContainer.parentNode.insertBefore(chartDiv, singerTopSongsContainer);
+
+                    const ctx = document.getElementById(`singerTopSongsChart_${{singerName}}`).getContext('2d');
+                    new Chart(ctx, {{
+                        type: 'bar',
+                        data: {{
+                            labels: songs.map(item => item[0]),
+                            datasets: [{{
+                                label: 'Quantidade',
+                                data: songs.map(item => item[1]),
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }}]
+                        }},
+                        options: {{
+                            responsive: true,
+                            indexAxis: 'y',
+                            plugins: {{
+                                datalabels: {{
+                                    anchor: 'end',
+                                    align: 'start',
+                                    formatter: (value, context) => {{
+                                        return value;
+                                    }}
+                                }}
+                            }},
+                            scales: {{
+                                x: {{
+                                    beginAtZero: true
+                                }}
+                            }}
+                        }}
+                    }});
+                }}
+            }}
+            singerTopSongsContainer.remove();
         </script>
     </body>
     </html>

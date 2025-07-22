@@ -317,6 +317,11 @@ h2 {
     text-transform: none;
 }
 
+h3 {
+    font-size: 19px;
+    margin-top: 25px;
+}
+
 .container {
     /* do not page break */
     page-break-inside: avoid;

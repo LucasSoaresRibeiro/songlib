@@ -39,23 +39,14 @@
             <canvas id="topAuthorsChart"></canvas>
         </div>
 
-        <div class="container">
-            <h2>Cultos por Dirigente</h2>
-            <canvas id="singersChart"></canvas>
-        </div>
-
-        <div class="container-limited-height">
-            <h2>Tonalidades Preferidas por Dirigente</h2>
-            <canvas id="singerKeysChart"></canvas>
-        </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início de Culto</h2>
+            <h2>Músicas Mais Escolhidas como Início</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final de Culto</h2>
+            <h2>Músicas Mais Escolhidas como Final</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
@@ -72,6 +63,21 @@
         <div class="container">
             <h2>Músicas Mais Escolhidas para Cálice</h2>
             <canvas id="wineSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Cultos por Dirigente</h2>
+            <canvas id="singersChart"></canvas>
+        </div>
+
+        <div class="container-limited-height">
+            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <canvas id="singerKeysChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Top 10 Músicas por Dirigente</h2>
+            <canvas id="singerTopSongsChart"></canvas>
         </div>
 
         <script>
@@ -260,7 +266,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "A# / Bb", "B", "C", "C# / Db", "D", "E", "F", "F# / Gb", "G", "G# / Ab"],
-                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(250, 120, 18, 0.6)", "borderColor": "rgba(250, 120, 18, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(30, 255, 53, 0.6)", "borderColor": "rgba(30, 255, 53, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(18, 202, 119, 0.6)", "borderColor": "rgba(18, 202, 119, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(204, 0, 178, 0.6)", "borderColor": "rgba(204, 0, 178, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(244, 196, 70, 0.6)", "borderColor": "rgba(244, 196, 70, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(196, 29, 24, 0.6)", "borderColor": "rgba(196, 29, 24, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(193, 77, 66, 0.6)", "borderColor": "rgba(193, 77, 66, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(135, 62, 118, 0.6)", "borderColor": "rgba(135, 62, 118, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(248, 9, 127, 0.6)", "borderColor": "rgba(248, 9, 127, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(16, 152, 102, 0.6)", "borderColor": "rgba(16, 152, 102, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
@@ -326,6 +332,54 @@
                 data: leastUsedSongsData,
                 options: {"responsive": true, "indexAxis": "y", "plugins": {"datalabels": {"anchor": "end", "align": "start", "formatter": "(value, context) => { return value; }"}}, "scales": {"x": {"beginAtZero": true}}}
             });
+
+            // Data for Singer Top Songs Chart
+            const singerTopSongsData = {"Geraldo": [["Reden\u00e7\u00e3o", 2], ["Eu Sou Grato (Tributo a Yehovah)", 2], ["N\u00e3o Mais Eu Mas Por Cristo em Mim", 2], ["Santo, Santo (Vineyard)", 2], ["Jesus me Transformou", 1], ["Meu Prazer (Em Esp\u00edrito)", 1], ["At\u00e9 Te Ver Face a Face", 1], ["Teu nome \u00e9 Santo", 1], ["Ajuntamento", 1], ["Oferta de amor", 1]], "Eric": [["Cantai Perto Est\u00e1 o Senhor", 2], ["Ele \u00c9 Exaltado", 2], ["Gra\u00e7as Senhor (Gra\u00e7as Dou)", 2], ["Poder pra Salvar", 2], ["Gra\u00e7as Dou", 2], ["Jesus \u00c9 O Rei da Gl\u00f3ria (Todo Poder)", 2], ["Teu Amor N\u00e3o Falha", 1], ["Te Agrade\u00e7o (Tradicional)", 1], ["Isa\u00edas 53", 1], ["Alvo Mais Que a Neve (Livro 2003)", 1]], "Theo": [["Grande e Eterno Deus", 3], ["Gra\u00e7as Senhor (Gra\u00e7as Dou)", 2], ["Perto Quero Estar (Te Louvarei)", 2], ["Reina", 2], ["Perd\u00e3o e Gra\u00e7a", 2], ["Eu Te Louvarei Meu Bom Jesus", 2], ["Somos Convidados", 2], ["No Controle Tu Est\u00e1s", 2], ["Tu Somente \u00c9s Deus", 2], ["S\u00f3 em Jesus (Confiarei)", 2]], "Daniel": [["Vem Glorificar a Deus", 3], ["Ao Deus de Abra\u00e3o Louvai", 2], ["Senhor Tu \u00c9s Bom", 2], ["Eu Te Louvarei Meu Bom Jesus", 2], ["Meu Tributo (Como Agradecer)", 2], ["S\u00f3 em Jesus (Confiarei)", 2], ["Fala \u00d3 Deus (Vers\u00e3o Baixo/Guitarra)", 2], ["Se N\u00e3o For Pra Te Adorar", 2], ["Alto Pre\u00e7o", 2], ["Digno \u00c9 o Senhor", 2]], "Pompeu": [["Rei das Na\u00e7\u00f5es (Grandes S\u00e3o as Tuas Obras)", 3], ["Perto Quero Estar (Te Louvarei)", 2], ["Foi na Cruz", 2], ["Aleluia, Hosana", 2], ["Firmeza na F\u00e9", 2], ["Vem Glorificar a Deus", 2], ["Senhor Tu \u00c9s Bom", 2], ["Firme nas Promessas (CC 154)", 2], ["Salvo Pela Gra\u00e7a", 2], ["Teu Amor \u00c9 Incr\u00edvel (Phillips, Craig & Dean)", 2]]};
+            const singerTopSongsContainer = document.getElementById('singerTopSongsChart');
+            
+            for (const singerName in singerTopSongsData) {
+                const songs = singerTopSongsData[singerName];
+                if (songs.length > 0) {
+                    const chartDiv = document.createElement('div');
+                    chartDiv.className = 'singer-top-songs-chart';
+                    chartDiv.innerHTML = `<h3>${singerName}</h3><canvas id="singerTopSongsChart_${singerName}"></canvas>`;
+                    singerTopSongsContainer.parentNode.insertBefore(chartDiv, singerTopSongsContainer);
+
+                    const ctx = document.getElementById(`singerTopSongsChart_${singerName}`).getContext('2d');
+                    new Chart(ctx, {
+                        type: 'bar',
+                        data: {
+                            labels: songs.map(item => item[0]),
+                            datasets: [{
+                                label: 'Quantidade',
+                                data: songs.map(item => item[1]),
+                                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                                borderColor: 'rgba(75, 192, 192, 1)',
+                                borderWidth: 1
+                            }]
+                        },
+                        options: {
+                            responsive: true,
+                            indexAxis: 'y',
+                            plugins: {
+                                datalabels: {
+                                    anchor: 'end',
+                                    align: 'start',
+                                    formatter: (value, context) => {
+                                        return value;
+                                    }
+                                }
+                            },
+                            scales: {
+                                x: {
+                                    beginAtZero: true
+                                }
+                            }
+                        }
+                    });
+                }
+            }
+            singerTopSongsContainer.remove();
         </script>
     </body>
     </html>
