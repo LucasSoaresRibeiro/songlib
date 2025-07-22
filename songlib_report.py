@@ -226,12 +226,12 @@ def generate_report():
 
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início</h2>
+            <h2>Músicas Mais Escolhidas como Início do Período de Louvor</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final</h2>
+            <h2>Músicas Mais Escolhidas como Final do Período de Louvor</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
