@@ -2,7 +2,7 @@
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Relatório SongLib</title>
+        <title>IBM - Estatísticas do Louvor</title>
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -13,7 +13,7 @@
         <div class="logo-container">
             <img src="images/logo.png" alt="Maranata Logo" class="logo" />
         </div>
-        <h1>Relatório Ministério de Louvor</h1>
+        <h1>Estatísticas do Ministério de Louvor</h1>
 
         <div class="container">
             <h2>Resumo:</h2>
@@ -30,7 +30,7 @@
         </div>
 
         <div class="container">
-            <h2>Músicas Menos Cantadas</h2>
+            <h2>Músicas Cadastradas Menos Cantadas</h2>
             <canvas id="leastUsedSongsChart"></canvas>
         </div>
 
@@ -259,8 +259,8 @@
 
             // Data for Singer Keys Chart
             const singerKeysData = {
-                labels: ["A", "Bb", "C", "D", "E", "G"],
-                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(236, 127, 205, 0.6)", "borderColor": "rgba(236, 127, 205, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(99, 221, 33, 0.6)", "borderColor": "rgba(99, 221, 33, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(225, 36, 63, 0.6)", "borderColor": "rgba(225, 36, 63, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(162, 176, 36, 0.6)", "borderColor": "rgba(162, 176, 36, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(101, 18, 7, 0.6)", "borderColor": "rgba(101, 18, 7, 1)", "borderWidth": 1}]
+                labels: ["A", "A# / Bb", "B", "C", "C# / Db", "D", "E", "F", "F# / Gb", "G", "G# / Ab"],
+                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(250, 120, 18, 0.6)", "borderColor": "rgba(250, 120, 18, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(30, 255, 53, 0.6)", "borderColor": "rgba(30, 255, 53, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(18, 202, 119, 0.6)", "borderColor": "rgba(18, 202, 119, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(204, 0, 178, 0.6)", "borderColor": "rgba(204, 0, 178, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(244, 196, 70, 0.6)", "borderColor": "rgba(244, 196, 70, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');

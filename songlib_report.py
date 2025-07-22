@@ -14,6 +14,10 @@ SINGERS = {
     "Pompeu": 0,
 }
 
+def get_song_title(song_data):
+    # return f"{song_data['title']} - {song_data['author']}"
+    return f"{song_data['title']}"
+
 def generate_report():
     total_sets = 0
     total_songs = 0
@@ -57,19 +61,28 @@ def generate_report():
                     if os.path.exists(song_file):
                         with open(song_file, 'r', encoding='utf-8') as sf:
                             song_data = json.load(sf)
-                            all_songs_in_sets.append(song_data['title'])
+                            all_songs_in_sets.append(get_song_title(song_data))
                             if 'author' in song_data and song_data['author'] != '':
                                 all_authors_in_sets.append(song_data['author'])
                             if 'key' in song_data and song_data['key'] != '':
                                 current_singer = next((s for s in SINGERS.keys() if s in title or s in title.upper()), None)
                                 if current_singer:
-                                    singer_song_keys[current_singer][song_data['key']] += 1
+                                    key = song['key'].split(" ")[0]
+                                    if key in ['A#', 'Bb']:
+                                        key = 'A# / Bb'
+                                    if key in ['G#', 'Ab']:
+                                        key = 'G# / Ab'
+                                    if key in ['C#', 'Db']:
+                                        key = 'C# / Db'
+                                    if key in ['F#', 'Gb']:
+                                        key = 'F# / Gb'
+                                    singer_song_keys[current_singer][key] += 1
                             if 'notes' in song and 'Oferta' in song['notes']:
-                                offering_songs.append(song_data['title'])
+                                offering_songs.append(get_song_title(song_data))
                             if 'notes' in song and 'Pão' in song['notes']:
-                                bread_songs.append(song_data['title'])
+                                bread_songs.append(get_song_title(song_data))
                             if 'notes' in song and 'Cálice' in song['notes']:
-                                wine_songs.append(song_data['title'])
+                                wine_songs.append(get_song_title(song_data))
                 for singer in SINGERS.keys():
                     if singer in title or singer in title.upper():
                         SINGERS[singer] += 1
@@ -104,7 +117,7 @@ def generate_report():
         if os.path.exists(song_file):
             with open(song_file, 'r', encoding='utf-8') as sf:
                 song_data = json.load(sf)
-                first_song_titles.append(song_data['title'])
+                first_song_titles.append(get_song_title(song_data))
     first_song_occurrence_counts = Counter(first_song_titles)
     top_first_songs = first_song_occurrence_counts.most_common(10)
 
@@ -115,7 +128,7 @@ def generate_report():
         if os.path.exists(song_file):
             with open(song_file, 'r', encoding='utf-8') as sf:
                 song_data = json.load(sf)
-                last_song_titles.append(song_data['title'])
+                last_song_titles.append(get_song_title(song_data))
     last_song_occurrence_counts = Counter(last_song_titles)
     top_last_songs = last_song_occurrence_counts.most_common(10)
 
@@ -126,7 +139,7 @@ def generate_report():
             filepath = os.path.join(SONGS_DIR, filename)
             with open(filepath, 'r', encoding='utf-8') as f:
                 song_data = json.load(f)
-                all_song_titles.append(song_data['title'])
+                all_song_titles.append(get_song_title(song_data))
 
     least_used_songs_counts = Counter(all_song_titles)
     # Subtract songs that have been used in sets
@@ -141,7 +154,8 @@ def generate_report():
     # Prepare data for Singer Keys Chart
     all_unique_keys = set()
     for singer_name, key_counts in singer_song_keys.items():
-        for key, _ in key_counts.most_common(5):
+        for key, _ in key_counts.most_common(1000):
+        # for key, _ in key_counts:
             all_unique_keys.add(key)
 
     sorted_unique_keys = sorted(list(all_unique_keys))
@@ -164,7 +178,7 @@ def generate_report():
     <!DOCTYPE html>
     <html>
     <head>
-        <title>Relatório SongLib</title>
+        <title>IBM - Estatísticas do Louvor</title>
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -175,7 +189,7 @@ def generate_report():
         <div class="logo-container">
             <img src="images/logo.png" alt="Maranata Logo" class="logo" />
         </div>
-        <h1>Relatório Ministério de Louvor</h1>
+        <h1>Estatísticas do Ministério de Louvor</h1>
 
         <div class="container">
             <h2>Resumo:</h2>
@@ -192,7 +206,7 @@ def generate_report():
         </div>
 
         <div class="container">
-            <h2>Músicas Menos Cantadas</h2>
+            <h2>Músicas Cadastradas Menos Cantadas</h2>
             <canvas id="leastUsedSongsChart"></canvas>
         </div>
 
