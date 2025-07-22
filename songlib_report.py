@@ -427,7 +427,7 @@ def generate_report():
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
             new Chart(singerKeysCtx, {{
-                type: 'bar',
+                type: 'radar',
                 data: singerKeysData,
                 options: {{
                     responsive: true,

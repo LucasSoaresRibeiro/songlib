@@ -30,6 +30,11 @@
         </div>
 
         <div class="container">
+            <h2>Músicas Menos Cantadas</h2>
+            <canvas id="leastUsedSongsChart"></canvas>
+        </div>
+
+        <div class="container">
             <h2>Autores/Intérpretes Mais Frequentes</h2>
             <canvas id="topAuthorsChart"></canvas>
         </div>
@@ -67,11 +72,6 @@
         <div class="container">
             <h2>Músicas Mais Escolhidas para Cálice</h2>
             <canvas id="wineSongsChart"></canvas>
-        </div>
-
-        <div class="container">
-            <h2>Músicas Menos Cantadas</h2>
-            <canvas id="leastUsedSongsChart"></canvas>
         </div>
 
         <script>
@@ -260,12 +260,12 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "Bb", "C", "D", "E", "G"],
-                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(247, 115, 20, 0.6)", "borderColor": "rgba(247, 115, 20, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(154, 138, 138, 0.6)", "borderColor": "rgba(154, 138, 138, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(10, 195, 159, 0.6)", "borderColor": "rgba(10, 195, 159, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(184, 5, 108, 0.6)", "borderColor": "rgba(184, 5, 108, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(244, 129, 143, 0.6)", "borderColor": "rgba(244, 129, 143, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(68, 87, 242, 0.6)", "borderColor": "rgba(68, 87, 242, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(156, 94, 253, 0.6)", "borderColor": "rgba(156, 94, 253, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(171, 149, 23, 0.6)", "borderColor": "rgba(171, 149, 23, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(1, 97, 96, 0.6)", "borderColor": "rgba(1, 97, 96, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(155, 194, 114, 0.6)", "borderColor": "rgba(155, 194, 114, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
             new Chart(singerKeysCtx, {
-                type: 'bar',
+                type: 'radar',
                 data: singerKeysData,
                 options: {
                     responsive: true,
