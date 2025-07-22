@@ -22,12 +22,16 @@ def generate_report():
     all_authors_in_sets = []
     all_first_songs_in_sets = []
     all_last_songs_in_sets = []
+    offering_songs = []
+    bread_songs = []
+    wine_songs = []
     singers = Counter()
     singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
 
     # Process song files
     total_songs = len(os.listdir(SONGS_DIR))
-
+    
+    
     # Process set files
     set_dates = []
     for filename in os.listdir(SETS_DIR):
@@ -60,6 +64,12 @@ def generate_report():
                                 current_singer = next((s for s in SINGERS.keys() if s in title or s in title.upper()), None)
                                 if current_singer:
                                     singer_song_keys[current_singer][song_data['key']] += 1
+                            if 'notes' in song and 'Oferta' in song['notes']:
+                                offering_songs.append(song_data['title'])
+                            if 'notes' in song and 'Pão' in song['notes']:
+                                bread_songs.append(song_data['title'])
+                            if 'notes' in song and 'Cálice' in song['notes']:
+                                wine_songs.append(song_data['title'])
                 for singer in SINGERS.keys():
                     if singer in title or singer in title.upper():
                         SINGERS[singer] += 1
@@ -185,6 +195,21 @@ def generate_report():
         <div class="container">
             <h2>Músicas Mais Escolhidas como Final de Culto</h2>
             <canvas id="lastSongsChart"></canvas>
+        </div>
+        
+        <div class="container">
+            <h2>Músicas Mais Escolhidas para Oferta</h2>
+            <canvas id="offeringSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Mais Escolhidas para Pão</h2>
+            <canvas id="breadSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Músicas Mais Escolhidas para Cálice</h2>
+            <canvas id="wineSongsChart"></canvas>
         </div>
 
         <script>
@@ -398,6 +423,108 @@ def generate_report():
                         }}
                     }}
                 }}
+            }});
+            
+            // Data for Offering Songs Chart
+            const offeringSongsData = {json.dumps({
+                "labels": [item[0] for item in Counter(offering_songs).most_common(10)],
+                "datasets": [{
+                    "label": 'Quantidade',
+                    "data": [item[1] for item in Counter(offering_songs).most_common(10)],
+                    "backgroundColor": 'rgba(255, 159, 64, 0.6)',
+                    "borderColor": 'rgba(255, 159, 64, 1)',
+                    "borderWidth": 1
+                }]
+            })};
+
+            const offeringSongsCtx = document.getElementById('offeringSongsChart').getContext('2d');
+            new Chart(offeringSongsCtx, {{
+                type: 'bar',
+                data: offeringSongsData,
+                options: {json.dumps({
+                    "responsive": True,
+                    "indexAxis": 'y',
+                    "plugins": {
+                        "datalabels": {
+                            "anchor": 'end',
+                            "align": 'start',
+                            "formatter": "(value, context) => { return value; }"
+                        }
+                    },
+                    "scales": {
+                        "x": {
+                            "beginAtZero": True
+                        }
+                    }
+                })}
+            }});
+
+            // Data for Bread Songs Chart
+            const breadSongsData = {json.dumps({
+                "labels": [item[0] for item in Counter(bread_songs).most_common(10)],
+                "datasets": [{
+                    "label": 'Quantidade',
+                    "data": [item[1] for item in Counter(bread_songs).most_common(10)],
+                    "backgroundColor": 'rgba(75, 192, 192, 0.6)',
+                    "borderColor": 'rgba(75, 192, 192, 1)',
+                    "borderWidth": 1
+                }]
+            })};
+
+            const breadSongsCtx = document.getElementById('breadSongsChart').getContext('2d');
+            new Chart(breadSongsCtx, {{
+                type: 'bar',
+                data: breadSongsData,
+                options: {json.dumps({
+                    "responsive": True,
+                    "indexAxis": 'y',
+                    "plugins": {
+                        "datalabels": {
+                            "anchor": 'end',
+                            "align": 'start',
+                            "formatter": "(value, context) => { return value; }"
+                        }
+                    },
+                    "scales": {
+                        "x": {
+                            "beginAtZero": True
+                        }
+                    }
+                })}
+            }});
+
+            // Data for Wine Songs Chart
+            const wineSongsData = {json.dumps({
+                "labels": [item[0] for item in Counter(wine_songs).most_common(10)],
+                "datasets": [{
+                    "label": 'Quantidade',
+                    "data": [item[1] for item in Counter(wine_songs).most_common(10)],
+                    "backgroundColor": 'rgba(153, 102, 255, 0.6)',
+                    "borderColor": 'rgba(153, 102, 255, 1)',
+                    "borderWidth": 1
+                }]
+            })};
+
+            const wineSongsCtx = document.getElementById('wineSongsChart').getContext('2d');
+            new Chart(wineSongsCtx, {{
+                type: 'bar',
+                data: wineSongsData,
+                options: {json.dumps({
+                    "responsive": True,
+                    "indexAxis": 'y',
+                    "plugins": {
+                        "datalabels": {
+                            "anchor": 'end',
+                            "align": 'start',
+                            "formatter": "(value, context) => { return value; }"
+                        }
+                    },
+                    "scales": {
+                        "x": {
+                            "beginAtZero": True
+                        }
+                    }
+                })}
             }});
         </script>
     </body>
