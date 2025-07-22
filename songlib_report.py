@@ -19,6 +19,7 @@ def generate_report():
     total_songs = 0
     total_songs_used = 0
     all_songs_in_sets = []
+    all_authors_in_sets = []
     singers = Counter()
 
     # Process song files
@@ -41,6 +42,8 @@ def generate_report():
                         with open(song_file, 'r', encoding='utf-8') as sf:
                             song_data = json.load(sf)
                             all_songs_in_sets.append(song_data['title'])
+                            if 'author' in song_data:
+                                all_authors_in_sets.append(song_data['author'])
                 
                 title = set_data.get('title', '')
                 for singer in SINGERS.keys():
@@ -62,6 +65,13 @@ def generate_report():
         top_songs_with_titles.append((song_title, count))
 
     top_songs = top_songs_with_titles # Get top 10 songs
+
+    author_occurrence_counts = Counter(all_authors_in_sets)
+    top_authors_with_titles = []
+    for author_name, count in author_occurrence_counts.most_common(10):
+        top_authors_with_titles.append((author_name, count))
+
+    top_authors = top_authors_with_titles # Get top 10 authors
 
     # Generate HTML report
     html_content = f"""
@@ -94,6 +104,9 @@ def generate_report():
 
         <h2>Músicas Mais Cantadas</h2>
         <canvas id="topSongsChart"></canvas>
+
+        <h2>Autores/Intérpretes Mais Frequentes</h2>
+        <canvas id="topAuthorsChart"></canvas>
 
         <script>
             // Data for Singers Chart
@@ -148,6 +161,42 @@ def generate_report():
             new Chart(topSongsCtx, {{
                 type: 'bar',
                 data: topSongsData,
+                options: {{
+                    responsive: true,
+                    indexAxis: 'y',
+                    plugins: {{
+                        datalabels: {{
+                            anchor: 'end',
+                            align: 'start',
+                            formatter: (value, context) => {{
+                                return value;
+                            }}
+                        }}
+                    }},
+                    scales: {{
+                        x: {{
+                            beginAtZero: true
+                        }}
+                    }}
+                }}
+            }});
+
+            // Data for Top Authors Chart
+            const topAuthorsData = {{
+                labels: {json.dumps([f"{author}" for author, count in top_authors])},
+                datasets: [{{
+                    label: 'Quantidade',
+                    data: {json.dumps([count for _, count in top_authors])},
+                    backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                    borderColor: 'rgba(255, 99, 132, 1)',
+                    borderWidth: 1
+                }}]
+            }};
+
+            const topAuthorsCtx = document.getElementById('topAuthorsChart').getContext('2d');
+            new Chart(topAuthorsCtx, {{
+                type: 'bar',
+                data: topAuthorsData,
                 options: {{
                     responsive: true,
                     indexAxis: 'y',
