@@ -322,6 +322,12 @@ h2 {
     page-break-inside: avoid;
 }
 
+.container-limited-height {
+    /* do not page break */
+    page-break-inside: avoid;
+    height: 550px;
+}
+
 p {
     text-transform: none;
     color: #000000 !important;

@@ -44,7 +44,7 @@
             <canvas id="singersChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="container-limited-height">
             <h2>Tonalidades Preferidas por Dirigente</h2>
             <canvas id="singerKeysChart"></canvas>
         </div>
@@ -260,7 +260,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "Bb", "C", "D", "E", "G"],
-                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(68, 87, 242, 0.6)", "borderColor": "rgba(68, 87, 242, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(156, 94, 253, 0.6)", "borderColor": "rgba(156, 94, 253, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(171, 149, 23, 0.6)", "borderColor": "rgba(171, 149, 23, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(1, 97, 96, 0.6)", "borderColor": "rgba(1, 97, 96, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(155, 194, 114, 0.6)", "borderColor": "rgba(155, 194, 114, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [6, 6, 6, 8, 8, 7], "backgroundColor": "rgba(236, 127, 205, 0.6)", "borderColor": "rgba(236, 127, 205, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 4, 8, 12, 9, 8], "backgroundColor": "rgba(99, 221, 33, 0.6)", "borderColor": "rgba(99, 221, 33, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 14, 17, 11, 9], "backgroundColor": "rgba(225, 36, 63, 0.6)", "borderColor": "rgba(225, 36, 63, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [5, 11, 16, 15, 9, 18], "backgroundColor": "rgba(162, 176, 36, 0.6)", "borderColor": "rgba(162, 176, 36, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [11, 8, 12, 11, 14, 13], "backgroundColor": "rgba(101, 18, 7, 0.6)", "borderColor": "rgba(101, 18, 7, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');

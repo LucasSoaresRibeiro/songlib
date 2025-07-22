@@ -206,7 +206,7 @@ def generate_report():
             <canvas id="singersChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="container-limited-height">
             <h2>Tonalidades Preferidas por Dirigente</h2>
             <canvas id="singerKeysChart"></canvas>
         </div>
