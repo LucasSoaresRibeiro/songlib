@@ -202,11 +202,28 @@ def generate_report():
 
         <div class="container">
             <h2>Resumo:</h2>
-            {f'<p>- Período: De {min(set_dates).strftime("%d/%m/%Y")} até {max(set_dates).strftime("%d/%m/%Y")}</p>' if set_dates else ''}
-            <p>- Músicas cadastradas: {total_songs}</p>
-            <p>- Número de cultos/programações: {total_sets}</p>
-            <p>- Média de músicas cantadas por programação: {int(round(total_songs_used/total_sets, 0))}</p>
-            <p>- Total de execuções de música: {total_songs_used}</p>
+            <div class="dashboard-container">
+                <div class="dashboard-block">
+                    <div class="dashboard-block-title">Período Analisado</div>
+                    <div class="dashboard-block-value">{min(set_dates).strftime("%d/%m/%Y")} a {max(set_dates).strftime("%d/%m/%Y")}</div>
+                </div>
+                <div class="dashboard-block">
+                    <div class="dashboard-block-title">Músicas Cadastradas</div>
+                    <div class="dashboard-block-value">{total_songs}</div>
+                </div>
+                <div class="dashboard-block">
+                    <div class="dashboard-block-title">Cultos e Programações</div>
+                    <div class="dashboard-block-value">{total_sets}</div>
+                </div>
+                <div class="dashboard-block">
+                    <div class="dashboard-block-title">Média de Músicas por Programação</div>
+                    <div class="dashboard-block-value">{int(round(total_songs_used/total_sets, 0))}</div>
+                </div>
+                <div class="dashboard-block">
+                    <div class="dashboard-block-title">Total de Execuções de Música</div>
+                    <div class="dashboard-block-value">{total_songs_used}</div>
+                </div>
+            </div>
         </div>
 
         <div class="container">
@@ -226,12 +243,12 @@ def generate_report():
 
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início do Período de Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Início do Louvor</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final do Período de Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Final do Louvor</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
