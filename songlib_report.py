@@ -1,39 +1,67 @@
 import os
 import json
 from collections import Counter
+from datetime import datetime
 
 SETS_DIR = 'c:\\Lucas\\Repos\\pessoal\\github\\songlib\\sets'
 SONGS_DIR = 'c:\\Lucas\\Repos\\pessoal\\github\\songlib\\songs'
+SINGERS = {
+    "Geraldo": 0,
+    "Eric": 0,
+    "Amanda": 0,
+    "Theo": 0,
+    "Daniel": 0,
+    "Pompeu": 0,
+}
 
 def generate_report():
     total_sets = 0
     total_songs = 0
+    total_songs_used = 0
     all_songs_in_sets = []
     singers = Counter()
 
+    # Process song files
+    total_songs = len(os.listdir(SONGS_DIR))
+
     # Process set files
+    set_dates = []
     for filename in os.listdir(SETS_DIR):
         if filename.endswith('.json'):
             total_sets += 1
             filepath = os.path.join(SETS_DIR, filename)
             with open(filepath, 'r', encoding='utf-8') as f:
                 set_data = json.load(f)
-                total_songs += len(set_data.get('songs', []))
+                total_songs_used += len(set_data.get('songs', []))
                 for song in set_data.get('songs', []):
-                    all_songs_in_sets.append(song['song_id'])
+
+                    # Look up song title from songs directory
+                    song_file = os.path.join(SONGS_DIR, f"{song['song_id']}.json")
+                    if os.path.exists(song_file):
+                        with open(song_file, 'r', encoding='utf-8') as sf:
+                            song_data = json.load(sf)
+                            all_songs_in_sets.append(song_data['title'])
                 
                 title = set_data.get('title', '')
-                if '-' in title:
-                    singer = title.split('-')[-1].strip()
-                    singers[singer] += 1
+                for singer in SINGERS.keys():
+                    if singer in title or singer in title.upper():
+                        SINGERS[singer] += 1
+                
+                if 'date' in set_data:
+                    set_dates.append(datetime.strptime(set_data['date'], "%d/%m/%Y"))
 
     # Sort singers by their event count in descending order
-    sorted_singers = sorted(singers.items(), key=lambda item: item[1], reverse=True)
+    sorted_singers = sorted(SINGERS.items(), key=lambda item: item[1], reverse=True)
     singers_labels = [singer for singer, count in sorted_singers]
     singers_data = [count for singer, count in sorted_singers]
 
     song_occurrence_counts = Counter(all_songs_in_sets)
-    top_songs = song_occurrence_counts.most_common(10) # Get top 10 songs
+
+    top_songs_with_titles = []
+    for song_title, count in song_occurrence_counts.most_common(10):
+        top_songs_with_titles.append((song_title, count))
+
+    top_songs = top_songs_with_titles # Get top 10 songs
 
     # Generate HTML report
     html_content = f"""
@@ -55,15 +83,16 @@ def generate_report():
         <h1>Relatório Ministério de Louvor</h1>
 
         <h2>Resumo:</h2>
-        <p>- Período analisado: {total_sets}</p>
-        <p>- Músicas cantadas: {total_songs}</p>
-        <p>- Músicas cadastradas: {total_sets}</p>
-        <p>- Número de programações: {total_sets}</p>
+        {f'<p>- Período: De {min(set_dates).strftime("%d/%m/%Y")} até {max(set_dates).strftime("%d/%m/%Y")}</p>' if set_dates else ''}
+        <p>- Músicas cadastradas: {total_songs}</p>
+        <p>- Número de cultos/programações: {total_sets}</p>
+        <p>- Média de músicas cantadas por programações: {int(round(total_songs_used/total_sets, 0))}</p>
+        <p>- Total de músicas cantadas: {total_songs_used}</p>
 
-        <h2>Eventos por Dirigente</h2>
+        <h2>Cultos por Dirigente</h2>
         <canvas id="singersChart"></canvas>
 
-        <h2>Ocorrências das Músicas Mais Frequentes</h2>
+        <h2>Músicas Mais Cantadas</h2>
         <canvas id="topSongsChart"></canvas>
 
         <script>
@@ -71,7 +100,7 @@ def generate_report():
             const singersData = {{
                 labels: {json.dumps(singers_labels)},
                 datasets: [{{
-                    label: 'Número de Eventos',
+                    label: 'Quantidade',
                     data: {json.dumps(singers_data)},
                     backgroundColor: 'rgba(75, 192, 192, 0.6)',
                     borderColor: 'rgba(75, 192, 192, 1)',
@@ -105,9 +134,9 @@ def generate_report():
 
             // Data for Top Songs Chart
             const topSongsData = {{
-                labels: {json.dumps([f"Song ID: {s_id}" for s_id, _ in top_songs])},
+                labels: {json.dumps([f"{title}" for title, count in top_songs])},
                 datasets: [{{
-                    label: 'Ocorrências',
+                    label: 'Quantidade',
                     data: {json.dumps([count for _, count in top_songs])},
                     backgroundColor: 'rgba(153, 102, 255, 0.6)',
                     borderColor: 'rgba(153, 102, 255, 1)',

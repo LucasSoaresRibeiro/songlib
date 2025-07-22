@@ -17,24 +17,25 @@
         <h1>Relatório Ministério de Louvor</h1>
 
         <h2>Resumo:</h2>
-        <p>- Período analisado: 64</p>
-        <p>- Número total de músicas cadastradas: 64</p>
-        <p>- Número total de repertórios: 64</p>
-        <p>- Número total de músicas nos repertórios: 380</p>
+        <p>- Período: De 11/08/2024 até 27/07/2025</p>
+        <p>- Músicas cadastradas: 184</p>
+        <p>- Número de cultos/programações: 64</p>
+        <p>- Média de músicas cantadas por programações: 6</p>
+        <p>- Total de músicas cantadas: 380</p>
 
-        <h2>Eventos por Dirigente</h2>
+        <h2>Cultos por Dirigente</h2>
         <canvas id="singersChart"></canvas>
 
-        <h2>Ocorrências das Músicas Mais Frequentes</h2>
+        <h2>Músicas Mais Cantadas</h2>
         <canvas id="topSongsChart"></canvas>
 
         <script>
             // Data for Singers Chart
             const singersData = {
-                labels: ["Theo", "Pompeu", "Daniel", "Eric", "Geraldo", "Sexta \u00e0 noite (Daniel)", "S\u00e1bado de manh\u00e3 (Geraldo)", "S\u00e1bado \u00e0 noite (Theo)", "Domingo de manh\u00e3 (Pompeu)", "Pompeu (Ceia)", "Anivers\u00e1rio Igreja", "Sexta \u00e0 noite", "S\u00e1bado de manh\u00e3", "S\u00e1bado \u00e0 noite", "Domingo de manh\u00e3", "Eric, Pompeu, Daniel", "40 Anos Minist\u00e9rio Pr Edison", "Daniel (Ceia e Acampadentro)", "Manh\u00e3", "Noite"],
+                labels: ["Daniel", "Pompeu", "Theo", "Eric", "Geraldo", "Amanda"],
                 datasets: [{
-                    label: 'Número de Eventos',
-                    data: [11, 10, 9, 9, 6, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+                    label: 'Quantidade',
+                    data: [15, 13, 12, 10, 7, 1],
                     backgroundColor: 'rgba(75, 192, 192, 0.6)',
                     borderColor: 'rgba(75, 192, 192, 1)',
                     borderWidth: 1
@@ -67,9 +68,9 @@
 
             // Data for Top Songs Chart
             const topSongsData = {
-                labels: ["Song ID: 85649", "Song ID: 85049", "Song ID: 85745", "Song ID: 85272", "Song ID: 85273", "Song ID: 85396", "Song ID: 85403", "Song ID: 87193", "Song ID: 88339", "Song ID: 85077"],
+                labels: ["Vem Glorificar a Deus", "Reden\u00e7\u00e3o", "Glorificar", "Senhor Tu \u00c9s Bom", "Eu Te Louvarei Meu Bom Jesus", "Grande e Eterno Deus", "Perto Quero Estar (Te Louvarei)", "Bondade de Deus", "\u00c9 Teu Povo (IPALPHA)", "Eu Sou Grato (Tributo a Yehovah)"],
                 datasets: [{
-                    label: 'Ocorrências',
+                    label: 'Quantidade',
                     data: [11, 8, 7, 6, 6, 6, 6, 6, 6, 5],
                     backgroundColor: 'rgba(153, 102, 255, 0.6)',
                     borderColor: 'rgba(153, 102, 255, 1)',
