@@ -7,8 +7,9 @@
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+        <script src="https://unpkg.com/chartjs-chart-wordcloud@4.4.4/build/index.umd.min.js"></script>
     </head>
     <body>
         <div class="logo-container">
@@ -98,9 +99,14 @@
             <canvas id="singerTopSongsChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="chart-container">
             <h2>Clima por Dirigente</h2>
             <canvas id="weatherBySingerChart"></canvas>
+        </div>
+
+        <div class="container-word-cloud">
+            <h2>Nuvem de Palavras das Músicas</h2>
+            <canvas id="wordCloudChart" style="height: 400px;"></canvas>
         </div>
 
         <script>
@@ -289,7 +295,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "A# / Bb", "B", "C", "C# / Db", "D", "E", "F", "F# / Gb", "G", "G# / Ab"],
-                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(40, 92, 251, 0.6)", "borderColor": "rgba(40, 92, 251, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(232, 224, 1, 0.6)", "borderColor": "rgba(232, 224, 1, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(194, 1, 28, 0.6)", "borderColor": "rgba(194, 1, 28, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(252, 221, 127, 0.6)", "borderColor": "rgba(252, 221, 127, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(131, 77, 100, 0.6)", "borderColor": "rgba(131, 77, 100, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(101, 53, 86, 0.6)", "borderColor": "rgba(101, 53, 86, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(179, 233, 63, 0.6)", "borderColor": "rgba(179, 233, 63, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(26, 146, 172, 0.6)", "borderColor": "rgba(26, 146, 172, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(196, 141, 41, 0.6)", "borderColor": "rgba(196, 141, 41, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(51, 117, 179, 0.6)", "borderColor": "rgba(51, 117, 179, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
@@ -405,6 +411,37 @@
             singerTopSongsContainer.remove();
             // Data for Weather by Singer Chart
             const weatherBySingerData = {"Geraldo": {"rain": 1, "no_rain": 6}, "Daniel": {"rain": 6, "no_rain": 8}, "Theo": {"rain": 8, "no_rain": 4}, "Pompeu": {"rain": 6, "no_rain": 6}, "Eric": {"rain": 8, "no_rain": 2}};
+
+            // Data for Word Cloud Chart
+            const wordCloudData = [["DEUS", 286], ["SENHOR", 244], ["JESUS", 186], ["AMOR", 166], ["\u00c9S", 144], ["GL\u00d3RIA", 116], ["TI", 114], ["CRISTO", 103], ["REI", 103], ["MIM", 80], ["PODER", 78], ["TUDO", 78], ["NOME", 78], ["CORA\u00c7\u00c3O", 77], ["OH", 77], ["GRANDE", 74], ["CRUZ", 72], ["VEM", 68], ["SANTO", 67], ["TODO", 63], ["LOUVOR", 63], ["GRA\u00c7A", 62], ["VIDA", 57], ["LUZ", 51], ["ALELUIA", 48], ["TERRA", 47], ["PAI", 46], ["VOU", 45], ["C\u00c9U", 45], ["PAZ", 44], ["QUERO", 41], ["SALVADOR", 40], ["SANGUE", 38], ["TODA", 38], ["TODOS", 38], ["F\u00c9", 38], ["T\u00c3O", 37], ["D\u00c1", 36], ["BOM", 35], ["DIGNO", 34], ["BENDITO", 34], ["VIVER", 33], ["FIRME", 33], ["DIA", 32], ["ETERNO", 32], ["NADA", 32], ["VER", 30], ["MORTE", 28], ["C\u00c9US", 28], ["CORDEIRO", 27], ["M\u00c3OS", 26], ["VOZ", 26], ["SEI", 26], ["IGUAL", 26], ["PECADO", 25], ["PROMESSAS", 25], ["REIS", 24], ["MUNDO", 24], ["FAZ", 24], ["NOVO", 22], ["LOUVAREI", 22], ["GRA\u00c7AS", 22], ["ADORAR", 22], ["EXALTADO", 22], ["ESPERAN\u00c7A", 21], ["LUGAR", 20], ["TEMPO", 20], ["PERD\u00c3O", 20], ["LOUVAR", 20], ["ALEGRIA", 19], ["CADA", 19], ["DAR", 18], ["PRESENTE", 18], ["PODEROSO", 18], ["EST\u00c1S", 18], ["FELIZ", 18], ["POSSO", 17], ["FEZ", 17], ["SALVAR", 17], ["DOU", 17], ["FILHO", 17], ["FIEL", 17], ["LE", 17], ["MAIOR", 16], ["FORTE", 16], ["GL\u00d3", 16], ["RIA", 16], ["AGRADE\u00c7O", 16], ["ALMA", 16], ["VIVO", 15], ["SALVA\u00c7\u00c3O", 15], ["FOR\u00c7A", 15], ["CERTO", 15], ["ADORAREI", 15], ["VI", 15], ["LOUVORES", 15], ["VAI", 15], ["CANTAREI", 15], ["NESTE", 15], ["MAR", 15]];
+            const wordCloudCtx = document.getElementById('wordCloudChart').getContext('2d');
+            new Chart(wordCloudCtx, {
+                type: 'wordCloud',
+                data: {
+                    labels: wordCloudData.map(item => item[0]),
+                    datasets: [{
+                        label: '',
+                        data: wordCloudData.map(item => item[1]/3)
+                    }]
+                },
+                options: {
+                    title: {
+                        display: true,
+                        text: "Chart.js Word Cloud"
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    font: {
+                        weight: 'normal',
+                        min: 5,
+                        max: 20
+                    }
+                }
+            });
+
             const weatherLabels = Object.keys(weatherBySingerData);
             const rainData = weatherLabels.map(singer => weatherBySingerData[singer]['rain']);
             const noRainData = weatherLabels.map(singer => weatherBySingerData[singer]['no_rain']);

@@ -1,8 +1,13 @@
-import os
 import json
-import requests
+import os
 from collections import Counter, defaultdict
-from datetime import datetime
+import requests
+from datetime import datetime, timedelta
+import re
+import nltk
+from nltk.corpus import stopwords
+
+nltk.download('stopwords')
 
 # Open-Meteo Historical Weather API configuration
 # WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast"
@@ -64,11 +69,50 @@ def generate_report():
     singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
     singer_top_songs = {singer: Counter() for singer in SINGERS.keys()}
     weather_by_singer = defaultdict(lambda: {'rain': 0, 'no_rain': 0})
+    all_song_lyrics = []
 
     # Process song files
+    for filename in os.listdir(SONGS_DIR):
+        if filename.endswith('.json'):
+            filepath = os.path.join(SONGS_DIR, filename)
+            with open(filepath, 'r', encoding='utf-8') as f:
+                song_data = json.load(f)
+                if 'chord_chart' in song_data and song_data['chord_chart']:
+                    all_song_lyrics.append(song_data['chord_chart'])
     total_songs = len(os.listdir(SONGS_DIR))
-    
-    
+
+    # Generate word cloud data
+    word_counts = Counter()
+    stop_words = set(stopwords.words('portuguese'))
+    # Add custom stop words if necessary
+    custom_stop_words = {'pra','intro', 'refrão', 'fim', 'verso', 'ponte', 'pre', 'solo', 'final', 'bis', 'volta', 'parte', 'coda', 'tag', 'adlib', 'interludio', 'instrumental', 'outro', 'fade', 'in', 'out', 'repeat', 'x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x', 'etc', 'e', 'o', 'a', 'os', 'as', 'um', 'uma', 'uns', 'umas', 'de', 'do', 'da', 'dos', 'das', 'em', 'no', 'na', 'nos', 'nas', 'por', 'para', 'com', 'sem', 'sobre', 'sob', 'entre', 'até', 'após', 'ante', 'contra', 'desde', 'durante', 'mediante', 'perante', 'segundo', 'salvo', 'tirante', 'trás', 'através', 'afora', 'dentro', 'fora', 'perto', 'longe', 'abaixo', 'acima', 'adiante', 'atrás', 'defronte', 'depois', 'diante', 'embaixo', 'emcima', 'enfim', 'então', 'logo', 'mais', 'menos', 'muito', 'pouco', 'quase', 'sempre', 'tarde', 'cedo', 'nunca', 'jamais', 'agora', 'ainda', 'já', 'ontem', 'hoje', 'amanhã', 'aqui', 'ali', 'aí', 'cá', 'lá', 'além', 'aquém', 'onde', 'aonde', 'donde', 'para onde', 'como', 'assim', 'bem', 'mal', 'melhor', 'pior', 'devagar', 'depressa', 'grátis', 'junto', 'separado', 'só', 'somente', 'apenas', 'inclusive', 'exclusivamente', 'certamente', 'provavelmente', 'talvez', 'sim', 'não', 'claro', 'decerto', 'realmente', 'verdadeiramente', 'aparentemente', 'possivelmente', 'quissá', 'acaso', 'porventura', 'talvez', 'se', 'embora', 'conforme', 'como', 'enquanto', 'quando', 'apenas', 'mal', 'assim que', 'logo que', 'desde que', 'até que', 'para que', 'a fim de que', 'porque', 'pois', 'porquanto', 'como', 'já que', 'visto que', 'uma vez que', 'seja', 'ou', 'nem', 'mas', 'porém', 'contudo', 'todavia', 'entretanto', 'no entanto', 'portanto', 'logo', 'por conseguinte', 'consequentemente', 'assim', 'destarte', 'desse modo', 'dessa forma', 'à medida que', 'à proporção que', 'quanto mais', 'quanto menos', 'quanto maior', 'quanto menor', 'que', 'se', 'como', 'conforme', 'segundo', 'consoante', 'assim como', 'bem como', 'tanto quanto', 'mais que', 'menos que', 'tão quanto', 'tão como', 'tal qual', 'qual', 'que', 'cujo', 'cuja', 'cujos', 'cujas', 'onde', 'quando', 'como', 'quanto', 'por que', 'para que', 'se', 'caso', 'contanto que', 'desde que', 'a menos que', 'exceto se', 'salvo se', 'sem que', 'dado que', 'posto que', 'uma vez que', 'ainda que', 'embora', 'conquanto', 'posto que', 'se bem que', 'mesmo que', 'por mais que', 'por menos que', 'apesar de que', 'não obstante', 'conforme', 'como', 'segundo', 'consoante', 'assim como', 'bem como', 'tanto quanto', 'mais que', 'menos que', 'tão quanto', 'tão como', 'tal qual', 'qual', 'que', 'cujo', 'cuja', 'cujos', 'cujas', 'onde', 'quando', 'como', 'quanto', 'por que', 'para que', 'se', 'caso', 'contanto que', 'desde que', 'a menos que', 'exceto se', 'salvo se', 'sem que', 'dado que', 'posto que', 'uma vez que', 'ainda que', 'embora', 'conquanto', 'posto que', 'se bem que', 'mesmo que', 'por mais que', 'por menos que', 'apesar de que', 'não obstante'}
+    stop_words.update(custom_stop_words)
+
+    for lyrics_block in all_song_lyrics:
+        # Remove chord notations (lines starting with . or containing | or [ ] or ( ) or { } or numbers)
+        cleaned_lyrics = []
+        for line in lyrics_block.split('\n'):
+            # Remove lines that look like chord lines or structural markers
+            if not (line.strip().startswith('.') or
+                    '|' in line or
+                    '[' in line or
+                    '(' in line or
+                    '{' in line or
+                    any(char.isdigit() for char in line)):
+                cleaned_lyrics.append(line)
+        text = ' '.join(cleaned_lyrics)
+
+        # Remove punctuation and convert to lowercase
+        text = re.sub(r'[\W_]+', ' ', text).lower()
+        words = text.split()
+        
+        # Filter out stop words and single-character words
+        filtered_words = [word.upper() for word in words if word not in stop_words and len(word) > 1]
+        word_counts.update(filtered_words)
+
+    # Get the top N words for the word cloud
+    top_words = word_counts.most_common(100)
+
     # Process set files
     set_dates = []
     for filename in os.listdir(SETS_DIR):
@@ -224,6 +268,23 @@ def generate_report():
             'borderWidth': 1
         })
 
+    report_data = {
+        'total_sets': total_sets,
+        'total_songs': total_songs,
+        'total_songs_used': total_songs_used,
+        'top_songs': top_songs,
+        'top_authors': top_authors,
+        'top_first_songs': top_first_songs,
+        'top_last_songs': top_last_songs,
+        'offering_songs': offering_songs,
+        'bread_songs': bread_songs,
+        'wine_songs': wine_songs,
+        'singer_song_keys': singer_song_keys,
+        'singer_top_songs': singer_top_songs,
+        'weather_by_singer': weather_by_singer,
+        'top_words': top_words
+    }
+
     # Generate HTML report
     html_content = f"""
     <!DOCTYPE html>
@@ -234,8 +295,9 @@ def generate_report():
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
-        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.0.0"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
+        <script src="https://unpkg.com/chartjs-chart-wordcloud@4.4.4/build/index.umd.min.js"></script>
     </head>
     <body>
         <div class="logo-container">
@@ -325,9 +387,14 @@ def generate_report():
             <canvas id="singerTopSongsChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="chart-container">
             <h2>Clima por Dirigente</h2>
             <canvas id="weatherBySingerChart"></canvas>
+        </div>
+
+        <div class="container-word-cloud">
+            <h2>Nuvem de Palavras das Músicas</h2>
+            <canvas id="wordCloudChart" style="height: 400px;"></canvas>
         </div>
 
         <script>
@@ -728,6 +795,37 @@ def generate_report():
             singerTopSongsContainer.remove();
             // Data for Weather by Singer Chart
             const weatherBySingerData = {json.dumps(weather_by_singer)};
+
+            // Data for Word Cloud Chart
+            const wordCloudData = {json.dumps(top_words)};
+            const wordCloudCtx = document.getElementById('wordCloudChart').getContext('2d');
+            new Chart(wordCloudCtx, {{
+                type: 'wordCloud',
+                data: {{
+                    labels: wordCloudData.map(item => item[0]),
+                    datasets: [{{
+                        label: '',
+                        data: wordCloudData.map(item => item[1]/3)
+                    }}]
+                }},
+                options: {{
+                    title: {{
+                        display: true,
+                        text: "Chart.js Word Cloud"
+                    }},
+                    plugins: {{
+                        legend: {{
+                            display: false
+                        }}
+                    }},
+                    font: {{
+                        weight: 'normal',
+                        min: 5,
+                        max: 20
+                    }}
+                }}
+            }});
+
             const weatherLabels = Object.keys(weatherBySingerData);
             const rainData = weatherLabels.map(singer => weatherBySingerData[singer]['rain']);
             const noRainData = weatherLabels.map(singer => weatherBySingerData[singer]['no_rain']);
