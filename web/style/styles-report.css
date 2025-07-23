@@ -380,8 +380,8 @@ th { background-color: #f2f2f2; }
     color: #0675bc;
 }
 
-@media print {
+/* @media print {
     @page {
-        size: A5 landscape;
+        size: A5 portrait;
     }
-}
+} */

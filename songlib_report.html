@@ -3,6 +3,7 @@
     <html>
     <head>
         <title>IBM - Estatísticas do Louvor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -46,7 +47,7 @@
             <canvas id="topSongsChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="container" style="display: none;">
             <h2>Músicas Cadastradas Menos Cantadas</h2>
             <canvas id="leastUsedSongsChart"></canvas>
         </div>
@@ -95,6 +96,11 @@
         <div class="container">
             <h2>Top 10 Músicas por Dirigente</h2>
             <canvas id="singerTopSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Clima por Dirigente</h2>
+            <canvas id="weatherBySingerChart"></canvas>
         </div>
 
         <script>
@@ -283,7 +289,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "A# / Bb", "B", "C", "C# / Db", "D", "E", "F", "F# / Gb", "G", "G# / Ab"],
-                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(83, 116, 197, 0.6)", "borderColor": "rgba(83, 116, 197, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(214, 117, 119, 0.6)", "borderColor": "rgba(214, 117, 119, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(118, 211, 4, 0.6)", "borderColor": "rgba(118, 211, 4, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(232, 38, 216, 0.6)", "borderColor": "rgba(232, 38, 216, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(95, 62, 49, 0.6)", "borderColor": "rgba(95, 62, 49, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(40, 92, 251, 0.6)", "borderColor": "rgba(40, 92, 251, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(232, 224, 1, 0.6)", "borderColor": "rgba(232, 224, 1, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(194, 1, 28, 0.6)", "borderColor": "rgba(194, 1, 28, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(252, 221, 127, 0.6)", "borderColor": "rgba(252, 221, 127, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(131, 77, 100, 0.6)", "borderColor": "rgba(131, 77, 100, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
@@ -397,6 +403,54 @@
                 }
             }
             singerTopSongsContainer.remove();
+            // Data for Weather by Singer Chart
+            const weatherBySingerData = {"Geraldo": {"rain": 1, "no_rain": 6}, "Daniel": {"rain": 6, "no_rain": 8}, "Theo": {"rain": 8, "no_rain": 4}, "Pompeu": {"rain": 6, "no_rain": 6}, "Eric": {"rain": 8, "no_rain": 2}};
+            const weatherLabels = Object.keys(weatherBySingerData);
+            const rainData = weatherLabels.map(singer => weatherBySingerData[singer]['rain']);
+            const noRainData = weatherLabels.map(singer => weatherBySingerData[singer]['no_rain']);
+
+            const weatherCtx = document.getElementById('weatherBySingerChart').getContext('2d');
+            new Chart(weatherCtx, {
+                type: 'bar',
+                data: {
+                    labels: weatherLabels,
+                    datasets: [
+                        {
+                            label: 'Choveu',
+                            data: rainData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        },
+                        {
+                            label: 'Não Choveu',
+                            data: noRainData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        x: {
+                            stacked: true,
+                        },
+                        y: {
+                            stacked: true,
+                            beginAtZero: true
+                        }
+                    },
+                    plugins: {
+                        datalabels: {
+                            formatter: (value, context) => {
+                                return value > 0 ? value : '';
+                            }
+                        }
+                    }
+                }
+            });
         </script>
     </body>
     </html>

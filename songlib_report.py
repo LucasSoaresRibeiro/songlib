@@ -1,7 +1,16 @@
 import os
 import json
-from collections import Counter
+import requests
+from collections import Counter, defaultdict
 from datetime import datetime
+
+# Open-Meteo Historical Weather API configuration
+# WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast"
+# DEFAULT_LATITUDE = -23.5505  # São Paulo latitude
+# DEFAULT_LONGITUDE = -46.6333 # São Paulo longitude
+WEATHER_API_URL = "https://archive-api.open-meteo.com/v1/era5"
+DEFAULT_LATITUDE = -23.2701002  # IBM latitude
+DEFAULT_LONGITUDE = -45.8214431 # IBM longitude
 
 SETS_DIR = 'c:\\Lucas\\Repos\\pessoal\\github\\songlib\\sets'
 SONGS_DIR = 'c:\\Lucas\\Repos\\pessoal\\github\\songlib\\songs'
@@ -18,6 +27,28 @@ def get_song_title(song_data):
     # return f"{song_data['title']} - {song_data['author']}"
     return f"{song_data['title']}"
 
+def get_weather_data(date_str, latitude, longitude):
+    params = {
+        "latitude": latitude,
+        "longitude": longitude,
+        "start_date": date_str,
+        "end_date": date_str,
+        "hourly": "precipitation",
+    }
+    try:
+        response = requests.get(WEATHER_API_URL, params=params)
+        response.raise_for_status()  # Raise an exception for HTTP errors
+        data = response.json()
+        # Check if any hourly precipitation is greater than 0
+        if "hourly" in data and "precipitation" in data["hourly"]:
+            for precip in data["hourly"]["precipitation"]:
+                if precip > .15:
+                    return True  # It rained
+        return False  # It did not rain or no precipitation data
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching weather data for {date_str}: {e}")
+        return False
+
 def generate_report():
     total_sets = 0
     total_songs = 0
@@ -32,6 +63,7 @@ def generate_report():
     singers = Counter()
     singer_song_keys = {singer: Counter() for singer in SINGERS.keys()}
     singer_top_songs = {singer: Counter() for singer in SINGERS.keys()}
+    weather_by_singer = defaultdict(lambda: {'rain': 0, 'no_rain': 0})
 
     # Process song files
     total_songs = len(os.listdir(SONGS_DIR))
@@ -91,7 +123,17 @@ def generate_report():
                         SINGERS[singer] += 1
                 
                 if 'date' in set_data:
-                    set_dates.append(datetime.strptime(set_data['date'], "%d/%m/%Y"))
+                    set_date_str = set_data['date']
+                    set_dates.append(datetime.strptime(set_date_str, "%d/%m/%Y"))
+                    
+                    current_singer = next((s for s in SINGERS.keys() if s in title or s in title.upper()), None)
+                    if current_singer:
+                        # Fetch weather data for the set date
+                        it_rained = get_weather_data(datetime.strptime(set_date_str, "%d/%m/%Y").strftime("%Y-%m-%d"), DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
+                        if it_rained:
+                            weather_by_singer[current_singer]['rain'] += 1
+                        else:
+                            weather_by_singer[current_singer]['no_rain'] += 1
 
     # Sort singers by their event count in descending order
     sorted_singers = sorted(SINGERS.items(), key=lambda item: item[1], reverse=True)
@@ -188,6 +230,7 @@ def generate_report():
     <html>
     <head>
         <title>IBM - Estatísticas do Louvor</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <link rel="stylesheet" href="web/style/styles-report.css">
         <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
@@ -231,7 +274,7 @@ def generate_report():
             <canvas id="topSongsChart"></canvas>
         </div>
 
-        <div class="container">
+        <div class="container" style="display: none;">
             <h2>Músicas Cadastradas Menos Cantadas</h2>
             <canvas id="leastUsedSongsChart"></canvas>
         </div>
@@ -280,6 +323,11 @@ def generate_report():
         <div class="container">
             <h2>Top 10 Músicas por Dirigente</h2>
             <canvas id="singerTopSongsChart"></canvas>
+        </div>
+
+        <div class="container">
+            <h2>Clima por Dirigente</h2>
+            <canvas id="weatherBySingerChart"></canvas>
         </div>
 
         <script>
@@ -678,6 +726,54 @@ def generate_report():
                 }}
             }}
             singerTopSongsContainer.remove();
+            // Data for Weather by Singer Chart
+            const weatherBySingerData = {json.dumps(weather_by_singer)};
+            const weatherLabels = Object.keys(weatherBySingerData);
+            const rainData = weatherLabels.map(singer => weatherBySingerData[singer]['rain']);
+            const noRainData = weatherLabels.map(singer => weatherBySingerData[singer]['no_rain']);
+
+            const weatherCtx = document.getElementById('weatherBySingerChart').getContext('2d');
+            new Chart(weatherCtx, {{
+                type: 'bar',
+                data: {{
+                    labels: weatherLabels,
+                    datasets: [
+                        {{
+                            label: 'Choveu',
+                            data: rainData,
+                            backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }},
+                        {{
+                            label: 'Não Choveu',
+                            data: noRainData,
+                            backgroundColor: 'rgba(255, 99, 132, 0.6)',
+                            borderColor: 'rgba(255, 99, 132, 1)',
+                            borderWidth: 1
+                        }}
+                    ]
+                }},
+                options: {{
+                    responsive: true,
+                    scales: {{
+                        x: {{
+                            stacked: true,
+                        }},
+                        y: {{
+                            stacked: true,
+                            beginAtZero: true
+                        }}
+                    }},
+                    plugins: {{
+                        datalabels: {{
+                            formatter: (value, context) => {{
+                                return value > 0 ? value : '';
+                            }}
+                        }}
+                    }}
+                }}
+            }});
         </script>
     </body>
     </html>
