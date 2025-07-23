@@ -105,7 +105,7 @@
         </div>
 
         <div class="container-word-cloud">
-            <h2>Nuvem de Palavras das Músicas</h2>
+            <h2>Palavras Mais Frequentes nas Músicas</h2>
             <canvas id="wordCloudChart" style="height: 400px;"></canvas>
         </div>
 
@@ -421,7 +421,7 @@
                     labels: wordCloudData.map(item => item[0]),
                     datasets: [{
                         label: '',
-                        data: wordCloudData.map(item => item[1]/3)
+                        data: wordCloudData.map(item => item[1]/2.5)
                     }]
                 },
                 options: {

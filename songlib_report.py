@@ -805,7 +805,7 @@ def generate_report():
                     labels: wordCloudData.map(item => item[0]),
                     datasets: [{{
                         label: '',
-                        data: wordCloudData.map(item => item[1]/3)
+                        data: wordCloudData.map(item => item[1]/2.5)
                     }}]
                 }},
                 options: {{
