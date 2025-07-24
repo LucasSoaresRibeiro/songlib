@@ -332,7 +332,7 @@ def generate_report():
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Cantadas</h2>
+            <h2>Músicas Mais Cantadas 🔝</h2>
             <canvas id="topSongsChart"></canvas>
         </div>
 
@@ -342,58 +342,58 @@ def generate_report():
         </div>
 
         <div class="container">
-            <h2>Autores/Intérpretes Mais Frequentes</h2>
+            <h2>Autores/Intérpretes Mais Frequentes 🔝</h2>
             <canvas id="topAuthorsChart"></canvas>
         </div>
 
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início do Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Início do Louvor 🔝</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final do Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Final do Louvor 🔝</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Oferta</h2>
+            <h2>Músicas Mais Escolhidas para Oferta 🔝</h2>
             <canvas id="offeringSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Pão</h2>
+            <h2>Músicas Mais Escolhidas para Pão 🥖</h2>
             <canvas id="breadSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Cálice</h2>
+            <h2>Músicas Mais Escolhidas para Cálice 🍷</h2>
             <canvas id="wineSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Cultos por Dirigente</h2>
+            <h2>Cultos por Dirigente 🎤</h2>
             <canvas id="singersChart"></canvas>
         </div>
 
         <div class="container-limited-height">
-            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <h2>Tonalidades Preferidas por Dirigente 🎵</h2>
             <canvas id="singerKeysChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Top 10 Músicas por Dirigente</h2>
+            <h2>Top 10 Músicas por Dirigente 🔝</h2>
             <canvas id="singerTopSongsChart"></canvas>
         </div>
 
         <div class="chart-container">
-            <h2>Clima por Dirigente</h2>
+            <h2>Índice de Precipitação por Dirigente ⛈️</h2>
             <canvas id="weatherBySingerChart"></canvas>
         </div>
 
         <div class="container-word-cloud">
-            <h2>Nuvem de Palavras das Músicas</h2>
+            <h2>Palavras Mais Frequentes nas Músicas 🙏</h2>
             <canvas id="wordCloudChart" style="height: 400px;"></canvas>
         </div>
 

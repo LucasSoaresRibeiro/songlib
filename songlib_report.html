@@ -44,7 +44,7 @@
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Cantadas</h2>
+            <h2>Músicas Mais Cantadas 🔝</h2>
             <canvas id="topSongsChart"></canvas>
         </div>
 
@@ -54,58 +54,58 @@
         </div>
 
         <div class="container">
-            <h2>Autores/Intérpretes Mais Frequentes</h2>
+            <h2>Autores/Intérpretes Mais Frequentes 🔝</h2>
             <canvas id="topAuthorsChart"></canvas>
         </div>
 
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Início do Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Início do Louvor 🔝</h2>
             <canvas id="firstSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas como Final do Louvor</h2>
+            <h2>Músicas Mais Escolhidas como Final do Louvor 🔝</h2>
             <canvas id="lastSongsChart"></canvas>
         </div>
         
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Oferta</h2>
+            <h2>Músicas Mais Escolhidas para Oferta 🔝</h2>
             <canvas id="offeringSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Pão</h2>
+            <h2>Músicas Mais Escolhidas para Pão 🥖</h2>
             <canvas id="breadSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Músicas Mais Escolhidas para Cálice</h2>
+            <h2>Músicas Mais Escolhidas para Cálice 🍷</h2>
             <canvas id="wineSongsChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Cultos por Dirigente</h2>
+            <h2>Cultos por Dirigente 🎤</h2>
             <canvas id="singersChart"></canvas>
         </div>
 
         <div class="container-limited-height">
-            <h2>Tonalidades Preferidas por Dirigente</h2>
+            <h2>Tonalidades Preferidas por Dirigente 🎵</h2>
             <canvas id="singerKeysChart"></canvas>
         </div>
 
         <div class="container">
-            <h2>Top 10 Músicas por Dirigente</h2>
+            <h2>Top 10 Músicas por Dirigente 🔝</h2>
             <canvas id="singerTopSongsChart"></canvas>
         </div>
 
         <div class="chart-container">
-            <h2>Clima por Dirigente</h2>
+            <h2>Índice de Precipitação por Dirigente ⛈️</h2>
             <canvas id="weatherBySingerChart"></canvas>
         </div>
 
         <div class="container-word-cloud">
-            <h2>Palavras Mais Frequentes nas Músicas</h2>
+            <h2>Palavras Mais Frequentes nas Músicas 🙏</h2>
             <canvas id="wordCloudChart" style="height: 400px;"></canvas>
         </div>
 
@@ -295,7 +295,7 @@
             // Data for Singer Keys Chart
             const singerKeysData = {
                 labels: ["A", "A# / Bb", "B", "C", "C# / Db", "D", "E", "F", "F# / Gb", "G", "G# / Ab"],
-                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(101, 53, 86, 0.6)", "borderColor": "rgba(101, 53, 86, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(179, 233, 63, 0.6)", "borderColor": "rgba(179, 233, 63, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(26, 146, 172, 0.6)", "borderColor": "rgba(26, 146, 172, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(196, 141, 41, 0.6)", "borderColor": "rgba(196, 141, 41, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(51, 117, 179, 0.6)", "borderColor": "rgba(51, 117, 179, 1)", "borderWidth": 1}]
+                datasets: [{"label": "Geraldo", "data": [4, 6, 2, 5, 0, 9, 8, 0, 0, 8, 0], "backgroundColor": "rgba(238, 206, 241, 0.6)", "borderColor": "rgba(238, 206, 241, 1)", "borderWidth": 1}, {"label": "Eric", "data": [14, 5, 1, 7, 0, 12, 9, 5, 0, 9, 0], "backgroundColor": "rgba(17, 41, 188, 0.6)", "borderColor": "rgba(17, 41, 188, 1)", "borderWidth": 1}, {"label": "Theo", "data": [10, 5, 3, 14, 1, 17, 11, 2, 0, 8, 0], "backgroundColor": "rgba(174, 112, 148, 0.6)", "borderColor": "rgba(174, 112, 148, 1)", "borderWidth": 1}, {"label": "Daniel", "data": [6, 10, 1, 16, 0, 15, 10, 7, 1, 19, 2], "backgroundColor": "rgba(45, 205, 251, 0.6)", "borderColor": "rgba(45, 205, 251, 1)", "borderWidth": 1}, {"label": "Pompeu", "data": [14, 5, 0, 12, 0, 11, 13, 0, 1, 13, 0], "backgroundColor": "rgba(111, 54, 63, 0.6)", "borderColor": "rgba(111, 54, 63, 1)", "borderWidth": 1}]
             };
 
             const singerKeysCtx = document.getElementById('singerKeysChart').getContext('2d');
