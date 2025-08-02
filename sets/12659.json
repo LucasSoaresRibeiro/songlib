@@ -1,38 +1,38 @@
 {
-    "id": "12524",
-    "url": "https://songlib.com/sets/4297/12524/",
-    "title": "Banda EBF - Eric, Amanda",
+    "id": "12659",
+    "url": "https://songlib.com/sets/4297/12659/",
+    "title": "Festa da Gratidão - Geraldo",
     "notes": "",
-    "date": "20/07/2025",
+    "date": "02/08/2025",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 85396,
+            "song_id": 87779,
             "no": "1",
-            "key": "B",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87067,
+            "no": "2",
+            "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 96247,
-            "no": "2",
-            "key": "D",
-            "use_b": false,
-            "notes": "Oferta"
-        },
-        {
-            "song_id": 87067,
             "no": "3",
             "key": "D",
             "use_b": false,
-            "notes": "Oferta"
+            "notes": ""
         },
         {
-            "song_id": 88037,
+            "song_id": 85402,
             "no": "4",
-            "key": "A",
-            "use_b": false,
+            "key": "F",
+            "use_b": true,
             "notes": ""
         }
     ]
