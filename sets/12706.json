@@ -1,0 +1,46 @@
+{
+    "id": "12706",
+    "url": "https://songlib.com/sets/4297/12706/",
+    "title": "Banda 3 - Geraldo",
+    "notes": "",
+    "date": "17/08/2025",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 85396,
+            "no": "1",
+            "key": "B",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85049,
+            "no": "2",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88036,
+            "no": "3",
+            "key": "G",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 102484,
+            "no": "4",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87835,
+            "no": "5",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

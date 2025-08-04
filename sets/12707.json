@@ -1,58 +1,58 @@
 {
-    "id": "12657",
-    "url": "https://songlib.com/sets/4297/12657/",
-    "title": "Banda 1 - Pompeu",
+    "id": "12707",
+    "url": "https://songlib.com/sets/4297/12707/",
+    "title": "Banda 4 - Theo",
     "notes": "",
-    "date": "03/08/2025",
+    "date": "24/08/2025",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 93468,
+            "song_id": 93187,
             "no": "1",
-            "key": "F#",
+            "key": "E",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 85402,
+            "song_id": 87065,
             "no": "2",
-            "key": "F",
-            "use_b": true,
-            "notes": "Oferta"
+            "key": "G",
+            "use_b": false,
+            "notes": ""
         },
         {
-            "song_id": 85654,
+            "song_id": 92033,
             "no": "3",
             "key": "D",
             "use_b": false,
-            "notes": "Ceia - Cálice"
-        },
-        {
-            "song_id": 85403,
-            "no": "4",
-            "key": "Bb",
-            "use_b": true,
             "notes": ""
         },
         {
-            "song_id": 88684,
+            "song_id": 87193,
+            "no": "4",
+            "key": "C",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 85275,
             "no": "5",
             "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 102428,
+            "song_id": 85650,
             "no": "6",
-            "key": "D",
+            "key": "C",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 102486,
+            "song_id": 88683,
             "no": "7",
-            "key": "D",
+            "key": "C",
             "use_b": false,
             "notes": ""
         }
