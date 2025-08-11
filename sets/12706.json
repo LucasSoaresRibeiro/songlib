@@ -8,16 +8,16 @@
     "is_draft": false,
     "songs": [
         {
-            "song_id": 85396,
+            "song_id": 85049,
             "no": "1",
-            "key": "B",
+            "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 85049,
+            "song_id": 85396,
             "no": "2",
-            "key": "D",
+            "key": "B",
             "use_b": false,
             "notes": ""
         },
@@ -31,7 +31,7 @@
         {
             "song_id": 102484,
             "no": "4",
-            "key": "D",
+            "key": "C",
             "use_b": false,
             "notes": ""
         },
