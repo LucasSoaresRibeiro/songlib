@@ -12,119 +12,119 @@
             "no": "1",
             "key": "B",
             "use_b": false,
-            "notes": "Sexta Noite - Daniel"
+            "notes": "Sexta Noite"
         },
         {
             "song_id": 102484,
             "no": "2",
             "key": "C",
             "use_b": false,
-            "notes": "Sexta Noite - Daniel"
+            "notes": "Sexta Noite"
         },
         {
             "song_id": 102875,
             "no": "3",
             "key": "C",
             "use_b": false,
-            "notes": "Sexta Noite - Daniel"
+            "notes": "Sexta Noite"
         },
         {
             "song_id": 102874,
             "no": "4",
             "key": "D",
             "use_b": false,
-            "notes": "Sexta Noite - Daniel"
+            "notes": "Sexta Noite"
         },
         {
             "song_id": 102874,
             "no": "5",
             "key": "C (-2)",
             "use_b": false,
-            "notes": "Sexta Noite - Daniel\n(Capo 2ª Casa)"
+            "notes": "Sexta Noite\n(Capo 2ª Casa)"
         },
         {
             "song_id": 85049,
             "no": "6",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Manhã (Pompeu)"
+            "notes": "Sábado Manhã"
         },
         {
             "song_id": 90696,
             "no": "7",
             "key": "C",
             "use_b": false,
-            "notes": "Sábado Manhã (Pompeu)"
+            "notes": "Sábado Manhã"
         },
         {
             "song_id": 102875,
             "no": "8",
             "key": "C",
             "use_b": false,
-            "notes": "Sábado Manhã (Pompeu)"
+            "notes": "Sábado Manhã"
         },
         {
             "song_id": 85650,
             "no": "9",
             "key": "C",
             "use_b": false,
-            "notes": "Sábado Manhã (Pompeu)"
+            "notes": "Sábado Manhã"
         },
         {
             "song_id": 102874,
             "no": "10",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Manhã (Pompeu)\nVolta do break"
+            "notes": "Sábado Manhã\nVolta do break"
         },
         {
             "song_id": 85400,
             "no": "11",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Noite (Eric)"
+            "notes": "Sábado Noite"
         },
         {
             "song_id": 87475,
             "no": "12",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Noite (Eric)"
+            "notes": "Sábado Noite"
         },
         {
             "song_id": 102874,
             "no": "13",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Noite (Eric)"
+            "notes": "Sábado Noite"
         },
         {
             "song_id": 87835,
             "no": "14",
             "key": "D",
             "use_b": false,
-            "notes": "Sábado Noite (Eric)"
+            "notes": "Sábado Noite"
         },
         {
             "song_id": 85649,
             "no": "15",
             "key": "Bb",
             "use_b": true,
-            "notes": "Domingo Manhã (Theo)"
+            "notes": "Domingo Manhã"
         },
         {
             "song_id": 102874,
             "no": "16",
             "key": "D",
             "use_b": false,
-            "notes": "Domingo Manhã (Theo)"
+            "notes": "Domingo Manhã"
         },
         {
             "song_id": 85275,
             "no": "17",
             "key": "D",
             "use_b": false,
-            "notes": "Domingo Manhã (Theo)"
+            "notes": "Domingo Manhã"
         }
     ]
 }
