@@ -1,0 +1,60 @@
+{
+    "id": "12830",
+    "url": "https://songlib.com/sets/4297/12830/",
+    "title": "Projeto Farol",
+    "notes": "",
+    "date": "31/08/2025",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 88339,
+            "no": "1",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88034,
+            "no": "2",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103338,
+            "no": "3",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87193,
+            "no": "4",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85401,
+            "no": "5",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85087,
+            "no": "6",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103339,
+            "no": "7",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}
