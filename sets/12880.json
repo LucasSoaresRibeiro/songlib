@@ -1,51 +1,51 @@
 {
-    "id": "12709",
-    "url": "https://songlib.com/sets/4297/12709/",
-    "title": "Banda 5 - Eric (Batismo e Ceia)",
+    "id": "12880",
+    "url": "https://songlib.com/sets/4297/12880/",
+    "title": "Banda 6 - Theo",
     "notes": "",
-    "date": "31/08/2025",
+    "date": "07/09/2025",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 85272,
+            "song_id": 85651,
             "no": "1",
             "key": "E",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 102619,
+            "song_id": 103536,
             "no": "2",
             "key": "C",
-            "use_b": true,
+            "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 98776,
+            "song_id": 85402,
             "no": "3",
-            "key": "F# (-3)",
-            "use_b": false,
+            "key": "F",
+            "use_b": true,
             "notes": "Oferta"
         },
         {
-            "song_id": 85401,
+            "song_id": 85654,
             "no": "4",
-            "key": "C",
+            "key": "D",
             "use_b": false,
             "notes": "Pão"
         },
         {
-            "song_id": 91660,
+            "song_id": 85742,
             "no": "5",
-            "key": "F",
+            "key": "C",
             "use_b": false,
             "notes": "Cálice"
         },
         {
-            "song_id": 102620,
+            "song_id": 103537,
             "no": "6",
-            "key": "G",
+            "key": "A",
             "use_b": false,
             "notes": ""
         }

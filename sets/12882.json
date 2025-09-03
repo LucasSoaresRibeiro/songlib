@@ -1,0 +1,53 @@
+{
+    "id": "12882",
+    "url": "https://songlib.com/sets/4297/12882/",
+    "title": "Banda 2 - Eric",
+    "notes": "",
+    "date": "21/09/2025",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 87883,
+            "no": "1",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87484,
+            "no": "2",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 102875,
+            "no": "3",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103520,
+            "no": "4",
+            "key": "0",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 92616,
+            "no": "5",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88682,
+            "no": "6",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}
