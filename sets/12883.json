@@ -5,7 +5,7 @@
     "notes": "",
     "date": "28/09/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 87473,
@@ -15,31 +15,38 @@
             "notes": ""
         },
         {
-            "song_id": 88615,
+            "song_id": 103586,
             "no": "2",
             "key": "E",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 92615,
+            "song_id": 88615,
             "no": "3",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 92615,
+            "no": "4",
             "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 93677,
-            "no": "4",
+            "no": "5",
             "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 93469,
-            "no": "5",
+            "no": "6",
             "key": "F",
-            "use_b": false,
+            "use_b": true,
             "notes": ""
         }
     ]

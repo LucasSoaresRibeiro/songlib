@@ -5,7 +5,7 @@
     "notes": "",
     "date": "21/09/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 87883,
@@ -31,20 +31,27 @@
         {
             "song_id": 103520,
             "no": "4",
-            "key": "0",
+            "key": "B",
             "use_b": false,
             "notes": "Oferta"
         },
         {
-            "song_id": 92616,
+            "song_id": 103520,
             "no": "5",
+            "key": "G (-4)",
+            "use_b": false,
+            "notes": "Oferta\nViolão - Capo 4ª Casa"
+        },
+        {
+            "song_id": 92616,
+            "no": "6",
             "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 88682,
-            "no": "6",
+            "no": "7",
             "key": "D",
             "use_b": false,
             "notes": ""

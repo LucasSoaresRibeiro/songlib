@@ -5,14 +5,14 @@
     "notes": "",
     "date": "14/09/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
-            "song_id": 87341,
+            "song_id": 103585,
             "no": "1",
-            "key": "Ab",
-            "use_b": true,
-            "notes": ""
+            "key": "F#",
+            "use_b": false,
+            "notes": "Especial Vocais"
         },
         {
             "song_id": 85649,
@@ -38,6 +38,13 @@
         {
             "song_id": 85397,
             "no": "5",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103584,
+            "no": "6",
             "key": "C",
             "use_b": false,
             "notes": ""
