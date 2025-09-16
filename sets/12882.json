@@ -22,36 +22,43 @@
             "notes": ""
         },
         {
-            "song_id": 102875,
+            "song_id": 91211,
             "no": "3",
-            "key": "C",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 102875,
+            "no": "4",
+            "key": "B (-1)",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 103520,
-            "no": "4",
+            "no": "5",
             "key": "B",
             "use_b": false,
             "notes": "Oferta"
         },
         {
             "song_id": 103520,
-            "no": "5",
+            "no": "6",
             "key": "G (-4)",
             "use_b": false,
             "notes": "Oferta\nViolão - Capo 4ª Casa"
         },
         {
             "song_id": 92616,
-            "no": "6",
+            "no": "7",
             "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 88682,
-            "no": "7",
+            "no": "8",
             "key": "D",
             "use_b": false,
             "notes": ""
