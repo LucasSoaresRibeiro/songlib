@@ -47,7 +47,7 @@ def get_weather_data(date_str, latitude, longitude):
         # Check if any hourly precipitation is greater than 0
         if "hourly" in data and "precipitation" in data["hourly"]:
             for precip in data["hourly"]["precipitation"]:
-                if precip > .15:
+                if precip != None and precip > .15:
                     return True  # It rained
         return False  # It did not rain or no precipitation data
     except requests.exceptions.RequestException as e:
@@ -87,6 +87,9 @@ def generate_report():
     # Add custom stop words if necessary
     custom_stop_words = {'pra','intro', 'refrão', 'fim', 'verso', 'ponte', 'pre', 'solo', 'final', 'bis', 'volta', 'parte', 'coda', 'tag', 'adlib', 'interludio', 'instrumental', 'outro', 'fade', 'in', 'out', 'repeat', 'x', '2x', '3x', '4x', '5x', '6x', '7x', '8x', '9x', '10x', 'etc', 'e', 'o', 'a', 'os', 'as', 'um', 'uma', 'uns', 'umas', 'de', 'do', 'da', 'dos', 'das', 'em', 'no', 'na', 'nos', 'nas', 'por', 'para', 'com', 'sem', 'sobre', 'sob', 'entre', 'até', 'após', 'ante', 'contra', 'desde', 'durante', 'mediante', 'perante', 'segundo', 'salvo', 'tirante', 'trás', 'através', 'afora', 'dentro', 'fora', 'perto', 'longe', 'abaixo', 'acima', 'adiante', 'atrás', 'defronte', 'depois', 'diante', 'embaixo', 'emcima', 'enfim', 'então', 'logo', 'mais', 'menos', 'muito', 'pouco', 'quase', 'sempre', 'tarde', 'cedo', 'nunca', 'jamais', 'agora', 'ainda', 'já', 'ontem', 'hoje', 'amanhã', 'aqui', 'ali', 'aí', 'cá', 'lá', 'além', 'aquém', 'onde', 'aonde', 'donde', 'para onde', 'como', 'assim', 'bem', 'mal', 'melhor', 'pior', 'devagar', 'depressa', 'grátis', 'junto', 'separado', 'só', 'somente', 'apenas', 'inclusive', 'exclusivamente', 'certamente', 'provavelmente', 'talvez', 'sim', 'não', 'claro', 'decerto', 'realmente', 'verdadeiramente', 'aparentemente', 'possivelmente', 'quissá', 'acaso', 'porventura', 'talvez', 'se', 'embora', 'conforme', 'como', 'enquanto', 'quando', 'apenas', 'mal', 'assim que', 'logo que', 'desde que', 'até que', 'para que', 'a fim de que', 'porque', 'pois', 'porquanto', 'como', 'já que', 'visto que', 'uma vez que', 'seja', 'ou', 'nem', 'mas', 'porém', 'contudo', 'todavia', 'entretanto', 'no entanto', 'portanto', 'logo', 'por conseguinte', 'consequentemente', 'assim', 'destarte', 'desse modo', 'dessa forma', 'à medida que', 'à proporção que', 'quanto mais', 'quanto menos', 'quanto maior', 'quanto menor', 'que', 'se', 'como', 'conforme', 'segundo', 'consoante', 'assim como', 'bem como', 'tanto quanto', 'mais que', 'menos que', 'tão quanto', 'tão como', 'tal qual', 'qual', 'que', 'cujo', 'cuja', 'cujos', 'cujas', 'onde', 'quando', 'como', 'quanto', 'por que', 'para que', 'se', 'caso', 'contanto que', 'desde que', 'a menos que', 'exceto se', 'salvo se', 'sem que', 'dado que', 'posto que', 'uma vez que', 'ainda que', 'embora', 'conquanto', 'posto que', 'se bem que', 'mesmo que', 'por mais que', 'por menos que', 'apesar de que', 'não obstante', 'conforme', 'como', 'segundo', 'consoante', 'assim como', 'bem como', 'tanto quanto', 'mais que', 'menos que', 'tão quanto', 'tão como', 'tal qual', 'qual', 'que', 'cujo', 'cuja', 'cujos', 'cujas', 'onde', 'quando', 'como', 'quanto', 'por que', 'para que', 'se', 'caso', 'contanto que', 'desde que', 'a menos que', 'exceto se', 'salvo se', 'sem que', 'dado que', 'posto que', 'uma vez que', 'ainda que', 'embora', 'conquanto', 'posto que', 'se bem que', 'mesmo que', 'por mais que', 'por menos que', 'apesar de que', 'não obstante'}
     stop_words.update(custom_stop_words)
+
+    # temp
+    stop_words = custom_stop_words
 
     for lyrics_block in all_song_lyrics:
         # Remove chord notations (lines starting with . or containing | or [ ] or ( ) or { } or numbers)

@@ -5,6 +5,12 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "install report dependencies",
+            "command": "c:\\Lucas\\Programas\\ArcGISPro\\envs\\arcgispro-clone-pro-32\\python.exe -m pip install -r requirements.txt",
+            "request": "launch",
+            "type": "node-terminal"
+        },
+        {
             "name": "songlib_backup",
             "type": "debugpy",
             "request": "launch",
@@ -16,6 +22,13 @@
             "type": "debugpy",
             "request": "launch",
             "program": "songlib_partial_backup.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "songlib_report",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "songlib_report.py",
             "console": "integratedTerminal"
         }
     ]
