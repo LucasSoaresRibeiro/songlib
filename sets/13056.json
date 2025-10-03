@@ -5,7 +5,7 @@
     "notes": "",
     "date": "19/10/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 93468,
@@ -19,26 +19,47 @@
             "no": "2",
             "key": "C",
             "use_b": false,
-            "notes": ""
+            "notes": "Oferta"
         },
         {
             "song_id": 104483,
             "no": "3",
-            "key": "0",
-            "use_b": false,
+            "key": "Bb",
+            "use_b": true,
             "notes": ""
         },
         {
-            "song_id": 88340,
+            "song_id": 104483,
             "no": "4",
+            "key": "G (-3)",
+            "use_b": false,
+            "notes": "Violão - Capo 3ª casa"
+        },
+        {
+            "song_id": 88340,
+            "no": "5",
             "key": "D",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 88035,
-            "no": "5",
+            "no": "6",
             "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87936,
+            "no": "7",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 104484,
+            "no": "8",
+            "key": "G",
             "use_b": false,
             "notes": ""
         }
