@@ -22,7 +22,13 @@
             "type": "debugpy",
             "request": "launch",
             "program": "songlib_partial_backup.py",
-            "console": "integratedTerminal"
+            "console": "integratedTerminal",
+            "args": [
+                "--username",
+                "lucas.sax@gmail.com",
+                "--password",
+                "123456"
+            ]
         },
         {
             "name": "songlib_report",
