@@ -80,7 +80,10 @@ async function loadAllSongs() {
         // Load song file list from song_files.txt
         const response = await fetch('web/data/song_files.txt');
         const fileContent = await response.text();
-        const songFiles = fileContent.trim().split('\n');
+        let songFiles = fileContent.trim().split('\n');
+
+        // eliminate duplicates 
+        songFiles = [...new Set(songFiles)];
         
         // Load song relationships
         const relationshipsResponse = await fetch('web/data/song_relationships.txt');

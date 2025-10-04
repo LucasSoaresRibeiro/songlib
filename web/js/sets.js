@@ -87,11 +87,14 @@ async function loadAllSets() {
     const setsContainer = document.getElementById('setsContainer');
     setsContainer.innerHTML = '<p>Carregando repertórios...</p>';
     
-    const setFilesList = await loadSetFilesList();
+    let setFilesList = await loadSetFilesList();
     if (setFilesList.length === 0) {
         setsContainer.innerHTML = '<p>Repertório não encontrado.</p>';
         return;
     }
+
+    // Eliminate duplicates
+    setFilesList = [...new Set(setFilesList)];
     
     // Clear container
     setsContainer.innerHTML = '';

@@ -109,10 +109,11 @@ def salvar_backup_sets_futuros(driver, site_url):
         except Exception as e:
             print(f"Error processing set {data_set['id']}: {e}")
 
-    # # Update set_files.txt
-    # os.makedirs('web/data', exist_ok=True)
-    # with open('web/data/set_files.txt', 'w', encoding='utf-8') as f:
-    #     f.write('\n'.join(sorted(set_file_list)))
+    # Update set_files.txt
+    os.makedirs('web/data', exist_ok=True)
+    with open('web/data/set_files.txt', 'a', encoding='utf-8') as f:
+        f.write('\n')
+        f.write('\n'.join(sorted(set_file_list)))
 
     print(f'Total future sets processed: {counter}')
     return future_song_ids
@@ -173,10 +174,11 @@ def salvar_backup_musicas_selecionadas(driver, site_url, song_ids):
         except Exception as e:
             print(f"Error processing song {song_id}: {e}")
 
-    # # Update song_files.txt
-    # os.makedirs('web/data', exist_ok=True)
-    # with open('web/data/song_files.txt', 'w', encoding='utf-8') as f:
-    #     f.write('\n'.join(sorted(song_file_list)))
+    # Update song_files.txt
+    os.makedirs('web/data', exist_ok=True)
+    with open('web/data/song_files.txt', 'a', encoding='utf-8') as f:
+        f.write('\n')
+        f.write('\n'.join(sorted(song_file_list)))
 
     print(f'Total songs processed: {counter}')
 
