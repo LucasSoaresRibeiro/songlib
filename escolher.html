@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PM256L3ZQP"></script>
+    <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-PM256L3ZQP');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <title>Música Aleatória - Músicas Maranata</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <link rel="stylesheet" href="formatacao/songlib.css">
+    <link rel="stylesheet" href="web/style/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Scripts da Aplicação -->
+    <script src="web/js/app.js" defer></script>
+    <script src="web/js/chordsheet.bundle.min.js" defer></script>
+    <script src="web/js/sets.js" defer></script>
+    <script src="web/js/song_manager.js" defer></script>
+    <script src="web/js/transpose.js" defer></script>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Maranata Logo" class="logo" />
+    </div>
+
+    <!-- Container principal para a funcionalidade de aleatorização -->
+    <div id="randomizer-page" style="width: 100%; max-width: 800px; padding: 20px; box-sizing: border-box; ">
+        <div id="randomizer-container" style="text-align: center; margin: 20px;">
+            <button id="randomSongBtn" style="padding: 12px 24px; font-size: 16px; cursor: pointer;">Clique aqui para escolher uma música</button>
+        </div>
+
+        <div class="nav-controls" style="display: none;">
+            <!-- O link foi trocado por um botão com um ID -->
+            <button id="chooseAnotherBtn" class="back-button"><i class="fas fa-random"></i> Escolher Outra Música</button>
+        </div>
+
+        <div id="songContent"></div>
+    </div>
+    
+    <!-- Elementos que os scripts esperam, mas não são usados nesta página, para evitar erros -->
+    <div id="landingPage" style="display: none;"></div>
+    <div id="setsPage" style="display: none;"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            await loadSongData();
+
+            const randomBtn = document.getElementById('randomSongBtn');
+            const chooseAnotherBtn = document.getElementById('chooseAnotherBtn');
+            const songContentContainer = document.getElementById('songContent');
+            const navControls = document.querySelector('.nav-controls');
+            const randomizerContainer = document.getElementById('randomizer-container');
+            const logoContainer = document.querySelector('.logo-container');
+            const homeLogo = document.querySelector('.logo');
+
+            // Função para escolher e exibir uma música, evitando repetição de código
+            function pickAndShowRandomSong() {
+                if (allSongs && allSongs.length > 0) {
+                    const randomIndex = Math.floor(Math.random() * allSongs.length);
+                    const randomSong = allSongs[randomIndex];
+                    currentSongData = randomSong;
+
+                    createSongContent(randomSong);
+                } else {
+                    if (songContentContainer) songContentContainer.innerHTML = "<p>Nenhuma música carregada. Tente novamente.</p>";
+                }
+            }
+
+            if (homeLogo) {
+                homeLogo.style.cursor = 'pointer';
+                homeLogo.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Evento para o primeiro clique no botão "Escolher Música Aleatória"
+            if (randomBtn) {
+                randomBtn.addEventListener('click', () => {
+                    pickAndShowRandomSong();
+
+                    // Ajusta a visibilidade dos elementos da interface
+                    if(navControls) navControls.style.display = 'flex';
+                    if(randomizerContainer) randomizerContainer.style.display = 'none';
+                    if(logoContainer) logoContainer.style.display = 'none';
+                });
+            }
+
+            // Evento para o novo botão "Escolher Outra Música"
+            if (chooseAnotherBtn) {
+                chooseAnotherBtn.addEventListener('click', () => {
+                    // Apenas chama a função para sortear e exibir a próxima música
+                    pickAndShowRandomSong();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
