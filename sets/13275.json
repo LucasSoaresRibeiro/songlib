@@ -1,0 +1,60 @@
+{
+    "id": "13275",
+    "url": "https://songlib.com/sets/4297/13275/",
+    "title": "Banda 6 - Eric",
+    "notes": "",
+    "date": "30/11/2025",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 90699,
+            "no": "1",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 90700,
+            "no": "2",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 104743,
+            "no": "3",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 105153,
+            "no": "4",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 105420,
+            "no": "5",
+            "key": "0",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 95353,
+            "no": "6",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 95739,
+            "no": "7",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

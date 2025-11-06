@@ -1,7 +1,7 @@
 {
     "id": "13213",
     "url": "https://songlib.com/sets/4297/13213/",
-    "title": "Banda 2 - Eric ou Daniel",
+    "title": "Banda 2 - Daniel",
     "notes": "",
     "date": "02/11/2025",
     "leader": "",
@@ -15,7 +15,7 @@
             "notes": ""
         },
         {
-            "song_id": 88339,
+            "song_id": 88034,
             "no": "2",
             "key": "G",
             "use_b": false,
@@ -36,22 +36,29 @@
             "notes": "Oferta"
         },
         {
-            "song_id": 85401,
+            "song_id": 105207,
             "no": "5",
+            "key": "A",
+            "use_b": false,
+            "notes": "Oferta"
+        },
+        {
+            "song_id": 85401,
+            "no": "6",
             "key": "C",
             "use_b": false,
             "notes": "Pão"
         },
         {
             "song_id": 96364,
-            "no": "6",
+            "no": "7",
             "key": "Bb",
             "use_b": true,
             "notes": "Cálice"
         },
         {
             "song_id": 105153,
-            "no": "7",
+            "no": "8",
             "key": "G",
             "use_b": false,
             "notes": ""
