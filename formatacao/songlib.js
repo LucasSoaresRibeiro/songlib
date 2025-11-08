@@ -163,18 +163,18 @@ htmlHeader += "<hr></hr>";
 htmlHeader += "<div style='display: flex; justify-content: space-around; align-items: flex-start;'>"; // Flex container for side-by-side QR codes
 
 // Online Playlist Section
-const setId = window.location.pathname.split('/')[2];
+const setId = window.location.pathname.split('/')[3];
 const onlinePlaylistUrl = `https://equipedelouvor.com/?set=${setId}`;
 
 htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
-htmlHeader += "<h4>Cifras online:</h4>";
+htmlHeader += "<h4 style='margin-bottom: -12px;'>Cifra online:</h4>";
 htmlHeader += `<img width="100px" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${onlinePlaylistUrl}">`;
 htmlHeader += `<a class="cover-playlist-link" href="${onlinePlaylistUrl}" target="_blank"></a>`;
 htmlHeader += "</div>";
 
 // YouTube Playlist Section
 htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
-htmlHeader += "<h4>Playlist de Referência:</h4>";
+htmlHeader += "<h4 style='margin-bottom: -12px;'>Playlist de Referência:</h4>";
 let videoIds = []
 for (let index = 0; index < songDatas.length; index++) {
 	let videoId = YouTubeGetID(songDatas[index].linkRef);

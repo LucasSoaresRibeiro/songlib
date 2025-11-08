@@ -22,14 +22,14 @@ h2 {
     font-weight: 700;
     font-size: 50px;
     color: #0675bc !important;
-    margin-top: 100px;
+    margin-top: 10px;
 }
 
 h3 {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 500;
-    font-size: 38px;
+    font-size: 30px;
     color: #626262 !important;
     line-height: 55px;
     text-transform: uppercase;
@@ -60,12 +60,12 @@ h4 {
     font-family: "Martian Mono", "Roboto Mono", monospace;
     font-optical-sizing: auto;
     font-weight: 600;
-    font-size: 28px;
+    font-size: 26px;
     color: #626262 !important;
     line-height: 22px;
-    margin-left: 20px;
+    margin-left: 0px;
     text-transform: uppercase;
-    letter-spacing: -1px;
+    letter-spacing: -2px;
     margin-top: 18px;
 }
 
@@ -77,9 +77,9 @@ h4 {
 }
 
 .cover-link {
-    line-height: 13px;
+    line-height: 11px;
     text-transform: none;
-    color: black !important;
+    color: #a7a7a7 !important;
     margin-left: 60px;
     margin-top: -5px;
     font-size: 17px;
@@ -90,7 +90,8 @@ h4 {
     display: block;
     line-height: normal;
     text-transform: none;
-    color: #626262 !important;
+    color: #a7a7a7 !important;
+    margin-top: 2px;
     font-size: 12px;
 }
 
