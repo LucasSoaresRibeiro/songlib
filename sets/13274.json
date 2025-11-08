@@ -5,7 +5,7 @@
     "notes": "",
     "date": "23/11/2025",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 85649,
@@ -31,7 +31,7 @@
         {
             "song_id": 105419,
             "no": "4",
-            "key": "0",
+            "key": "D",
             "use_b": false,
             "notes": ""
         },
