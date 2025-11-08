@@ -77,7 +77,7 @@ h4 {
 }
 
 .cover-link {
-    line-height: normal;
+    line-height: 13px;
     text-transform: none;
     color: black !important;
     margin-left: 60px;
@@ -87,11 +87,11 @@ h4 {
 }
 
 .cover-playlist-link {
+    display: block;
     line-height: normal;
     text-transform: none;
     color: #626262 !important;
-    font-size: 15px;
-    word-wrap: break-word;
+    font-size: 12px;
 }
 
 p {
@@ -231,6 +231,10 @@ p {
 .titlebar {
     float: right;
     position: absolute;
+}
+
+.music-notation {
+	letter-spacing: -1.5px !important;
 }
 
 .notes {
