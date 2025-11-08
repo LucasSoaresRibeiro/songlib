@@ -281,7 +281,8 @@ function displaySongsTable(songs) {
             // Update URL with song ID
             const url = new URL(window.location);
             url.searchParams.set('songs', song.id);
-            url.searchParams.set('chords', 'true');
+            // A LINHA ABAIXO FOI REMOVIDA
+            // url.searchParams.set('chords', 'true'); 
             window.history.pushState({}, '', url);
             handleUrlChange();
         });

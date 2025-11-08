@@ -140,7 +140,8 @@ function openSong(songId) {
     // Update URL to load the song
     const url = new URL(window.location);
     url.searchParams.set('songs', songId);
-    url.searchParams.set('chords', 'true');
+    // A LINHA ABAIXO FOI REMOVIDA
+    // url.searchParams.set('chords', 'true');
     window.history.pushState({}, '', url);
     
     // Trigger the URL change handler defined in app.js
@@ -155,17 +156,19 @@ function loadAllSongsInSet(setData) {
         alert('This set has no songs to load.');
         return;
     }
-
+    
     // Update visibility state
     updateAppVisibility('song');
-
-    // Update URL to load the set by its ID, removing the long list of songs
+    
+    // Update URL to load the set by its ID. We only need the 'set' parameter.
     const url = new URL(window.location);
-    url.searchParams.delete('songs'); // Remove o parâmetro 'songs' se existir
+    url.searchParams.delete('songs'); // Garante que o parâmetro 'songs' seja removido
     url.searchParams.set('set', setData.id);
-    url.searchParams.set('chords', 'true');
+    
+    // O parâmetro 'chords' agora é omitido por padrão (significando true)
+    
     window.history.pushState({}, '', url);
-
+    
     // Trigger the URL change handler defined in app.js
     if (typeof handleUrlChange === 'function') {
         handleUrlChange();

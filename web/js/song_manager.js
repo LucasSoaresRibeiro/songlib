@@ -145,20 +145,25 @@ ${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compart
 
     toggleChordsBtn.addEventListener('click', () => {
         chordsVisible = !chordsVisible;
-        // toggleChordsBtn.textContent = chordsVisible ? 'Ocultar Acordes' : 'Mostrar Acordes';
         toggleChordsBtn.innerHTML = `<i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes`;
         document.querySelectorAll('.chords').forEach(chord => {
             chord.style.display = chordsVisible ? 'block' : 'none';
         });
         
         // Toggle compact-lyrics class on lyrics elements when chords are hidden
-        document.querySelectorAll('.lyrics').forEach(lyric => {
+    document.querySelectorAll('.lyrics').forEach(lyric => {
             lyric.classList.toggle('compact-lyrics', !chordsVisible);
         });
         
-        // Update URL while preserving song ID
+        // LÓGICA DE ATUALIZAÇÃO DA URL MODIFICADA
         const url = new URL(window.location);
-        url.searchParams.set('chords', chordsVisible);
+        if (chordsVisible) {
+            // Se os acordes estão visíveis (padrão), removemos o parâmetro da URL
+            url.searchParams.delete('chords');
+        } else {
+            // Se estão ocultos, definimos o parâmetro como 'false'
+            url.searchParams.set('chords', 'false');
+        }
         window.history.replaceState({}, '', url);
     });
 
