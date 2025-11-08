@@ -155,20 +155,17 @@ function loadAllSongsInSet(setData) {
         alert('This set has no songs to load.');
         return;
     }
-    
-    // Extract all song IDs from the set
-    const songIds = setData.songs.map(song => song.song_id);
-    
+
     // Update visibility state
     updateAppVisibility('song');
-    
-    // Update URL to load all songs
+
+    // Update URL to load the set by its ID, removing the long list of songs
     const url = new URL(window.location);
-    url.searchParams.set('songs', songIds.join(','));
+    url.searchParams.delete('songs'); // Remove o parâmetro 'songs' se existir
     url.searchParams.set('set', setData.id);
     url.searchParams.set('chords', 'true');
     window.history.pushState({}, '', url);
-    
+
     // Trigger the URL change handler defined in app.js
     if (typeof handleUrlChange === 'function') {
         handleUrlChange();

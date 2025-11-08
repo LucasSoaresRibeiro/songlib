@@ -294,11 +294,26 @@ function displaySongsTable(songs) {
 function handleUrlChange() {
     const urlParams = new URLSearchParams(window.location.search);
     const songsParam = urlParams.get('songs');
+    const setParam = urlParams.get('set'); // Adicionamos a leitura do parâmetro 'set'
     const keysParam = urlParams.get('keys');
     chordsVisible = urlParams.get('chords') !== 'false'; // Update global state
 
-    // Parse songs and keys parameters
-    if (songsParam) {
+    // Lógica para carregar o repertório a partir do ID (NOVO)
+    if (setParam && !songsParam) {
+        const set = setList.find(s => s.data.id === setParam);
+        if (set) {
+            // Monta a lista de músicas a partir dos dados do repertório
+            songsList = set.data.songs.map(song => song.song_id.toString());
+            currentSongIndex = 0;
+            updateAppVisibility('song');
+        } else {
+            // Caso o repertório não seja encontrado, volta para a página inicial
+            songsList = [];
+            updateAppVisibility('landing');
+        }
+    }
+    // Lógica original para carregar músicas individuais ou uma lista explícita
+    else if (songsParam) {
         songsList = songsParam.split(',');
         const keysList = keysParam ? keysParam.split(',') : [];
         currentSongIndex = 0;
@@ -311,14 +326,16 @@ function handleUrlChange() {
         });
         // Update visibility for song view
         updateAppVisibility('song');
-    } else {
+    }
+    // Se não houver parâmetros, exibe a página inicial
+    else {
         songsList = [];
         currentSongIndex = 0;
         // Update visibility for landing view
         updateAppVisibility('landing');
     }
 
-    // If songs are loaded, update the display
+    // Se houver músicas na lista (carregadas de um repertório ou da URL), exibe a primeira
     if (allSongs.length > 0 && songsList.length > 0) {
         updateKeyAccumulationForSet(songsList);
         const song = allSongs.find(s => s.id === songsList[currentSongIndex]);
