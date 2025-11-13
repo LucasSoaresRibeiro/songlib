@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-PM256L3ZQP"></script>
+    <script>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'G-PM256L3ZQP');
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <title>Escolher Música - Músicas Maranata</title>
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="formatacao/songlib.css">
+    <link rel="stylesheet" href="web/style/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+
+    <!-- Scripts da Aplicação -->
+    <script src="web/js/app.js" defer></script>
+    <script src="web/js/chordsheet.bundle.min.js" defer></script>
+    <script src="web/js/sets.js" defer></script>
+    <script src="web/js/song_manager.js" defer></script>
+    <script src="web/js/transpose.js" defer></script>
+
+    <!-- Scripts para a Roleta (Winwheel) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="web/js/Winwheel.min.js"></script>
+
+    <style>
+        /* Estilos adicionais para a roleta */
+        body {
+            /* text-align: center; */
+        }
+
+        .logo-container {
+            margin-bottom: 20px;
+        }
+        
+        #randomizer-page {
+            width: 100%;
+            max-width: 800px;
+            padding: 20px;
+            box-sizing: border-box;
+            margin: 0 auto;
+        }
+
+        .wheel-container {
+            position: relative;
+            width: 350px;
+            height: 350px;
+            margin: 0 auto 20px auto;
+        }
+
+        .wheel-pointer {
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 60px;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 125"><path fill="%23FFD700" d="M50 0L0 50h100z"/><path fill="%23D4AF37" d="M50 0L0 50h25l25-25z"/><polygon fill="%23C0C0C0" points="50,100 25,50 75,50"/></svg>');
+            background-size: contain;
+            background-repeat: no-repeat;
+            z-index: 10;
+        }
+        
+        #canvas {
+            width: 100%;
+            height: 100%;
+        }
+
+        #spin_button {
+            padding: 15px 40px;
+            font-size: 20px;
+            font-weight: bold;
+            color: white;
+            background: linear-gradient(45deg, #ff4b2b, #ff416c);
+            border: none;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            margin-top: 20px;
+        }
+
+        #spin_button:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        #spin_button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: scale(1);
+            box-shadow: none;
+        }
+
+        .nav-controls {
+            display: none;
+        }
+
+        #songContent {
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+    <div class="logo-container">
+        <img src="images/logo.png" alt="Maranata Logo" class="logo" />
+    </div>
+
+    <div id="randomizer-page">
+        <div id="randomizer-container" style="text-align: center; margin: 20px;">
+            <div class="wheel-container">
+                <div class="wheel-pointer"></div>
+                <canvas id="canvas" width="350" height="350"></canvas>
+            </div>
+            <button id="spin_button">GIRAR!</button>
+        </div>
+
+        <div id="songContent"></div>
+    </div>
+    
+    <div id="landingPage" style="display: none;"></div>
+    <div id="setsPage" style="display: none;"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', async () => {
+            // Carrega a lista completa de músicas uma única vez
+            await loadSongData();
+
+            const songContentContainer = document.getElementById('songContent');
+            const homeLogo = document.querySelector('.logo');
+            const spinButton = document.getElementById('spin_button');
+
+            let theWheel;
+            let wheelSpinning = false;
+            
+            function getRandomColor() {
+                const letters = '0123456789ABCDEF';
+                let color = '#';
+                for (let i = 0; i < 6; i++) {
+                    color += letters[Math.floor(Math.random() * 16)];
+                }
+                return color;
+            }
+
+            /**
+             * NOVO: Seleciona um número específico de músicas aleatórias da lista principal.
+             * @param {Array} sourceArray A lista completa de músicas (allSongs).
+             * @param {number} count O número de músicas a serem selecionadas.
+             * @returns {Array} Uma nova lista com as músicas selecionadas.
+             */
+            function selectRandomSongs(sourceArray, count) {
+                // Cria uma cópia embaralhada do array original
+                const shuffled = [...sourceArray].sort(() => 0.5 - Math.random());
+                // Retorna os primeiros 'count' itens da lista embaralhada
+                // Garante que não tentará pegar mais músicas do que as existentes
+                return shuffled.slice(0, Math.min(count, sourceArray.length));
+            }
+
+            // Função chamada quando a roleta para de girar
+            function showSelectedSong(indicatedSegment) {
+                const winningSongTitle = indicatedSegment.text;
+                // Busca a música na lista MESTRA (allSongs) para ter todos os dados
+                const selectedSong = allSongs.find(song => song.title === winningSongTitle);
+
+                if (selectedSong) {
+                    currentSongData = selectedSong;
+                    createSongContent(selectedSong);
+                    songContentContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                } else {
+                    songContentContainer.innerHTML = "<p>Música não encontrada. Tente novamente.</p>";
+                }
+                
+                spinButton.disabled = false;
+                spinButton.textContent = "GIRAR NOVAMENTE!";
+                wheelSpinning = false;
+            }
+
+            // Adiciona evento de clique no logo para voltar para a home
+            if (homeLogo) {
+                homeLogo.style.cursor = 'pointer';
+                homeLogo.addEventListener('click', () => {
+                    window.location.href = 'index.html';
+                });
+            }
+
+            // Lógica do botão de girar
+            if (spinButton) {
+                spinButton.addEventListener('click', () => {
+                    if (wheelSpinning) return;
+                    
+                    if (!allSongs || allSongs.length === 0) {
+                        alert("Nenhuma música foi carregada. Verifique o console de erros.");
+                        return;
+                    }
+
+                    wheelSpinning = true;
+                    spinButton.disabled = true;
+                    spinButton.textContent = "Sorteando músicas...";
+
+                    // 1. SELECIONA 20 MÚSICAS ALEATÓRIAS PARA ESTE GIRO
+                    const songsForThisSpin = selectRandomSongs(allSongs, 20);
+
+                    const segments = songsForThisSpin.map(song => ({
+                        'fillStyle': getRandomColor(),
+                        'text': song.title
+                    }));
+
+                    // 2. CRIA UMA NOVA ROLETA COM AS MÚSICAS SELECIONADAS
+                    theWheel = new Winwheel({
+                        'numSegments': segments.length,
+                        'outerRadius': 170,
+                        'textFontSize': 10,
+                        'segments': segments,
+                        'animation': {
+                            'type': 'spinToStop',
+                            'duration': 8,
+                            'spins': 10,
+                            'callbackFinished': showSelectedSong,
+                        }
+                    });
+
+                    // 3. GIRA A ROLETA RECÉM-CRIADA
+                    spinButton.textContent = "Girando...";
+                    theWheel.startAnimation();
+                });
+            }
+        });
+    </script>
+</body>
+</html>
