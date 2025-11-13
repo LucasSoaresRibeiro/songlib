@@ -72,7 +72,7 @@ async function createSongContent(songData, isTranposed = false) {
         <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulationLabel}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
-${window.location.href}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
+https://equipedelouvor.com/?songs=${songData.id}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
         ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url.split('|')[0].trim()}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
