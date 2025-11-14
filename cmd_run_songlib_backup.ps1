@@ -8,9 +8,9 @@ param (
 )
 
 # Executa o backup com as credenciais como argumentos
-& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_backup.py" --username $username --password $password
-& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_relation.py"
-& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_report.py"
+& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-pro-35\arcgispro-pro-35\python.exe" "$PSScriptRoot\songlib_backup.py" --username $username --password $password
+& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-pro-35\arcgispro-pro-35\python.exe" "$PSScriptRoot\songlib_relation.py"
+& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-pro-35\arcgispro-pro-35\python.exe" "$PSScriptRoot\songlib_report.py"
 
 # Commit e push das alterações
 git add *

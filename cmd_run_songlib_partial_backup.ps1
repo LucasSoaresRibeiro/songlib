@@ -8,7 +8,7 @@ param (
 )
 
 # Execute the partial backup with credentials as arguments
-& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-clone-pro-32\python.exe" "$PSScriptRoot\songlib_partial_backup.py" --username $username --password $password
+& "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-pro-35\arcgispro-pro-35\python.exe" "$PSScriptRoot\songlib_partial_backup.py" --username $username --password $password
 
 # Commit and push changes
 git add *
