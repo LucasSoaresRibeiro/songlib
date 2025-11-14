@@ -880,9 +880,9 @@ def generate_report():
     </html>
     """
 
-    with open('songlib_report.html', 'w', encoding='utf-8') as f:
+    with open('relatorio.html', 'w', encoding='utf-8') as f:
         f.write(html_content)
-    print("Relatório gerado: songlib_report.html")
+    print("Relatório gerado: relatorio.html")
 
 if __name__ == '__main__':
     generate_report()
