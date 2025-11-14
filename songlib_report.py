@@ -10,7 +10,7 @@ from nltk.corpus import stopwords
 nltk.download('stopwords')
 
 # Open-Meteo Historical Weather API configuration
-WEATHER_API_URL = "https://archive-api.open-meteo.com/v1/era5"
+WEATHER_API_URL = "https://archive-api-open-meteo.com/v1/era5"
 DEFAULT_LATITUDE = -23.2701002  # IBM latitude
 DEFAULT_LONGITUDE = -45.8214431 # IBM longitude
 
@@ -88,12 +88,10 @@ def generate_report():
                 date_obj = datetime.strptime(set_data['date'], "%d/%m/%Y")
                 date_str_api = date_obj.strftime("%Y-%m-%d")
                 
-                # VERIFICA SE A DATA ESTÁ NO CACHE
                 if date_str_api in weather_cache:
                     it_rained = weather_cache[date_str_api]
                     print(f"({index + 1}/{total_set_files}) Clima para {date_str_api} encontrado no cache.")
                 else:
-                    # SE NÃO ESTIVER, BUSCA NA API E ATUALIZA O CACHE
                     print(f"({index + 1}/{total_set_files}) Buscando novo dado de clima para {date_str_api}...")
                     it_rained = get_weather_data(date_str_api, DEFAULT_LATITUDE, DEFAULT_LONGITUDE)
                     weather_cache[date_str_api] = it_rained
@@ -102,7 +100,6 @@ def generate_report():
             set_data['it_rained'] = it_rained
             all_sets_data.append(set_data)
 
-    # SALVA O CACHE NO ARQUIVO SE TIVER SIDO ATUALIZADO
     if cache_updated:
         with open(WEATHER_CACHE_FILE, 'w', encoding='utf-8') as f:
             json.dump(weather_cache, f, indent=4)
@@ -154,6 +151,33 @@ def generate_report():
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
         <script src="https://unpkg.com/chartjs-chart-wordcloud@4.4.4/build/index.umd.min.js"></script>
+        
+        <style>
+            @media print {{
+                /* Define o tamanho da página e a orientação */
+                @page {{
+                    size: A5 landscape;
+                    margin: 1cm;
+                }}
+
+                /* Garante que as cores dos gráficos sejam impressas */
+                body {{
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }}
+
+                /* Oculta os containers do filtro e do logo */
+                .filter-container, .logo-container {{
+                    display: none;
+                }}
+
+                /* Força uma quebra de página antes do container do gráfico de precipitação */
+                .weather-chart-container {{
+                    page-break-before: always;
+                    padding-top: 1cm; /* Adiciona um espaço no topo da nova página */
+                }}
+            }}
+        </style>
     </head>
     <body>
         <div class="logo-container">
@@ -161,9 +185,9 @@ def generate_report():
         </div>
         <h1>Estatísticas do Ministério de Louvor</h1>
 
-        <div class="container">
+        <div class="container filter-container">
             <h2>Filtro por Período</h2>
-            <div class="filter-container">
+            <div class="filter-controls">
                 <label for="startDate">Data Inicial:</label>
                 <input type="date" id="startDate" name="startDate" value="{min_date_str}">
                 <label for="endDate">Data Final:</label>
@@ -239,7 +263,8 @@ def generate_report():
             <div id="singerTopSongsChartsContainer"></div>
         </div>
         
-        <div class="chart-container">
+        <!-- Adicionada uma classe específica para a quebra de página -->
+        <div class="chart-container weather-chart-container">
             <h2>Índice de Precipitação por Dirigente ⛈️</h2>
             <canvas id="weatherBySingerChart"></canvas>
         </div>
@@ -395,8 +420,8 @@ def generate_report():
             function updateWeatherChart(canvasId, weatherData) {{
                 if(window.weatherChartInstance) window.weatherChartInstance.destroy();
                 const labels = Object.keys(weatherData).filter(s => weatherData[s].rain > 0 || weatherData[s].no_rain > 0);
-                const rainData = labels.map(singer => weatherData[s]['rain']);
-                const noRainData = labels.map(singer => weatherData[s]['no_rain']);
+                const rainData = labels.map(singer => weatherData[singer]['rain']);
+                const noRainData = labels.map(singer => weatherData[singer]['no_rain']);
 
                 const ctx = document.getElementById(canvasId).getContext('2d');
                 window.weatherChartInstance = new Chart(ctx, {{
@@ -425,8 +450,41 @@ def generate_report():
                 
                 const wordCloudCtx = document.getElementById('wordCloudChart').getContext('2d');
                 new Chart(wordCloudCtx, {{
-                    type: 'wordCloud', data: {{ labels: topWordsData.map(item => item[0]), datasets: [{{ label: '', data: topWordsData.map(item => item[1]/2.5) }}] }},
-                    options: {{ title: {{ display: true, text: "Chart.js Word Cloud" }}, plugins: {{ legend: {{ display: false }} }}, font: {{ weight: 'normal', min: 5, max: 20 }} }}
+                    type: 'wordCloud',
+                    data: {{
+                        labels: topWordsData.map(item => item[0]),
+                        datasets: [{{
+                            label: '',
+                            data: topWordsData.map(item => item[1] / 2.5)
+                        }}]
+                    }},
+                    options: {{
+                        title: {{
+                            display: true,
+                            text: "Chart.js Word Cloud"
+                        }},
+                        plugins: {{
+                            legend: {{
+                                display: false
+                            }},
+                            datalabels: {{
+                                display: false
+                            }},
+                            tooltip: {{
+                                callbacks: {{
+                                    label: function(context) {{
+                                        const originalValue = topWordsData[context.dataIndex][1];
+                                        return context.label + ': ' + originalValue;
+                                    }}
+                                }}
+                            }}
+                        }},
+                        font: {{
+                            weight: 'normal',
+                            min: 5,
+                            max: 20
+                        }}
+                    }}
                 }});
 
                 updateDashboard();

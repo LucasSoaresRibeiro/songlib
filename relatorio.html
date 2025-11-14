@@ -10,6 +10,33 @@
         <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2.2.0/dist/chartjs-plugin-datalabels.min.js"></script>
         <script src="https://unpkg.com/chartjs-chart-wordcloud@4.4.4/build/index.umd.min.js"></script>
+        
+        <style>
+            @media print {
+                /* Define o tamanho da página e a orientação */
+                @page {
+                    size: A5 landscape;
+                    margin: 1cm;
+                }
+
+                /* Garante que as cores dos gráficos sejam impressas */
+                body {
+                    -webkit-print-color-adjust: exact;
+                    print-color-adjust: exact;
+                }
+
+                /* Oculta os containers do filtro e do logo */
+                .filter-container, .logo-container {
+                    display: none;
+                }
+
+                /* Força uma quebra de página antes do container do gráfico de precipitação */
+                .weather-chart-container {
+                    page-break-before: always;
+                    padding-top: 1cm; /* Adiciona um espaço no topo da nova página */
+                }
+            }
+        </style>
     </head>
     <body>
         <div class="logo-container">
@@ -17,9 +44,9 @@
         </div>
         <h1>Estatísticas do Ministério de Louvor</h1>
 
-        <div class="container">
+        <div class="container filter-container">
             <h2>Filtro por Período</h2>
-            <div class="filter-container">
+            <div class="filter-controls">
                 <label for="startDate">Data Inicial:</label>
                 <input type="date" id="startDate" name="startDate" value="2024-08-11">
                 <label for="endDate">Data Final:</label>
@@ -95,7 +122,8 @@
             <div id="singerTopSongsChartsContainer"></div>
         </div>
         
-        <div class="chart-container">
+        <!-- Adicionada uma classe específica para a quebra de página -->
+        <div class="chart-container weather-chart-container">
             <h2>Índice de Precipitação por Dirigente ⛈️</h2>
             <canvas id="weatherBySingerChart"></canvas>
         </div>
@@ -251,8 +279,8 @@
             function updateWeatherChart(canvasId, weatherData) {
                 if(window.weatherChartInstance) window.weatherChartInstance.destroy();
                 const labels = Object.keys(weatherData).filter(s => weatherData[s].rain > 0 || weatherData[s].no_rain > 0);
-                const rainData = labels.map(singer => weatherData[s]['rain']);
-                const noRainData = labels.map(singer => weatherData[s]['no_rain']);
+                const rainData = labels.map(singer => weatherData[singer]['rain']);
+                const noRainData = labels.map(singer => weatherData[singer]['no_rain']);
 
                 const ctx = document.getElementById(canvasId).getContext('2d');
                 window.weatherChartInstance = new Chart(ctx, {
@@ -281,8 +309,41 @@
                 
                 const wordCloudCtx = document.getElementById('wordCloudChart').getContext('2d');
                 new Chart(wordCloudCtx, {
-                    type: 'wordCloud', data: { labels: topWordsData.map(item => item[0]), datasets: [{ label: '', data: topWordsData.map(item => item[1]/2.5) }] },
-                    options: { title: { display: true, text: "Chart.js Word Cloud" }, plugins: { legend: { display: false } }, font: { weight: 'normal', min: 5, max: 20 } }
+                    type: 'wordCloud',
+                    data: {
+                        labels: topWordsData.map(item => item[0]),
+                        datasets: [{
+                            label: '',
+                            data: topWordsData.map(item => item[1] / 2.5)
+                        }]
+                    },
+                    options: {
+                        title: {
+                            display: true,
+                            text: "Chart.js Word Cloud"
+                        },
+                        plugins: {
+                            legend: {
+                                display: false
+                            },
+                            datalabels: {
+                                display: false
+                            },
+                            tooltip: {
+                                callbacks: {
+                                    label: function(context) {
+                                        const originalValue = topWordsData[context.dataIndex][1];
+                                        return context.label + ': ' + originalValue;
+                                    }
+                                }
+                            }
+                        },
+                        font: {
+                            weight: 'normal',
+                            min: 5,
+                            max: 20
+                        }
+                    }
                 });
 
                 updateDashboard();
