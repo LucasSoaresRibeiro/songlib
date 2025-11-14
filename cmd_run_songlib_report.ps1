@@ -7,7 +7,7 @@ param (
     [string]$password = "123456"
 )
 
-# Execute the partial backup with credentials as arguments
+# Update report
 & "C:\Lucas\Programas\ArcGISPro\envs\arcgispro-pro-35\arcgispro-pro-35\python.exe" "$PSScriptRoot\songlib_report.py"
 
 # Commit and push changes
