@@ -159,32 +159,43 @@ for (let index = 0; index < songDatas.length; index++) {
 }
 
 // CAPA - Playlists
-htmlHeader += "<hr></hr>";
-htmlHeader += "<div style='display: flex; justify-content: space-around; align-items: flex-start;'>"; // Flex container for side-by-side QR codes
+htmlHeader += "<div style='display: flex; justify-content: space-around; align-items: flex-start; margin-top: 10px;'>"; // Flex container for side-by-side QR codes
 
 // Online Playlist Section
 const setId = window.location.pathname.split('/')[3];
 const onlinePlaylistUrl = `https://equipedelouvor.com/?set=${setId}`;
 
 htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
-htmlHeader += "<h4 style='margin-bottom: -12px;'>Cifra online:</h4>";
+htmlHeader += "<h4 style='margin-bottom: -12px; margin-top: 10px;'>Cifra online:</h4>";
+htmlHeader += "<div style='display: flex; align-items: center;'>";
 htmlHeader += `<img width="100px" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${onlinePlaylistUrl}">`;
-htmlHeader += `<a class="cover-playlist-link" href="${onlinePlaylistUrl}" target="_blank"></a>`;
+htmlHeader += `<a class="cover-playlist-link" href="${onlinePlaylistUrl}" target="_blank" style="margin-left: 10px;"></a>`;
+htmlHeader += "</div>";
 htmlHeader += "</div>";
 
 // YouTube Playlist Section
 htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
-htmlHeader += "<h4 style='margin-bottom: -12px;'>Playlist de Referência:</h4>";
-let videoIds = []
+htmlHeader += "<h4 style='margin-bottom: -12px; margin-top: 10px;'>Playlist de Referência:</h4>";
+let allVideoIds = [];
 for (let index = 0; index < songDatas.length; index++) {
-	let videoId = YouTubeGetID(songDatas[index].linkRef);
-	if (videoId != null) {
-		videoIds.push(videoId);
-	}
+    if (songDatas[index].linkRef) {
+        const links = songDatas[index].linkRef.split("|");
+        links.forEach(link => {
+            let videoId = YouTubeGetID(link);
+            if (videoId != null) {
+                allVideoIds.push(videoId);
+            }
+        });
+    }
 }
-let playlistLink = `http://www.youtube.com/watch_videos?video_ids=${videoIds.join(',')}&start_radio=1`;
+// Remove duplicates
+let uniqueVideoIds = [...new Set(allVideoIds)];
+
+let playlistLink = `http://www.youtube.com/watch_videos?video_ids=${uniqueVideoIds.join(',')}&start_radio=1`;
+htmlHeader += "<div style='display: flex; align-items: center;'>";
 htmlHeader += `<img width="100px" style="margin-top: 5px;" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${playlistLink}">`;
-htmlHeader += `<a class="cover-playlist-link" href="${playlistLink}" target="_blank"></a>`;
+htmlHeader += `<a class="cover-playlist-link" href="${playlistLink}" target="_blank" style="margin-left: 10px;"></a>`;
+htmlHeader += "</div>";
 htmlHeader += "</div>";
 
 htmlHeader += "</div>"; // Closing Flex container
