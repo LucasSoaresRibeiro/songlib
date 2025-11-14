@@ -197,6 +197,17 @@ def generate_report():
         </div>
 
         <div class="container">
+            <h2>Filtro por Período</h2>
+            <div class="filter-container">
+                <label for="startDate">Data Inicial:</label>
+                <input type="date" id="startDate" name="startDate" value="{min_date_str}">
+                <label for="endDate">Data Final:</label>
+                <input type="date" id="endDate" name="endDate" value="{max_date_str}">
+                <button id="filterButton">Filtrar</button>
+            </div>
+        </div>
+
+        <div class="container">
             <h2>Resumo:</h2>
             <div class="dashboard-container">
                 <div class="dashboard-block">
@@ -267,7 +278,7 @@ def generate_report():
         <div class="chart-container weather-chart-container">
             <h2>Índice de Precipitação por Dirigente ⛈️</h2>
             <canvas id="weatherBySingerChart"></canvas>
-        </div>
+        </div> -->
 
         <div class="container-word-cloud">
             <h2>Palavras Mais Frequentes nas Músicas 🙏</h2>
