@@ -138,10 +138,10 @@ whats_msg.push(`Data: ${date_str}`);
 
 htmlHeader+= `<p class='cover-date'>Data: ${date_str}</p>`;
 htmlHeader += "</br>";
-htmlHeader += "<hr></hr>";
+// htmlHeader += "<hr></hr>";
 
 // CAPA - LISTA DE MUSICAS
-htmlHeader += "<h3>Músicas:</h3>";
+// htmlHeader += "<h3>Músicas:</h3>";
 for (let index = 0; index < songDatas.length; index++) {
     htmlHeader+= `<p class='cover-music-name'>${songDatas[index].name} - <span class='cover-key'>${songDatas[index].key}</span></p>`;
     if (songDatas[index].linkRef) {
