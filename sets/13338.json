@@ -10,41 +10,62 @@
         {
             "song_id": 85396,
             "no": "1",
-            "key": "B",
+            "key": "A (-2)",
             "use_b": false,
-            "notes": "Bloco 1"
+            "notes": "Bloco 1\nCapo 2ª casa"
+        },
+        {
+            "song_id": 85396,
+            "no": "2",
+            "key": "G (-4)",
+            "use_b": false,
+            "notes": "Bloco 1\nCapo 4ª casa"
         },
         {
             "song_id": 106062,
-            "no": "2",
-            "key": "B",
+            "no": "3",
+            "key": "A (-2)",
             "use_b": false,
-            "notes": "Bloco 1"
+            "notes": "Bloco 1\nCapo 2ª casa"
+        },
+        {
+            "song_id": 106062,
+            "no": "4",
+            "key": "G (-4)",
+            "use_b": false,
+            "notes": "Bloco 1\nCapo 4ª casa"
         },
         {
             "song_id": 93678,
-            "no": "3",
+            "no": "5",
             "key": "C",
             "use_b": false,
             "notes": "Bloco 2"
         },
         {
-            "song_id": 88339,
-            "no": "4",
-            "key": "A (+2)",
+            "song_id": 104743,
+            "no": "6",
+            "key": "A",
             "use_b": false,
             "notes": "Bloco 2"
         },
         {
+            "song_id": 104743,
+            "no": "7",
+            "key": "G (-2)",
+            "use_b": false,
+            "notes": "Bloco 2\nCapo 2ª casa"
+        },
+        {
             "song_id": 88682,
-            "no": "5",
+            "no": "8",
             "key": "D",
             "use_b": false,
             "notes": "Bloco 3"
         },
         {
             "song_id": 104613,
-            "no": "6",
+            "no": "9",
             "key": "D",
             "use_b": false,
             "notes": "Bloco 3"
