@@ -20,6 +20,13 @@
             "key": "A",
             "use_b": false,
             "notes": ""
+        },
+        {
+            "song_id": 107427,
+            "no": "3",
+            "key": "G (-2)",
+            "use_b": false,
+            "notes": "Capo casa 2"
         }
     ]
 }
