@@ -36,22 +36,29 @@
             "notes": ""
         },
         {
-            "song_id": 108123,
+            "song_id": 108580,
             "no": "5",
             "key": "A",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 102484,
+            "song_id": 108123,
             "no": "6",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 102484,
+            "no": "7",
             "key": "C",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 91389,
-            "no": "7",
+            "no": "8",
             "key": "Bb",
             "use_b": true,
             "notes": ""
