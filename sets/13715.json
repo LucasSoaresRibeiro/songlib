@@ -62,6 +62,13 @@
             "key": "Bb",
             "use_b": true,
             "notes": ""
+        },
+        {
+            "song_id": 91389,
+            "no": "9",
+            "key": "G (-3)",
+            "use_b": false,
+            "notes": "Capo 3"
         }
     ]
 }
