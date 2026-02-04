@@ -78,6 +78,7 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
+        <button class="toggle-whatsapp-lyrics" onclick="exportLyricsToWhatsApp()" title="Exportar letra sem cifra para WhatsApp"><i class="fab fa-whatsapp"></i> Letra WhatsApp</button>
     `;
     songContent.appendChild(header);
 
@@ -227,6 +228,53 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
             compress: true
         }
     };
+}
+
+/**
+ * Exports lyrics only (no chords) formatted for WhatsApp.
+ * Keeps section headings [VERSO], [REFRAO], etc. and removes chord lines.
+ */
+function exportLyricsToWhatsApp() {
+    if (!currentSongData || !currentSongData.chord_chart) return;
+
+    const lines = currentSongData.chord_chart.split('\n');
+    const lyricsLines = [];
+
+    lines.forEach(line => {
+        const trimmed = line.trim();
+        if (trimmed === '') {
+            lyricsLines.push('');
+            return;
+        }
+        // Skip chord lines (start with .)
+        if (line.startsWith('.')) return;
+        // Keep section headings [VERSO], [REFRAO], etc.
+        if (line.match(/^\s*\[.*\]\s*$/)) {
+            lyricsLines.push(trimmed.slice(1, -1).toUpperCase());
+            return;
+        }
+        // Keep lyric lines
+        lyricsLines.push(line.toUpperCase());
+    });
+
+    // Compact multiple consecutive empty lines into one
+    const compacted = lyricsLines.reduce((acc, line) => {
+        if (line === '' && acc[acc.length - 1] === '') return acc;
+        acc.push(line);
+        return acc;
+    }, []);
+
+    const lyricsText = compacted.join('\n').trim();
+
+    const header = [
+        `*${currentSongData.title}*`,
+        currentSongData.author ? `(${currentSongData.author})` : '',
+        currentSongData.key ? `Tom: ${currentSongData.key}` : ''
+    ].filter(Boolean).join('\n');
+
+    const fullText = [header, '', lyricsText].join('\n');
+    const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
+    window.open(waUrl, '_blank');
 }
 
 // Function to show YouTube modal
