@@ -230,31 +230,6 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
     };
 }
 
-/** Maps section names to emoji indicators for WhatsApp formatting */
-const SECTION_EMOJIS = {
-    refrao: '🔁', refrão: '🔁',
-    verso: '📝', versos: '📝', estrofe: '📝',
-    intro: '▶️',
-    ponte: '🌉', bridge: '🌉',
-    outro: '⏹️', ending: '⏹️', fine: '⏹️',
-    'pré-refrão': '↩️', 'pre-refrao': '↩️',
-    instrumental: '🎸',
-    coda: '🎼',
-    final: '🏁'
-};
-
-/** Default emoji for unknown sections */
-const DEFAULT_SECTION_EMOJI = '🎵';
-
-function getSectionEmoji(sectionName) {
-    const key = sectionName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-    const normalized = key.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
-    for (const [k, emoji] of Object.entries(SECTION_EMOJIS)) {
-        if (normalized.includes(k) || k.includes(normalized)) return emoji;
-    }
-    return DEFAULT_SECTION_EMOJI;
-}
-
 /**
  * Exports lyrics only (no chords) formatted for WhatsApp.
  * Rich formatting: emojis for sections, bold title, separators, better spacing.
@@ -278,9 +253,8 @@ function exportLyricsToWhatsApp() {
 
         const headingMatch = line.match(/^\s*\[(.*?)\]\s*$/);
         if (headingMatch) {
-            const sectionName = headingMatch[1].trim();
-            const emoji = getSectionEmoji(sectionName);
-            items.push({ type: 'heading', name: sectionName.toUpperCase(), emoji });
+            const sectionName = headingMatch[1].trim().toUpperCase();
+            items.push({ type: 'heading', name: sectionName });
             return;
         }
 
@@ -295,9 +269,10 @@ function exportLyricsToWhatsApp() {
 
     const parts = [];
 
-    parts.push('═'.repeat(28));
-    parts.push(`*${currentSongData.title}*`);
-    parts.push('─'.repeat(28));
+    parts.push('');
+    parts.push('-'.repeat(15));
+    parts.push(`MÚSICA: *${currentSongData.title.toUpperCase()}*`);
+    parts.push('-'.repeat(15));
     if (currentSongData.author) parts.push(`_${currentSongData.author}_`);
     if (currentSongData.key) parts.push(`Tom: ${currentSongData.key}`);
     parts.push('');
@@ -305,8 +280,7 @@ function exportLyricsToWhatsApp() {
 
     items.forEach(item => {
         if (item.type === 'heading') {
-            parts.push(`${item.emoji} *${item.name}*`);
-            parts.push('');
+            parts.push(`*${item.name} ---------*`);
         } else if (item.type === 'lyrics' && item.lines?.length > 0) {
             const text = item.lines.join('\n').trim();
             if (text) {
