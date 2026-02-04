@@ -230,49 +230,93 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
     };
 }
 
+/** Maps section names to emoji indicators for WhatsApp formatting */
+const SECTION_EMOJIS = {
+    refrao: '🔁', refrão: '🔁',
+    verso: '📝', versos: '📝', estrofe: '📝',
+    intro: '▶️',
+    ponte: '🌉', bridge: '🌉',
+    outro: '⏹️', ending: '⏹️', fine: '⏹️',
+    'pré-refrão': '↩️', 'pre-refrao': '↩️',
+    instrumental: '🎸',
+    coda: '🎼',
+    final: '🏁'
+};
+
+/** Default emoji for unknown sections */
+const DEFAULT_SECTION_EMOJI = '🎵';
+
+function getSectionEmoji(sectionName) {
+    const key = sectionName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+    const normalized = key.replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '');
+    for (const [k, emoji] of Object.entries(SECTION_EMOJIS)) {
+        if (normalized.includes(k) || k.includes(normalized)) return emoji;
+    }
+    return DEFAULT_SECTION_EMOJI;
+}
+
 /**
  * Exports lyrics only (no chords) formatted for WhatsApp.
- * Keeps section headings [VERSO], [REFRAO], etc. and removes chord lines.
+ * Rich formatting: emojis for sections, bold title, separators, better spacing.
  */
 function exportLyricsToWhatsApp() {
     if (!currentSongData || !currentSongData.chord_chart) return;
 
     const lines = currentSongData.chord_chart.split('\n');
-    const lyricsLines = [];
+    const items = []; // { type: 'heading'|'lyrics', heading?: {name, emoji}, lines?: string[] }
 
     lines.forEach(line => {
         const trimmed = line.trim();
         if (trimmed === '') {
-            lyricsLines.push('');
+            const last = items[items.length - 1];
+            if (last?.type === 'lyrics' && last.lines.length > 0) {
+                last.lines.push('');
+            }
             return;
         }
-        // Skip chord lines (start with .)
         if (line.startsWith('.')) return;
-        // Keep section headings [VERSO], [REFRAO], etc.
-        if (line.match(/^\s*\[.*\]\s*$/)) {
-            lyricsLines.push(trimmed.slice(1, -1).toUpperCase());
+
+        const headingMatch = line.match(/^\s*\[(.*?)\]\s*$/);
+        if (headingMatch) {
+            const sectionName = headingMatch[1].trim();
+            const emoji = getSectionEmoji(sectionName);
+            items.push({ type: 'heading', name: sectionName.toUpperCase(), emoji });
             return;
         }
-        // Keep lyric lines
-        lyricsLines.push(line.toUpperCase());
+
+        const lyricText = line.trimStart().toUpperCase();
+        const last = items[items.length - 1];
+        if (last?.type === 'lyrics') {
+            last.lines.push(lyricText);
+        } else {
+            items.push({ type: 'lyrics', lines: [lyricText] });
+        }
     });
 
-    // Compact multiple consecutive empty lines into one
-    const compacted = lyricsLines.reduce((acc, line) => {
-        if (line === '' && acc[acc.length - 1] === '') return acc;
-        acc.push(line);
-        return acc;
-    }, []);
+    const parts = [];
 
-    const lyricsText = compacted.join('\n').trim();
+    parts.push('═'.repeat(28));
+    parts.push(`*${currentSongData.title}*`);
+    parts.push('─'.repeat(28));
+    if (currentSongData.author) parts.push(`_${currentSongData.author}_`);
+    if (currentSongData.key) parts.push(`Tom: ${currentSongData.key}`);
+    parts.push('');
+    parts.push('');
 
-    const header = [
-        `*${currentSongData.title}*`,
-        currentSongData.author ? `(${currentSongData.author})` : '',
-        currentSongData.key ? `Tom: ${currentSongData.key}` : ''
-    ].filter(Boolean).join('\n');
+    items.forEach(item => {
+        if (item.type === 'heading') {
+            parts.push(`${item.emoji} *${item.name}*`);
+            parts.push('');
+        } else if (item.type === 'lyrics' && item.lines?.length > 0) {
+            const text = item.lines.join('\n').trim();
+            if (text) {
+                parts.push(text);
+                parts.push('');
+            }
+        }
+    });
 
-    const fullText = [header, '', lyricsText].join('\n');
+    const fullText = parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
     const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
     window.open(waUrl, '_blank');
 }
