@@ -1,0 +1,95 @@
+{
+    "id": "13973",
+    "url": "https://songlib.com/sets/4297/13973/",
+    "title": "Acampadentro",
+    "notes": "",
+    "date": "14/02/2026",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 85273,
+            "no": "1",
+            "key": "E",
+            "use_b": false,
+            "notes": "SÁBADO\nGeraldo - B3"
+        },
+        {
+            "song_id": 87065,
+            "no": "2",
+            "key": "G",
+            "use_b": false,
+            "notes": "SÁBADO\nGeraldo - B3"
+        },
+        {
+            "song_id": 87484,
+            "no": "3",
+            "key": "E",
+            "use_b": false,
+            "notes": "SÁBADO\nGeraldo - B3"
+        },
+        {
+            "song_id": 85403,
+            "no": "4",
+            "key": "Bb",
+            "use_b": true,
+            "notes": "SÁBADO\nGeraldo - B3"
+        },
+        {
+            "song_id": 93187,
+            "no": "5",
+            "key": "D",
+            "use_b": false,
+            "notes": "DOMINGO\nTheo - B4"
+        },
+        {
+            "song_id": 85400,
+            "no": "6",
+            "key": "D",
+            "use_b": false,
+            "notes": "DOMINGO\nTheo - B4"
+        },
+        {
+            "song_id": 93678,
+            "no": "7",
+            "key": "C",
+            "use_b": false,
+            "notes": "DOMINGO\nTheo - B4"
+        },
+        {
+            "song_id": 85397,
+            "no": "8",
+            "key": "C",
+            "use_b": false,
+            "notes": "DOMINGO\nTheo - B4"
+        },
+        {
+            "song_id": 85649,
+            "no": "9",
+            "key": "Bb",
+            "use_b": true,
+            "notes": "SEGUNDA\nPompeu - B5"
+        },
+        {
+            "song_id": 85049,
+            "no": "10",
+            "key": "D",
+            "use_b": false,
+            "notes": "SEGUNDA\nPompeu - B5"
+        },
+        {
+            "song_id": 92033,
+            "no": "11",
+            "key": "D",
+            "use_b": false,
+            "notes": "SEGUNDA\nPompeu - B5"
+        },
+        {
+            "song_id": 87193,
+            "no": "12",
+            "key": "C",
+            "use_b": false,
+            "notes": "SEGUNDA\nPompeu - B5"
+        }
+    ]
+}
