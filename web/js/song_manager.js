@@ -79,7 +79,7 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
         <button class="toggle-whatsapp-lyrics" onclick="exportLyricsToWhatsApp()" title="Exportar letra sem cifra para WhatsApp"><i class="fab fa-whatsapp"></i> Letra WhatsApp</button>
-        <button class="toggle-copy-chords" onclick="copyChordChartToClipboard(event)" title="Copiar cifras e letras como texto"><i class="fas fa-copy"></i> Copiar Cifras</button>
+        <button class="toggle-copy-chords" onclick="shareChordChart(event)" title="Compartilhar cifras e letras"><i class="fas fa-share-alt"></i> Compartilhar Cifras</button>
     `;
     songContent.appendChild(header);
 
@@ -297,11 +297,12 @@ function exportLyricsToWhatsApp() {
 }
 
 /**
- * Copies the full chord chart (chords + lyrics) to clipboard as plain text.
+ * Shares the full chord chart (chords + lyrics) using Web Share API.
+ * Falls back to clipboard copy if Web Share API is not available.
  * Formats with header (Música, Versão, Tom) and removes dots from chord lines.
- * Useful for importing into other applications.
+ * Useful for importing into other applications on mobile devices.
  */
-async function copyChordChartToClipboard(event) {
+async function shareChordChart(event) {
     if (!currentSongData || !currentSongData.chord_chart) return;
 
     try {
@@ -339,10 +340,39 @@ async function copyChordChartToClipboard(event) {
         });
 
         const formattedText = formattedLines.join('\n');
+        const button = event?.target?.closest('.toggle-copy-chords') || document.querySelector('.toggle-copy-chords');
+        
+        // Try Web Share API first (works on mobile devices)
+        if (navigator.share) {
+            try {
+                await navigator.share({
+                    title: `${currentSongData.title} - Cifras`,
+                    text: formattedText
+                });
+                
+                // Show feedback
+                if (button) {
+                    const originalText = button.innerHTML;
+                    button.innerHTML = '<i class="fas fa-check"></i> Compartilhado!';
+                    button.style.backgroundColor = '#28a745';
+                    setTimeout(() => {
+                        button.innerHTML = originalText;
+                        button.style.backgroundColor = '';
+                    }, 2000);
+                }
+                return;
+            } catch (shareError) {
+                // User cancelled share or error occurred, fall through to clipboard
+                if (shareError.name === 'AbortError') {
+                    return; // User cancelled, don't show error
+                }
+            }
+        }
+        
+        // Fallback to clipboard copy
         await navigator.clipboard.writeText(formattedText);
         
         // Show feedback to user
-        const button = event?.target?.closest('.toggle-copy-chords') || document.querySelector('.toggle-copy-chords');
         if (button) {
             const originalText = button.innerHTML;
             button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
@@ -353,8 +383,8 @@ async function copyChordChartToClipboard(event) {
             }, 2000);
         }
     } catch (err) {
-        console.error('Failed to copy text: ', err);
-        alert('Erro ao copiar. Tente novamente.');
+        console.error('Failed to share/copy text: ', err);
+        alert('Erro ao compartilhar. Tente novamente.');
     }
 }
 
