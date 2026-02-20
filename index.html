@@ -15,22 +15,42 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no, user-scalable=no"
     />
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link rel="manifest" href="https://lucassoaresribeiro.github.io/songlib/manifest.json"/>
     <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <title>Músicas Maranata</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <link rel="stylesheet" href="formatacao/songlib.css">
-    <link rel="stylesheet" href="web/style/styles.css">
+    <link rel="stylesheet" href="formatacao/songlib.css?v=20260204">
+    <link rel="stylesheet" href="web/style/styles.css?v=20260204">
     <link href="https://fonts.googleapis.com/css2?family=Martian+Mono:wdth,wght@87.5,100..800&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 
-    <script src="web/js/app.js" defer></script>
-    <script src="web/js/chordsheet.bundle.min.js" defer></script>
-    <script src="web/js/sets.js" defer></script>
-    <script src="web/js/song_manager.js" defer></script>
-    <script src="web/js/transpose.js" defer></script>
+    <script src="web/js/app.js?v=20260204" defer></script>
+    <script src="web/js/chordsheet.bundle.min.js?v=20260204" defer></script>
+    <script src="web/js/sets.js?v=20260204" defer></script>
+    <script src="web/js/song_manager.js?v=20260204" defer></script>
+    <script src="web/js/transpose.js?v=20260204" defer></script>
     <script>
+        // Force cache refresh - version check
+        const APP_VERSION = '20260204';
+        const storedVersion = localStorage.getItem('app_version');
+        if (storedVersion !== APP_VERSION) {
+            localStorage.setItem('app_version', APP_VERSION);
+            // Clear all caches if available
+            if ('caches' in window) {
+                caches.keys().then(names => {
+                    names.forEach(name => caches.delete(name));
+                });
+            }
+            // Force reload if version changed
+            if (storedVersion && storedVersion !== APP_VERSION) {
+                window.location.reload(true);
+            }
+        }
+
         // Theme toggle functionality
         function toggleTheme() {
             const body = document.body;

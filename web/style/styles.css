@@ -216,7 +216,7 @@ p {
 
 }
 
-.toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, .toggle-whatsapp-lyrics {
+.toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, .toggle-whatsapp-lyrics, .toggle-copy-chords {
     border: none;
     color: #ffffff;
     padding: 6px 12px;
@@ -276,7 +276,15 @@ p {
     background-color: #20BD5A;
 }
 
-.toggle-chords i, .toggle-share i, .toggle-youtube i, .toggle-print i, .toggle-whatsapp-lyrics i {
+.toggle-copy-chords {
+    background-color: #6c757d;
+}
+
+.toggle-copy-chords:hover {
+    background-color: #5a6268;
+}
+
+.toggle-chords i, .toggle-share i, .toggle-youtube i, .toggle-print i, .toggle-whatsapp-lyrics i, .toggle-copy-chords i {
     font-size: 14px;
 }
 
@@ -445,7 +453,7 @@ p {
     } */
     
     #landingPage, .search-container, #searchInput, #searchResults, 
-    .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, .toggle-whatsapp-lyrics, 
+    .toggle-chords, .toggle-share, .toggle-youtube, .toggle-print, .toggle-whatsapp-lyrics, .toggle-copy-chords, 
     .song-navigation, .modal, .close-button, .back-button, .related-songs, .theme-toggle {
         display: none !important;
     }

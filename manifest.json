@@ -1,6 +1,7 @@
 {
   "short_name": "Músicas IBM",
   "name": "Músicas IBM",
+  "version": "20260204",
   "icons": [
     {
       "src": "favicon.ico",

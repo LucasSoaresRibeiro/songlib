@@ -79,6 +79,7 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
         <button class="toggle-print" onclick="window.print()"><i class="fas fa-print"></i> Imprimir</button>
         <button class="toggle-whatsapp-lyrics" onclick="exportLyricsToWhatsApp()" title="Exportar letra sem cifra para WhatsApp"><i class="fab fa-whatsapp"></i> Letra WhatsApp</button>
+        <button class="toggle-copy-chords" onclick="copyChordChartToClipboard(event)" title="Copiar cifras e letras como texto"><i class="fas fa-copy"></i> Copiar Cifras</button>
     `;
     songContent.appendChild(header);
 
@@ -293,6 +294,68 @@ function exportLyricsToWhatsApp() {
     const fullText = parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
     const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
     window.open(waUrl, '_blank');
+}
+
+/**
+ * Copies the full chord chart (chords + lyrics) to clipboard as plain text.
+ * Formats with header (Música, Versão, Tom) and removes dots from chord lines.
+ * Useful for importing into other applications.
+ */
+async function copyChordChartToClipboard(event) {
+    if (!currentSongData || !currentSongData.chord_chart) return;
+
+    try {
+        const lines = currentSongData.chord_chart.split('\n');
+        const formattedLines = [];
+
+        // Add header
+        formattedLines.push(`Música: ${currentSongData.title}`);
+        if (currentSongData.author) {
+            formattedLines.push(`Versão: ${currentSongData.author}`);
+        }
+        if (currentSongData.key) {
+            formattedLines.push(`Tom: ${currentSongData.key}`);
+        }
+        formattedLines.push(''); // Empty line after header
+
+        // Process chord chart lines
+        lines.forEach(line => {
+            const trimmed = line.trim();
+            
+            if (trimmed === '') {
+                formattedLines.push('');
+                return;
+            }
+
+            // Remove dot from chord lines (lines starting with .)
+            if (line.startsWith('.')) {
+                const chordLine = line.substring(1); // Remove the dot
+                formattedLines.push(chordLine);
+                return;
+            }
+
+            // Keep section headings and lyrics as-is
+            formattedLines.push(line);
+        });
+
+        const formattedText = formattedLines.join('\n');
+        await navigator.clipboard.writeText(formattedText);
+        
+        // Show feedback to user
+        const button = event?.target?.closest('.toggle-copy-chords') || document.querySelector('.toggle-copy-chords');
+        if (button) {
+            const originalText = button.innerHTML;
+            button.innerHTML = '<i class="fas fa-check"></i> Copiado!';
+            button.style.backgroundColor = '#28a745';
+            setTimeout(() => {
+                button.innerHTML = originalText;
+                button.style.backgroundColor = '';
+            }, 2000);
+        }
+    } catch (err) {
+        console.error('Failed to copy text: ', err);
+        alert('Erro ao copiar. Tente novamente.');
+    }
 }
 
 // Function to show YouTube modal
