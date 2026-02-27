@@ -1,0 +1,67 @@
+{
+    "id": "14042",
+    "url": "https://songlib.com/sets/4297/14042/",
+    "title": "Banda 3 - Geraldo",
+    "notes": "Definir versão",
+    "date": "15/03/2026",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 97072,
+            "no": "1",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85271,
+            "no": "2",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 96414,
+            "no": "3",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88340,
+            "no": "4",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88035,
+            "no": "5",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93468,
+            "no": "6",
+            "key": "F#",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 94470,
+            "no": "7",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 90332,
+            "no": "8",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

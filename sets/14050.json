@@ -1,0 +1,109 @@
+{
+    "id": "14050",
+    "url": "https://songlib.com/sets/4297/14050/",
+    "title": "DEFINIR VERSÕES",
+    "notes": "",
+    "date": "01/01/2027",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 97103,
+            "no": "1",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 97104,
+            "no": "2",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85650,
+            "no": "3",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88683,
+            "no": "4",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 85271,
+            "no": "5",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 96414,
+            "no": "6",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88340,
+            "no": "7",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88035,
+            "no": "8",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 106062,
+            "no": "9",
+            "key": "B",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103520,
+            "no": "10",
+            "key": "B",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88339,
+            "no": "11",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88034,
+            "no": "12",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 92020,
+            "no": "13",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 96415,
+            "no": "14",
+            "key": "D",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}

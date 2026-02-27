@@ -1,0 +1,60 @@
+{
+    "id": "14043",
+    "url": "https://songlib.com/sets/4297/14043/",
+    "title": "Banda 4",
+    "notes": "Definir versão",
+    "date": "22/03/2026",
+    "leader": "",
+    "is_draft": true,
+    "songs": [
+        {
+            "song_id": 95352,
+            "no": "1",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87473,
+            "no": "2",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 106062,
+            "no": "3",
+            "key": "B",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 103520,
+            "no": "4",
+            "key": "B",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88339,
+            "no": "5",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 88034,
+            "no": "6",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 109492,
+            "no": "7",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}
