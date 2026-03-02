@@ -5,7 +5,7 @@
     "notes": "Definir versão",
     "date": "15/03/2026",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 97072,

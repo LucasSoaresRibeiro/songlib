@@ -2,10 +2,10 @@
     "id": "14062",
     "url": "https://songlib.com/sets/4297/14062/",
     "title": "Retiro de Mulheres",
-    "notes": "Pentende: Amor de Deus (Rachel Novais)",
+    "notes": "",
     "date": "06/03/2026",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 87193,
@@ -38,7 +38,7 @@
         {
             "song_id": 109536,
             "no": "5",
-            "key": "0",
+            "key": "A",
             "use_b": false,
             "notes": ""
         },

@@ -8,7 +8,7 @@
     "is_draft": false,
     "songs": [
         {
-            "song_id": 102617,
+            "song_id": 109393,
             "no": "1",
             "key": "E",
             "use_b": false,
@@ -24,16 +24,16 @@
         {
             "song_id": 90787,
             "no": "3",
-            "key": "Bb",
-            "use_b": true,
-            "notes": ""
+            "key": "E (+6)",
+            "use_b": false,
+            "notes": "Capo 6ª casa"
         },
         {
             "song_id": 102874,
             "no": "4",
-            "key": "D",
+            "key": "C (-2)",
             "use_b": false,
-            "notes": ""
+            "notes": "Capo 2ª casa"
         },
         {
             "song_id": 108967,

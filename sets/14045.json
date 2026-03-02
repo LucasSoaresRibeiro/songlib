@@ -5,7 +5,7 @@
     "notes": "Definir versão",
     "date": "05/04/2026",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 107250,
@@ -46,6 +46,13 @@
             "song_id": 109495,
             "no": "6",
             "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 95791,
+            "no": "7",
+            "key": "C",
             "use_b": false,
             "notes": ""
         }
