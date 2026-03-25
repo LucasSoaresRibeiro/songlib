@@ -2,15 +2,15 @@
     "id": "14043",
     "url": "https://songlib.com/sets/4297/14043/",
     "title": "Banda 4 - Marcão",
-    "notes": "Definir versão",
+    "notes": "",
     "date": "22/03/2026",
     "leader": "",
     "is_draft": false,
     "songs": [
         {
-            "song_id": 95352,
+            "song_id": 110058,
             "no": "1",
-            "key": "A",
+            "key": "A (-5)",
             "use_b": false,
             "notes": ""
         },
@@ -22,43 +22,29 @@
             "notes": ""
         },
         {
-            "song_id": 106062,
+            "song_id": 103520,
             "no": "3",
             "key": "B",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 103520,
-            "no": "4",
-            "key": "B",
-            "use_b": false,
-            "notes": ""
-        },
-        {
             "song_id": 88339,
-            "no": "5",
-            "key": "G",
-            "use_b": false,
-            "notes": ""
-        },
-        {
-            "song_id": 88034,
-            "no": "6",
+            "no": "4",
             "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
             "song_id": 109492,
-            "no": "7",
+            "no": "5",
             "key": "G",
             "use_b": false,
             "notes": ""
         },
         {
-            "song_id": 88504,
-            "no": "8",
+            "song_id": 110230,
+            "no": "6",
             "key": "D",
             "use_b": false,
             "notes": ""
