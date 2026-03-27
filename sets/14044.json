@@ -2,10 +2,10 @@
     "id": "14044",
     "url": "https://songlib.com/sets/4297/14044/",
     "title": "Banda 5 - Theo",
-    "notes": "Pendente: Música de Páscoa",
+    "notes": "",
     "date": "29/03/2026",
     "leader": "",
-    "is_draft": true,
+    "is_draft": false,
     "songs": [
         {
             "song_id": 92615,
@@ -39,6 +39,13 @@
             "song_id": 91211,
             "no": "5",
             "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 92169,
+            "no": "6",
+            "key": "D",
             "use_b": false,
             "notes": ""
         }
