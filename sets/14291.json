@@ -15,7 +15,7 @@
             "notes": ""
         },
         {
-            "song_id": 85275,
+            "song_id": 110577,
             "no": "2",
             "key": "D",
             "use_b": false,
@@ -39,6 +39,13 @@
             "song_id": 110541,
             "no": "5",
             "key": "G (+3)",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 87936,
+            "no": "6",
+            "key": "G",
             "use_b": false,
             "notes": ""
         }
