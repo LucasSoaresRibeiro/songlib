@@ -1,0 +1,53 @@
+{
+    "id": "14316",
+    "url": "https://songlib.com/sets/4297/14316/",
+    "title": "Banda 2 - Eric",
+    "notes": "",
+    "date": "19/04/2026",
+    "leader": "",
+    "is_draft": false,
+    "songs": [
+        {
+            "song_id": 90701,
+            "no": "1",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 109495,
+            "no": "2",
+            "key": "E",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 93468,
+            "no": "3",
+            "key": "F#",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 102484,
+            "no": "4",
+            "key": "C",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 96925,
+            "no": "5",
+            "key": "A",
+            "use_b": false,
+            "notes": ""
+        },
+        {
+            "song_id": 96016,
+            "no": "6",
+            "key": "G",
+            "use_b": false,
+            "notes": ""
+        }
+    ]
+}
