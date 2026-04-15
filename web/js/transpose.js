@@ -17,8 +17,7 @@ function transpose(direction) {
     currentSongData['chord_chart'] = transposeChordChart(chordChart, currentSongData['key_accumulation']);
     currentSongData['key'] = direction === 'up' ? formatter.format(parser.parse(currentSongData['key']).transposeUp()): formatter.format(parser.parse(currentSongData['key']).transposeDown());
 
-    const isTranposed = true;
-    createSongContent(currentSongData, isTranposed);
+    createSongContent(currentSongData);
 }
 
 function transposeChordChart(chordChart, steps) {

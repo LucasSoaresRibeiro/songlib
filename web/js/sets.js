@@ -1,152 +1,126 @@
-// Cache for loaded set data
-const setsCache = {};
-// Cache for loaded song data
+// Cache for loaded song data (by string id)
 const songsCache = {};
 
 // Function to toggle between pages
 function initSetNavigation() {
     const songsLink = document.getElementById('songsLink');
     const setsLink = document.getElementById('setsLink');
-    
-    songsLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        updateAppVisibility('landing');
-    });
-    
-    setsLink.addEventListener('click', function(e) {
-        e.preventDefault();
-        updateAppVisibility('sets');
-        // loadAllSets();
-    });
+
+    if (songsLink) {
+        songsLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            updateAppVisibility('landing');
+        });
+    }
+
+    if (setsLink) {
+        setsLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            updateAppVisibility('sets');
+        });
+    }
 }
 
-// Function to load set file names from set_files.txt
-async function loadSetFilesList() {
-    try {
-        const response = await fetch('web/data/set_files.txt');
-        if (!response.ok) {
-            throw new Error('Failed to load set files list');
+/**
+ * Garante que cada id em allSongs exista (fetch GET /musicas/{id} se necessário).
+ */
+async function ensureSongsLoadedForQueue(ids) {
+    for (const raw of ids) {
+        const id = String(raw);
+        if (!allSongs.some(s => String(s.id) === id)) {
+            await loadSongDataForSet(id);
         }
-        
-        const text = await response.text();
-        return text.split('\n')
-            .map(line => line.trim())
-            .filter(line => line.length > 0);
-    } catch (error) {
-        console.error('Error loading set files list:', error);
-        return [];
     }
 }
 
-// Function to load a specific set file
-async function loadSetFile(fileName) {
-    // Check if we already have this set in cache
-    if (setsCache[fileName]) {
-        return setsCache[fileName];
-    }
-    
-    try {
-        const response = await fetch(`sets/${fileName}`);
-        if (!response.ok) {
-            throw new Error(`Failed to load set file: ${fileName}`);
-        }
-        
-        const setData = await response.json();
-        setsCache[fileName] = setData;
-        return setData;
-    } catch (error) {
-        console.error(`Error loading set file ${fileName}:`, error);
-        return null;
-    }
-}
-
-// Function to load song data from songs/[songId].json
+// Function to load song data: cache → allSongs → API
 async function loadSongDataForSet(songId) {
-    // Check cache first
-    if (songsCache[songId]) {
-        return songsCache[songId];
+    const id = String(songId);
+    const existing = allSongs.find(s => String(s.id) === id);
+    if (existing) {
+        songsCache[id] = existing;
+        return existing;
     }
-    
+    if (songsCache[id]) {
+        return songsCache[id];
+    }
+
     try {
-        const response = await fetch(`songs/${songId}.json`);
-        if (!response.ok) {
-            throw new Error(`Failed to load song data for ID: ${songId}`);
+        const cfg = getEigrejaPublicConfig();
+        const body = await fetchMusicaById(cfg, id);
+        const apiSong = body && body.song ? body.song : body;
+        if (!apiSong) {
+            console.error('Resposta sem música para ID:', id);
+            return null;
         }
-        
-        const songData = await response.json();
-        songsCache[songId] = songData;
+        const songData = mapEigrejaSongToEditorSong(apiSong);
+        songsCache[id] = songData;
+        if (!allSongs.some(s => String(s.id) === id)) {
+            allSongs.push(songData);
+        }
         return songData;
     } catch (error) {
-        console.error(`Error loading song data for ID ${songId}:`, error);
+        console.error(`Error loading song data for ID ${id}:`, error);
         return null;
     }
 }
 
-// Function to load all sets
+// Function to load all sets from API pública
 async function loadAllSets() {
     const setsContainer = document.getElementById('setsContainer');
-    setsContainer.innerHTML = '<p>Carregando repertórios...</p>';
-    
-    let setFilesList = await loadSetFilesList();
-    if (setFilesList.length === 0) {
-        setsContainer.innerHTML = '<p>Repertório não encontrado.</p>';
-        return;
-    }
+    if (!setsContainer) return;
 
-    // Eliminate duplicates
-    setFilesList = [...new Set(setFilesList)];
-    
-    // Clear container
-    setsContainer.innerHTML = '';
-    
-    // Load all set files first
-    const setsPromises = setFilesList.map(fileName => loadSetFile(fileName));
-    const setsResults = await Promise.all(setsPromises);
-    
-    // Create an array of objects with set data and file name
-    for (let i = 0; i < setsResults.length; i++) {
-        if (setsResults[i]) {
+    setsContainer.innerHTML = '<p>Carregando repertórios...</p>';
+    setList.length = 0;
+
+    try {
+        const cfg = getEigrejaPublicConfig();
+        const body = await fetchProgramacoes(cfg);
+        const schedules = body && Array.isArray(body.schedules) ? body.schedules : [];
+
+        if (schedules.length === 0) {
+            setsContainer.innerHTML = '<p>Nenhuma programação pública encontrada.</p>';
+            return;
+        }
+
+        setsContainer.innerHTML = '';
+
+        for (const schedule of schedules) {
+            const setData = mapScheduleToSetData(schedule);
+            if (!setData.id) continue;
             setList.push({
-                data: setsResults[i],
-                fileName: setFilesList[i]
+                data: setData,
+                fileName: setData.id
             });
         }
-    }
-    
-    // Sort sets by date in descending order
-    setList.sort((a, b) => {
-        const parseDate = (dateStr) => {
-            if (!dateStr) return new Date(0);
-            const [day, month, year] = dateStr.split('/').map(Number);
-            return new Date(year, month - 1, day);
-        };
 
-        const dateA = parseDate(a.data.date);
-        const dateB = parseDate(b.data.date);
-        return dateB - dateA; // Descending order (newest first)
-    });
-    
-    // Display each set in the sorted order
-    for (const set of setList) {
-        await displaySetCard(setsContainer, set.data, set.fileName);
+        setList.sort((a, b) => {
+            const isoA = a.data.eventDateIso || '';
+            const isoB = b.data.eventDateIso || '';
+            const tA = isoA ? new Date(isoA).getTime() : 0;
+            const tB = isoB ? new Date(isoB).getTime() : 0;
+            return tB - tA;
+        });
+
+        for (const set of setList) {
+            await displaySetCard(setsContainer, set.data, set.fileName);
+        }
+    } catch (error) {
+        console.error('Error loading sets:', error);
+        setsContainer.innerHTML = `<p>Não foi possível carregar as programações. ${error.message || ''}</p>`;
     }
 }
 
 // Function to open a song in the main view
 function openSong(songId) {
-    // Update visibility state
     updateAppVisibility('song');
-    
-    // Update URL to load the song
+
     const url = new URL(window.location);
-    url.searchParams.set('songs', songId);
-    // A LINHA ABAIXO FOI REMOVIDA
-    // url.searchParams.set('chords', 'true');
+    url.searchParams.set('songs', String(songId));
     window.history.pushState({}, '', url);
-    
-    // Trigger the URL change handler defined in app.js
+
     if (typeof handleUrlChange === 'function') {
-        handleUrlChange();
+        void handleUrlChange();
     }
 }
 
@@ -156,22 +130,17 @@ function loadAllSongsInSet(setData) {
         alert('This set has no songs to load.');
         return;
     }
-    
-    // Update visibility state
+
     updateAppVisibility('song');
-    
-    // Update URL to load the set by its ID. We only need the 'set' parameter.
+
     const url = new URL(window.location);
-    url.searchParams.delete('songs'); // Garante que o parâmetro 'songs' seja removido
+    url.searchParams.delete('songs');
     url.searchParams.set('set', setData.id);
-    
-    // O parâmetro 'chords' agora é omitido por padrão (significando true)
-    
+
     window.history.pushState({}, '', url);
-    
-    // Trigger the URL change handler defined in app.js
+
     if (typeof handleUrlChange === 'function') {
-        handleUrlChange();
+        void handleUrlChange();
     }
 }
 
@@ -179,139 +148,127 @@ function loadAllSongsInSet(setData) {
 async function displaySetCard(container, setData, fileName) {
     const setCard = document.createElement('div');
     setCard.className = 'set-card';
-    
-    // Create set header
+
     const setHeader = document.createElement('div');
     setHeader.className = 'set-header';
-    
+
     const titleElement = document.createElement('div');
     titleElement.className = 'set-title';
     titleElement.textContent = setData.title || 'Untitled Set';
-    
-    // Add draft badge if needed
+
     if (setData.is_draft) {
         const draftBadge = document.createElement('span');
         draftBadge.className = 'set-draft-badge';
         draftBadge.textContent = 'Rascunho';
         titleElement.appendChild(draftBadge);
     }
-    
+
     const dateElement = document.createElement('div');
     dateElement.className = 'set-date';
     dateElement.textContent = setData.date || 'No date';
-    
+
     setHeader.appendChild(titleElement);
     setHeader.appendChild(dateElement);
     setCard.appendChild(setHeader);
-    
-    // Add set info if available
+
     if (setData.notes || setData.leader) {
         const infoElement = document.createElement('div');
         infoElement.className = 'set-info';
-        
+
         if (setData.leader) {
             infoElement.textContent = `Líder: ${setData.leader}`;
         }
-        
+
         if (setData.notes) {
             if (setData.leader) infoElement.textContent += ' | ';
             infoElement.textContent += `Notas: ${setData.notes}`;
         }
-        
+
         setCard.appendChild(infoElement);
     }
-    
-    // Add "Load All Songs" button
+
     if (setData.songs && setData.songs.length > 0) {
         const loadButtonContainer = document.createElement('div');
         loadButtonContainer.className = 'set-actions';
-        
+
         const loadButton = document.createElement('button');
         loadButton.className = 'load-set-button';
         loadButton.innerHTML = '<i class="fas fa-music"></i> Carregar Repertório';
         loadButton.title = 'Carregar todas as músicas deste set';
-        
+
         loadButton.addEventListener('click', () => {
             loadAllSongsInSet(setData);
         });
-        
+
         loadButtonContainer.appendChild(loadButton);
         setCard.appendChild(loadButtonContainer);
     }
-    
-    // Add songs list
+
     if (setData.songs && setData.songs.length > 0) {
         const songsContainer = document.createElement('div');
         songsContainer.className = 'set-songs';
-        
-        // Load all song data first
+
         const songPromises = setData.songs.map(song => loadSongDataForSet(song.song_id));
         const songDataList = await Promise.all(songPromises);
-        
+
         setData.songs.forEach((song, index) => {
             const songElement = document.createElement('div');
             songElement.className = 'set-song';
-            
+
             const songInfo = document.createElement('div');
             songInfo.className = 'set-song-info';
-            
-            // Use song title if available, fall back to ID if not
+
             const songData = songDataList[index];
-            const songTitle = songData ? songData.title : `Song ID: ${song.song_id}`;
-            
-            // Create song link
+            const songTitle = songData
+                ? songData.title
+                : song.songTitulo || `Song ID: ${song.song_id}`;
+
             const songLink = document.createElement('a');
             songLink.href = '#';
             songLink.className = 'song-link';
             songLink.innerHTML = `${index + 1}. ${songTitle} <span class="song-key">(Tom: ${song.key})</span>`;
-            
-            // Add click event to open the song
-            songLink.addEventListener('click', (e) => {
+
+            songLink.addEventListener('click', e => {
                 e.preventDefault();
                 openSong(song.song_id);
             });
-            
+
             songInfo.appendChild(songLink);
             songElement.appendChild(songInfo);
-            
+
             if (song.notes) {
                 const songNotes = document.createElement('div');
                 songNotes.className = 'set-song-notes';
                 songNotes.textContent = song.notes;
                 songElement.appendChild(songNotes);
             }
-            
+
             songsContainer.appendChild(songElement);
         });
-        
+
         setCard.appendChild(songsContainer);
     } else {
         const noSongs = document.createElement('p');
         noSongs.textContent = 'No songs in this set.';
         setCard.appendChild(noSongs);
     }
-    
-    // Add file name as data attribute for reference
+
     setCard.dataset.fileName = fileName;
-    
+
     container.appendChild(setCard);
 }
 
 // Function to listen for the back button in song view
 function initBackButtonListener() {
-    document.addEventListener('click', function(e) {
+    document.addEventListener('click', function (e) {
         if (e.target && (e.target.id === 'backToTable' || e.target.closest('#backToTable'))) {
-
-            // if "set" on url, go back to sets
             const url = new URL(window.location);
             if (url.searchParams.get('set')) {
                 updateAppVisibility('sets');
             } else {
-                // if not, go back to landing
                 updateAppVisibility('landing');
             }
 
-            // remove set parameter from url
             url.searchParams.delete('set');
             url.searchParams.delete('songs');
             window.history.pushState({}, '', url);
@@ -319,37 +276,39 @@ function initBackButtonListener() {
     });
 }
 
-// Initialize navigation and back button listener when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     initSetNavigation();
     initBackButtonListener();
 });
 
 function updateKeyAccumulationForSet(songsList) {
-
-    // check if set parameter is present
     const url = new URL(window.location);
     if (!url.searchParams.get('set')) {
         return;
     }
 
-    // get set info
     const setId = url.searchParams.get('set');
-    const set = setList.find(s => s.data.id === setId);
+    const set = setList.find(s => String(s.data.id) === String(setId));
     if (!set) {
         return;
     }
 
-    // update song key accumulation
     for (let i = 0; i < songsList.length; i++) {
         const songId = songsList[i];
-        const songData = allSongs.find(s => s.id === songId);
+        const songData = allSongs.find(s => String(s.id) === String(songId));
         if (songData) {
-            const songSetConfig = set.data.songs.find(s => s.song_id === parseInt(songData.id));
-            if (songSetConfig['key'].match(/\d+/)) {
-                songData['key_accumulation'] = parseInt(songSetConfig['key'].match(/\d+/)[0]);
-                songData['chord_chart'] = transposeChordChart(songData['chord_chart_original'], songData['key_accumulation']);
-                songData['key'] = formatter.format(parser.parse(songData['key']).transpose(songData['key_accumulation']))
+            const songSetConfig = set.data.songs.find(
+                s => String(s.song_id) === String(songData.id)
+            );
+            if (songSetConfig && songSetConfig.key && songSetConfig.key.match(/\d+/)) {
+                songData['key_accumulation'] = parseInt(songSetConfig['key'].match(/\d+/)[0], 10);
+                songData['chord_chart'] = transposeChordChart(
+                    songData['chord_chart_original'],
+                    songData['key_accumulation']
+                );
+                songData['key'] = formatter.format(
+                    parser.parse(songData['key']).transpose(songData['key_accumulation'])
+                );
             } else {
                 songData['key_accumulation'] = 0;
                 songData['chord_chart'] = songData['chord_chart_original'];

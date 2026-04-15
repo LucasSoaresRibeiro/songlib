@@ -1,0 +1,167 @@
+/**
+ * Cliente HTTP e mapeamento API eIgreja → formato interno do editor (SongLib-like).
+ */
+
+function buildEigrejaPublicHeaders(cfg) {
+    const headers = { Accept: 'application/json' };
+    if (cfg.syncApiKey) {
+        headers['x-eigreja-api-key'] = cfg.syncApiKey;
+    }
+    return headers;
+}
+
+function buildEigrejaApiUrl(cfg, pathAfterSlug) {
+    const slug = cfg.churchSlug;
+    if (!slug) {
+        throw new Error('Configure o slug da igreja (churchSlug em eigreja-config.js ou ?church= na URL).');
+    }
+    const base = cfg.apiBase || 'https://eigreja.com/api/public/v1';
+    const segment = pathAfterSlug.replace(/^\/+/, '');
+    return `${base}/${encodeURIComponent(slug)}/${segment}`;
+}
+
+async function fetchPublicJson(url, cfg) {
+    const res = await fetch(url, {
+        method: 'GET',
+        headers: buildEigrejaPublicHeaders(cfg),
+        credentials: 'omit',
+        mode: 'cors'
+    });
+    let body = null;
+    const text = await res.text();
+    try {
+        body = text ? JSON.parse(text) : null;
+    } catch {
+        body = null;
+    }
+    if (!res.ok) {
+        const msgFromBody = body && (body.error || body.message);
+        let msg = msgFromBody || `Erro HTTP ${res.status}`;
+        if (res.status === 401) {
+            msg = 'Chave de API inválida ou ausente (401). Verifique EIGREJA_SYNC_API_KEY / ?syncKey=.';
+        } else if (res.status === 404) {
+            msg = 'Igreja não encontrada ou rota inválida (404). Verifique o slug (?church=).';
+        } else if (res.status === 0 || res.type === 'opaque') {
+            msg = 'Falha de rede ou CORS. Abra o DevTools → Network e confira o domínio da API.';
+        }
+        const err = new Error(msg);
+        err.status = res.status;
+        err.body = body;
+        throw err;
+    }
+    return body;
+}
+
+function linksToUrlString(links) {
+    if (!links || !Array.isArray(links) || links.length === 0) return '';
+    const urls = links.map(l => (l && l.url ? String(l.url).trim() : '')).filter(Boolean);
+    return urls.join('|');
+}
+
+function mapEigrejaSongToEditorSong(apiSong) {
+    const id = String(apiSong.id != null ? apiSong.id : '');
+    const title = apiSong.titulo != null ? String(apiSong.titulo) : '';
+    let author = apiSong.artista != null ? String(apiSong.artista) : '';
+    if (apiSong.interprete) {
+        const interp = String(apiSong.interprete).trim();
+        if (interp) {
+            author = author ? `${author} (${interp})` : interp;
+        }
+    }
+    const key = apiSong.tom != null ? String(apiSong.tom) : '';
+    const time_sig = apiSong.compasso != null ? String(apiSong.compasso) : '';
+
+    let chord_chart = '';
+    const src = apiSong.chordChartSource;
+    if (src && src.type === 'text' && typeof src.value === 'string') {
+        chord_chart = src.value;
+    } else {
+        chord_chart =
+            '[Cifra indisponível neste formato no editor — use o tipo texto no eIgreja ou abra o anexo no site.]';
+    }
+
+    const url = linksToUrlString(apiSong.links);
+
+    const song = {
+        id,
+        title,
+        author,
+        key,
+        time_sig,
+        chord_chart,
+        url,
+        key_original: key,
+        chord_chart_original: chord_chart,
+        key_accumulation: 0
+    };
+    return song;
+}
+
+function parseScheduleSongs(schedule) {
+    const raw = schedule.songs;
+    if (Array.isArray(raw) && raw.length > 0) {
+        return raw.map(slot => ({
+            song_id: String(slot.songId != null ? slot.songId : slot.song_id),
+            key: slot.key != null ? String(slot.key) : '',
+            notes: slot.notes != null ? String(slot.notes) : '',
+            songTitulo: slot.songTitulo != null ? String(slot.songTitulo) : ''
+        }));
+    }
+    const items = schedule.items;
+    if (!Array.isArray(items)) return [];
+    return items
+        .filter(it => it && (it.type === 'song' || it.type === 'musica'))
+        .map(it => ({
+            song_id: String(it.songId != null ? it.songId : it.song_id),
+            key: it.key != null ? String(it.key) : '',
+            notes: it.notes != null ? String(it.notes) : '',
+            songTitulo: it.songTitulo != null ? String(it.songTitulo) : ''
+        }));
+}
+
+function formatEventDateForUi(isoOrStr) {
+    if (!isoOrStr) return '';
+    const d = new Date(isoOrStr);
+    if (Number.isNaN(d.getTime())) return String(isoOrStr);
+    const day = String(d.getDate()).padStart(2, '0');
+    const month = String(d.getMonth() + 1).padStart(2, '0');
+    const year = d.getFullYear();
+    return `${day}/${month}/${year}`;
+}
+
+function mapScheduleToSetData(schedule) {
+    const eventDateIso = schedule.eventDate != null ? String(schedule.eventDate) : '';
+    const songs = parseScheduleSongs(schedule);
+    const title =
+        schedule.name != null
+            ? String(schedule.name)
+            : schedule.title != null
+              ? String(schedule.title)
+              : '';
+    return {
+        id: String(schedule.id != null ? schedule.id : ''),
+        title,
+        date: formatEventDateForUi(eventDateIso),
+        eventDateIso,
+        songs,
+        notes: schedule.notes != null ? String(schedule.notes) : '',
+        leader: schedule.leader != null ? String(schedule.leader) : '',
+        is_draft: !!schedule.isDraft || !!schedule.is_draft
+    };
+}
+
+async function fetchMusicasCatalog(cfg) {
+    const url = `${buildEigrejaApiUrl(cfg, 'musicas')}?limit=${cfg.musicasLimit}`;
+    return fetchPublicJson(url, cfg);
+}
+
+async function fetchMusicaById(cfg, songId) {
+    const id = encodeURIComponent(String(songId));
+    const url = buildEigrejaApiUrl(cfg, `musicas/${id}`);
+    return fetchPublicJson(url, cfg);
+}
+
+async function fetchProgramacoes(cfg) {
+    const url = `${buildEigrejaApiUrl(cfg, 'programacoes')}?limit=${cfg.programacoesLimit}`;
+    return fetchPublicJson(url, cfg);
+}

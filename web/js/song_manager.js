@@ -11,37 +11,47 @@ modal.innerHTML = `
 document.body.appendChild(modal);
 
 async function loadSongData() {
+    const landingPage = document.getElementById('landingPage');
+    let loadingIndicator = null;
     try {
-        // Show loading indicator
-        const landingPage = document.getElementById('landingPage');
-        const loadingIndicator = document.createElement('div');
-        loadingIndicator.className = 'loading-indicator';
-        loadingIndicator.innerHTML = `
+        if (landingPage) {
+            loadingIndicator = document.createElement('div');
+            loadingIndicator.className = 'loading-indicator';
+            loadingIndicator.innerHTML = `
             <div class="loading-spinner"></div>
-            <p>Carregando músicas...</p>
+            <p>Carregando músicas e programações...</p>
         `;
-        landingPage.appendChild(loadingIndicator);
-        
-        // Load songs data
-        await loadAllSongs();
-        
-        // Remove loading indicator after data is loaded
-        loadingIndicator.remove();
+            landingPage.appendChild(loadingIndicator);
+        }
+
+        await Promise.all([loadAllSongs(), loadAllSets()]);
+
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+
+        await handleUrlChange();
     } catch (error) {
         console.error('Error loading song data:', error);
-        // Show error message to user
-        const landingPage = document.getElementById('landingPage');
-        const errorMessage = document.createElement('div');
-        errorMessage.className = 'error-message';
-        errorMessage.innerHTML = `
-            <p>Erro ao carregar as músicas. Por favor, tente novamente.</p>
+        if (loadingIndicator) {
+            loadingIndicator.remove();
+        }
+        const msg =
+            (error && error.message) ||
+            'Erro ao carregar os dados. Verifique o slug da igreja (?church=) e a rede.';
+        if (landingPage) {
+            const errorMessage = document.createElement('div');
+            errorMessage.className = 'error-message';
+            errorMessage.innerHTML = `
+            <p>${msg}</p>
             <button onclick="location.reload()">Recarregar</button>
         `;
-        landingPage.appendChild(errorMessage);
+            landingPage.appendChild(errorMessage);
+        }
     }
 }
 
-async function createSongContent(songData, isTranposed = false) {
+function createSongContent(songData) {
 
     const songContent = document.getElementById('songContent');
     // Clear existing content before displaying new song
@@ -51,8 +61,8 @@ async function createSongContent(songData, isTranposed = false) {
     songContent.style.position = 'relative';
     songContent.style.overflow = 'visible';
     
-    // Hide the landing page (table) when showing a song
-    document.getElementById('landingPage').style.display = 'none';
+    const landingPageEl = document.getElementById('landingPage');
+    if (landingPageEl) landingPageEl.style.display = 'none';
     document.title = `${songData.title} - Músicas Maranata`;
 
     let keyAccumulationLabel = "";
@@ -62,18 +72,28 @@ async function createSongContent(songData, isTranposed = false) {
         keyAccumulationLabel = `(${currentSongData['key_accumulation']})`;
     }
     
+    const refLine = (songData.url || '')
+        .split('|')
+        .map(url => url.trim())
+        .filter(Boolean)
+        .join(', ');
+    const sharePageUrl = typeof getPublicShareUrlForSong === 'function'
+        ? getPublicShareUrlForSong(songData.id)
+        : `${window.location.origin}${window.location.pathname}?songs=${encodeURIComponent(String(songData.id))}`;
+    const waText = `${songData.title}${songData.author ? '\n(' + songData.author + ')' : ''}\n${sharePageUrl}`;
+    const firstVideoUrl = (songData.url || '').split('|')[0].trim();
+
     // Create song header
     const header = document.createElement('div');
     header.innerHTML = `
         <h1>${songData.title}</h1>
         <p class="author">VERSÃO: ${songData.author}</p>
         <p class="time-sig">${songData.time_sig ? `Compasso: ${songData.time_sig}` : ''}</p>
-        <p class="link">REFERÊNCIA: <span>${songData.url.split('|').map(url => url.trim()).join(', ')}</span></p>
+        <p class="link">REFERÊNCIA: <span>${refLine}</span></p>
         <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulationLabel}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
-        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(`${songData.title}${songData.author ? ' \n(' + songData.author : ''})
-https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        ${songData.url ? `<button class="toggle-youtube" onclick="showYoutubeModal('${songData.url.split('|')[0].trim()}')"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
+        <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(waText)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
+        ${firstVideoUrl ? `<button type="button" class="toggle-youtube" onclick="showYoutubeModal(${JSON.stringify(firstVideoUrl)})"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
@@ -106,36 +126,6 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
         }
         createSongContent(currentSongData);
     });
-
-    // Add related songs section if available
-    const songFileName = `${songData.id}.json`;
-    if (songRelationships[songFileName] && songRelationships[songFileName].length > 0) {
-        const relatedSongsContainer = document.createElement('div');
-        relatedSongsContainer.className = 'related-songs';
-        relatedSongsContainer.innerHTML = '<h3>Versões Relacionadas:</h3>';
-        
-        const relatedList = document.createElement('div');
-        relatedList.className = 'related-songs-list';
-        
-        songRelationships[songFileName].forEach(relatedFileName => {
-            const relatedSong = allSongs.find(s => `${s.id}.json` === relatedFileName);
-            if (relatedSong) {
-                const relatedItem = document.createElement('button');
-                relatedItem.className = 'related-song-button';
-                relatedItem.innerHTML = `${relatedSong.title} (${relatedSong.key})`;
-                relatedItem.addEventListener('click', () => {
-                    const url = new URL(window.location);
-                    url.searchParams.set('songs', relatedSong.id);
-                    window.history.pushState({}, '', url);
-                    handleUrlChange();
-                });
-                relatedList.appendChild(relatedItem);
-            }
-        });
-        
-        relatedSongsContainer.appendChild(relatedList);
-        header.appendChild(relatedSongsContainer);
-    }
 
     // Add toggle chords functionality
     const toggleChordsBtn = header.querySelector('#toggleChords');
@@ -200,35 +190,6 @@ https://equipedelouvor.com?songs=${songData.id}`)}', '_blank')"><i class="fas fa
     
     songContent.appendChild(chordChart);
     addSongNavigation();
-
-    // Wait for content to be fully rendered and fonts to load
-    await document.fonts.ready;
-    await new Promise(resolve => setTimeout(resolve, 1000));
-
-    // Get the actual dimensions of the content
-    const contentRect = songContent.getBoundingClientRect();
-    
-    // Generate PDF with content-aware dimensions
-    const opt = {
-        margin: [10, 10, 10, 10],
-        filename: `${songData.title}.pdf`,
-        image: { type: 'jpeg', quality: 1 },
-        html2canvas: { 
-            scale: 2,
-            useCORS: true,
-            logging: true,
-            width: contentRect.width,
-            height: contentRect.height,
-            scrollX: 0,
-            scrollY: -window.scrollY
-        },
-        jsPDF: { 
-            unit: 'pt', 
-            format: [contentRect.width * 2, contentRect.height * 2],
-            orientation: 'portrait',
-            compress: true
-        }
-    };
 }
 
 /**
