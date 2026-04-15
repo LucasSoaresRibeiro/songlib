@@ -32,9 +32,11 @@ async function loadRelatorioDatasetsFromEigreja() {
         };
     }
 
-    const allSetsData = (progBody.schedules || []).map(sch => {
+    const allSetsData = [];
+    for (const sch of progBody.schedules || []) {
         const d = mapScheduleToSetData(sch);
-        return {
+        if (!d.id || !setDataHasSongs(d)) continue;
+        allSetsData.push({
             id: d.id,
             url: '',
             title: d.title,
@@ -50,8 +52,8 @@ async function loadRelatorioDatasetsFromEigreja() {
                 notes: slot.notes || ''
             })),
             it_rained: !!(sch.itRained || sch.it_rained)
-        };
-    });
+        });
+    }
 
     const topWordsData = buildTopWordsFromChordCharts(allSongsData);
     return { allSongsData, allSetsData, topWordsData };

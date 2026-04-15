@@ -88,10 +88,17 @@ async function loadAllSets() {
         for (const schedule of schedules) {
             const setData = mapScheduleToSetData(schedule);
             if (!setData.id) continue;
+            if (!setDataHasSongs(setData)) continue;
             setList.push({
                 data: setData,
                 fileName: setData.id
             });
+        }
+
+        if (setList.length === 0) {
+            setsContainer.innerHTML =
+                '<p>Nenhum repertório com músicas encontrado (programações vazias foram ocultadas).</p>';
+            return;
         }
 
         setList.sort((a, b) => {

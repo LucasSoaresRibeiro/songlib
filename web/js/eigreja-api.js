@@ -150,6 +150,14 @@ function mapScheduleToSetData(schedule) {
     };
 }
 
+/** Programação com pelo menos uma música (slot com `song_id` não vazio). */
+function setDataHasSongs(setData) {
+    if (!setData || !Array.isArray(setData.songs) || setData.songs.length === 0) {
+        return false;
+    }
+    return setData.songs.some(s => s.song_id != null && String(s.song_id).trim() !== '');
+}
+
 async function fetchMusicasCatalog(cfg) {
     const url = `${buildEigrejaApiUrl(cfg, 'musicas')}?limit=${cfg.musicasLimit}`;
     return fetchPublicJson(url, cfg);
