@@ -109,8 +109,49 @@ async function loadAllSets() {
             return tB - tA;
         });
 
+        const todayStart = new Date();
+        todayStart.setHours(0, 0, 0, 0);
+
+        const isTodayOrFuture = (set) => {
+            const iso = set && set.data ? set.data.eventDateIso : '';
+            if (!iso) return false;
+            const d = new Date(iso);
+            if (Number.isNaN(d.getTime())) return false;
+            return d.getTime() >= todayStart.getTime();
+        };
+
+        const upcomingSets = [];
+        const pastSets = [];
+
         for (const set of setList) {
+            if (isTodayOrFuture(set)) upcomingSets.push(set);
+            else pastSets.push(set);
+        }
+
+        for (const set of upcomingSets) {
             await displaySetCard(setsContainer, set.data, set.fileName);
+        }
+
+        if (pastSets.length > 0) {
+            const showMoreWrap = document.createElement('div');
+            showMoreWrap.className = 'sets-show-more';
+
+            const showMoreBtn = document.createElement('button');
+            showMoreBtn.type = 'button';
+            showMoreBtn.className = 'show-more-sets-button';
+            showMoreBtn.textContent = 'Exibir mais';
+
+            showMoreBtn.addEventListener('click', async () => {
+                showMoreBtn.disabled = true;
+                showMoreBtn.textContent = 'Carregando...';
+                for (const set of pastSets) {
+                    await displaySetCard(setsContainer, set.data, set.fileName);
+                }
+                showMoreWrap.remove();
+            });
+
+            showMoreWrap.appendChild(showMoreBtn);
+            setsContainer.appendChild(showMoreWrap);
         }
     } catch (error) {
         console.error('Error loading sets:', error);
