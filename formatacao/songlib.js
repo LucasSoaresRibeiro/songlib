@@ -1,6 +1,6 @@
 //https://songlib.com/sets/4297/*/song/*/
 
-whats_msg = [];
+whats_msg =[];
 
 function YouTubeGetID(url) {
 	try {
@@ -55,12 +55,11 @@ console.log("Aguarde, unindo musicas...");
 var baseUrl = "https://songlib.com/";
 var songs = document.getElementsByClassName("load-song-only");
 
-var songDatas = [];
+var songDatas =[];
 
 // get song properties
 for (let index = 0; index < songs.length; index++) {
     const song = songs[index];
-    // console.log(song.getAttribute("data-ajax-href"));
     const songId = song.getAttribute("data-songid");
 
     var keyElement = song.parentElement.getElementsByTagName("span")[0];
@@ -127,45 +126,96 @@ htmlHeader += "<h2></h2>";
 htmlHeader += '<img width="450px" src="https://static.wixstatic.com/media/a58031_21b005a3dc204ce1aa6e3bd8368e5865~mv2.png">';
 htmlHeader += "</br>";
 
-// CAPA - TITULO REPERTORIO
+// CAPA - TITULO REPERTORIO E WHATSAPP MSG HEADER
 htmlHeader += "<hr></hr>";
 htmlHeader += "<h3>{0}</h3>".format(jsonResponse.set.title);
-whats_msg.push(jsonResponse.set.title);
+whats_msg.push(`*${jsonResponse.set.title}*`);
 
 var date = new Date(jsonResponse.set.date);
-date_str = `${date.getUTCDate()}/${date.getUTCMonth()+1}/${date.getUTCFullYear()}`;
-whats_msg.push(`Data: ${date_str}`);
+date_str = `${("0" + date.getUTCDate()).slice(-2)}/${("0" + (date.getUTCMonth()+1)).slice(-2)}/${date.getUTCFullYear()}`;
+whats_msg.push(`📅 *Data:* ${date_str}`);
 
 htmlHeader+= `<p class='cover-date'>Data: ${date_str}</p>`;
 htmlHeader += "</br>";
-// htmlHeader += "<hr></hr>";
 
-// CAPA - LISTA DE MUSICAS
-// htmlHeader += "<h3>Músicas:</h3>";
+// CAPA - LISTA DE MUSICAS (HTML PREServado)
 for (let index = 0; index < songDatas.length; index++) {
     htmlHeader+= `<p class='cover-music-name'>${songDatas[index].name} - <span class='cover-key'>${songDatas[index].key}</span></p>`;
     if (songDatas[index].linkRef) {
     	songDatas[index].linkRef.split("|").forEach(link =>
     		{
-					htmlHeader+= `<p><a class="cover-link" href="${link}" target="_blank"> </a></p>`;
+					htmlHeader+= `<p><a class="cover-link" href="${link.trim()}" target="_blank"> </a></p>`;
     		}
   		)
     }
-
-    whats_msg.push('');
-    whats_msg.push(`${songDatas[index].name}`);
-    // whats_msg.push(`Tom: ${songDatas[index].key}`);
-    whats_msg.push(`${songDatas[index].linkRef}`);
 }
 
+// --- NOVA LÓGICA DO WHATS_MSG (Formatado, Múltiplos Links e Sem Numeração) ---
+let urlGroups = {};
+let noUrlSongs =[];
+
+songDatas.forEach(song => {
+    let cleanName = song.name;
+    // Exclui o número da música identificando padrões comuns (ex: "1 - ", "02. ", etc)
+    let numMatch = cleanName.match(/^(\d+)[\s\.\-\)]+/);
+    if (numMatch && parseInt(numMatch[1], 10) < 100) {
+        cleanName = cleanName.substring(numMatch[0].length).trim();
+    }
+
+    if (song.linkRef) {
+        // Extrai e limpa os links do separador |
+        let links = song.linkRef.split('|').map(l => l.trim()).filter(l => l);
+        
+        if (links.length > 0) {
+            // Cria uma chave única baseada na combinação de links ordenados
+            let groupKey = links.slice().sort().join('|');
+            if (!urlGroups[groupKey]) {
+                urlGroups[groupKey] = {
+                    songs:[],
+                    links: links // Guarda os links separados em array para listagem visual
+                };
+            }
+            urlGroups[groupKey].songs.push(cleanName);
+        } else {
+            noUrlSongs.push(cleanName);
+        }
+    } else {
+        noUrlSongs.push(cleanName);
+    }
+});
+
+whats_msg.push('');
+
+// Preenche a mensagem listando a música (ou agrupamento) e as múltiplas URLs logo abaixo
+Object.values(urlGroups).forEach(group => {
+    // Une as músicas caso partilhem das mesmíssimas URLs
+    let songNames = [...new Set(group.songs)].join(' / ');
+    whats_msg.push(`*${songNames}*`);
+    
+    // Imprime os links um abaixo do outro
+    group.links.forEach(link => {
+        whats_msg.push(`- ${link}`);
+    });
+    whats_msg.push('');
+});
+
+// Adiciona as músicas que ficaram sem URL
+if (noUrlSongs.length > 0) {
+    let songNames = [...new Set(noUrlSongs)].join(' / ');
+    whats_msg.push(`*${songNames}*`);
+    whats_msg.push(`_Sem URL de referência_`);
+    whats_msg.push('');
+}
+// --- FIM DA LÓGICA DO WHATS_MSG ---
+
 // CAPA - Playlists
-htmlHeader += "<div style='display: flex; justify-content: space-around; align-items: flex-start; margin-top: 10px;'>"; // Flex container for side-by-side QR codes
+htmlHeader += "<div style='display: flex; justify-content: space-around; align-items: flex-start; margin-top: 10px;'>";
 
 // Online Playlist Section
 const setId = window.location.pathname.split('/')[3];
 const onlinePlaylistUrl = `https://equipedelouvor.com/?set=${setId}`;
 
-htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
+htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;page-break-inside: avoid;'>";
 htmlHeader += "<h4 style='margin-bottom: -12px; margin-top: 10px;'>Cifra online:</h4>";
 htmlHeader += "<div style='display: flex; align-items: center;'>";
 htmlHeader += `<img width="100px" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${onlinePlaylistUrl}">`;
@@ -176,7 +226,7 @@ htmlHeader += "</div>";
 // YouTube Playlist Section
 htmlHeader += "<div style='width: 50%; overflow-wrap: break-word;'>";
 htmlHeader += "<h4 style='margin-bottom: -12px; margin-top: 10px;'>Playlist de Referência:</h4>";
-let allVideoIds = [];
+let allVideoIds =[];
 for (let index = 0; index < songDatas.length; index++) {
     if (songDatas[index].linkRef) {
         const links = songDatas[index].linkRef.split("|");
@@ -191,14 +241,14 @@ for (let index = 0; index < songDatas.length; index++) {
 // Remove duplicates
 let uniqueVideoIds = [...new Set(allVideoIds)];
 
-let playlistLink = `http://www.youtube.com/watch_videos?video_ids=${uniqueVideoIds.join(',')}&start_radio=1`;
+let playlistLink = `https://www.youtube.com/watch_videos?video_ids=${uniqueVideoIds.join(',')}&start_radio=1`;
 htmlHeader += "<div style='display: flex; align-items: center;'>";
-htmlHeader += `<img width="100px" style="margin-top: 5px;" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${playlistLink}">`;
+htmlHeader += `<img width="100px" style="margin-top: 5px;" src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(playlistLink)}">`;
 htmlHeader += `<a class="cover-playlist-link" href="${playlistLink}" target="_blank" style="margin-left: 10px;"></a>`;
 htmlHeader += "</div>";
 htmlHeader += "</div>";
 
-htmlHeader += "</div>"; // Closing Flex container
+htmlHeader += "</div>";
 
 // CAPA - Insere HTML
 var htmlObject = document.createElement('div');
@@ -214,9 +264,7 @@ for (let index = 0; index < songDatas.length; index++) {
     var response = httpGet(baseUrl+songDatas[index].url);
 
     response = response.replace("Written by <b>","Versão: ");
-    //console.log(response);
     var jsonResponse = JSON.parse(response);
-    //console.log(jsonResponse.chords.headerHtml);
 
     console.log("Adicionando "+jsonResponse.song.title);
 
@@ -240,11 +288,10 @@ for (let index = 0; index < songDatas.length; index++) {
 
     // REFERENCIA
     if (songDatas[index].linkRef) {
-    	// toneHtmlContent += ` | <span class="link">REFERÊNCIA: <a href="${songDatas[index].linkRef}" target="_blank"></a></span>`;
     	toneHtmlContent += ` | <span class="link">REFERÊNCIA: `;
     	songDatas[index].linkRef.split("|").forEach(link =>
     		{
-					toneHtmlContent+= `<a href="${link}" target="_blank"></a></br>`;
+					toneHtmlContent+= `<a href="${link.trim()}" target="_blank"></a></br>`;
     		}
   		)
 			toneHtmlContent+= `</span>`;
@@ -273,34 +320,29 @@ headingElements.forEach((headingElement) => {
 });
 
 // Ajusta linhas que possuem notação musical
-  // Get all pre elements
-  const preElements = document.getElementsByTagName('pre');
+const preElements = document.getElementsByTagName('pre');
+const musicalNotations = ['𝅘𝅥','𝅘𝅥𝅮'];
 
-  // Musical notation symbols to look for
-  const musicalNotations = ['𝅘𝅥','𝅘𝅥𝅮'];
+Array.from(preElements).forEach(preElement => {
+    const containsNotation = musicalNotations.some(notation =>
+        preElement.textContent.includes(notation)
+    );
 
-  // Convert pre elements to array and iterate through them
-  Array.from(preElements).forEach(preElement => {
-      // Check if the pre element contains any of the musical notations
-      const containsNotation = musicalNotations.some(notation =>
-          preElement.textContent.includes(notation)
-      );
+    if (containsNotation) {
+        preElement.classList.add('music-notation');
+    }
+});
 
-      // If musical notation is found, add the class
-      if (containsNotation) {
-          preElement.classList.add('music-notation');
-      }
-  });
-
-// send whats app message
-whats_url = `https://api.whatsapp.com/send/?phone=12982348140&text=${encodeURI(whats_msg.join('\n'))}&type=phone_number&app_absent=0`;
-console.log(whats_url);
+// Transformação final do Whatsapp MSG em TXT de texto puro para evitar chamadas de API web
+var whats_text = whats_msg.join('\n');
+var blob = new Blob([whats_text], { type: 'text/plain;charset=utf-8' });
+whats_url = URL.createObjectURL(blob);
+console.log("Arquivo de texto gerado para o WhatsApp criado: " + whats_url);
 
 console.log("finalizado!");
-window.print();
+window.open(whats_url, '_blank');
 
-/*
+// Abrindo a nova guia com o texto para copiar no Whatsapp
 setTimeout(function() {
-	window.open(whats_url);
-}, 5000);
-*/
+	window.print();
+}, 2000);

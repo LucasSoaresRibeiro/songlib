@@ -33,6 +33,7 @@ h3 {
     color: #626262 !important;
     line-height: 55px;
     text-transform: uppercase;
+    
 
 }
 
@@ -266,6 +267,7 @@ p {
     object-position: left;
 }
 
+// IMPRESSAO
 @media print {
     h1 {
         page-break-before: always;
@@ -277,7 +279,6 @@ p {
 
     @page {
         size: A4;
-        /* DIN A4 standard, Europe */
         margin: 4mm 15mm 4mm 15mm;
     }
 
@@ -296,3 +297,46 @@ p {
     }
 
 }
+
+// // MOBILE
+// @media print {
+//     h1 {
+//         page-break-before: always;
+//     }
+
+//     // .hasslide {
+//     //     break-inside: avoid;
+//     // }
+    
+// 		pre {
+// 		  /* 1. Preserve formatting & wrap text */
+// 		  white-space: pre-line;       
+		  
+// 		  /* 2. Force long words to break if they overflow the container */
+// 		  word-wrap: break-word;       
+// 		  overflow-wrap: break-word;   
+// 		}
+		
+//     .chords {
+//     	display: none;
+//     }
+
+//     @page {
+//         size: 9cm 19.5cm;
+//         margin: 3mm 2mm 3mm 2mm;
+//     }
+
+//     html,
+//     body {
+//         width: 210mm;
+//         height: 282mm;
+//         font-size: 11px;
+//         background: #FFF;
+//         overflow: visible;
+//     }
+
+//     body {
+//         padding-top: 15mm;
+//     }
+
+// }
