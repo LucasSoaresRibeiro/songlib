@@ -138,6 +138,29 @@ function mapScheduleToSetData(schedule) {
             : schedule.title != null
               ? String(schedule.title)
               : '';
+
+    // Campos opcionais (variam conforme versão/shape do payload)
+    const equipeNome =
+        schedule.equipeNome != null
+            ? String(schedule.equipeNome)
+            : schedule.equipe?.nome != null
+              ? String(schedule.equipe.nome)
+              : schedule.teamName != null
+                ? String(schedule.teamName)
+                : schedule.team?.name != null
+                  ? String(schedule.team.name)
+                  : '';
+
+    const dirigenteNome =
+        schedule.dirigenteNome != null
+            ? String(schedule.dirigenteNome)
+            : schedule.dirigente?.nome != null
+              ? String(schedule.dirigente.nome)
+              : schedule.leaderName != null
+                ? String(schedule.leaderName)
+                : schedule.leader != null
+                  ? String(schedule.leader)
+                  : '';
     return {
         id: String(schedule.id != null ? schedule.id : ''),
         title,
@@ -146,6 +169,8 @@ function mapScheduleToSetData(schedule) {
         songs,
         notes: schedule.notes != null ? String(schedule.notes) : '',
         leader: schedule.leader != null ? String(schedule.leader) : '',
+        equipeNome,
+        dirigenteNome,
         is_draft: !!schedule.isDraft || !!schedule.is_draft
     };
 }

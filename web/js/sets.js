@@ -219,18 +219,16 @@ async function displaySetCard(container, setData, fileName) {
     setHeader.appendChild(dateElement);
     setCard.appendChild(setHeader);
 
-    if (setData.notes || setData.leader) {
+    if (setData.notes || setData.leader || setData.equipeNome || setData.dirigenteNome) {
         const infoElement = document.createElement('div');
         infoElement.className = 'set-info';
 
-        if (setData.leader) {
-            infoElement.textContent = `Líder: ${setData.leader}`;
-        }
-
-        if (setData.notes) {
-            if (setData.leader) infoElement.textContent += ' | ';
-            infoElement.textContent += `Notas: ${setData.notes}`;
-        }
+        const parts = [];
+        if (setData.equipeNome) parts.push(`Equipe: ${setData.equipeNome}`);
+        if (setData.dirigenteNome) parts.push(`Dirigente: ${setData.dirigenteNome}`);
+        if (setData.leader && !setData.dirigenteNome) parts.push(`Líder: ${setData.leader}`);
+        if (setData.notes) parts.push(`Notas: ${setData.notes}`);
+        infoElement.textContent = parts.join(' | ');
 
         setCard.appendChild(infoElement);
     }
