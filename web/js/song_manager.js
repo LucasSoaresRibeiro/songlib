@@ -10,6 +10,39 @@ modal.innerHTML = `
 `;
 document.body.appendChild(modal);
 
+/**
+ * Filtros CSS no elemento html ou no container do YouTube impedem o carregamento ou a exibição
+ * do vídeo em iframes no Safari antigo (iPad). Guardamos e removemos enquanto o modal está aberto.
+ */
+var _youtubeModalSavedFilters = null;
+
+function suspendFiltersForYoutubeEmbed() {
+    if (_youtubeModalSavedFilters !== null) {
+        return;
+    }
+    var container = document.getElementById('youtube-container');
+    _youtubeModalSavedFilters = {
+        html: document.documentElement.style.filter || '',
+        container: container ? container.style.filter || '' : ''
+    };
+    document.documentElement.style.filter = '';
+    if (container) {
+        container.style.filter = '';
+    }
+}
+
+function restoreYoutubeModalFilters() {
+    if (_youtubeModalSavedFilters === null) {
+        return;
+    }
+    document.documentElement.style.filter = _youtubeModalSavedFilters.html;
+    var container = document.getElementById('youtube-container');
+    if (container) {
+        container.style.filter = _youtubeModalSavedFilters.container;
+    }
+    _youtubeModalSavedFilters = null;
+}
+
 async function loadSongData() {
     const landingPage = document.getElementById('landingPage');
     let loadingIndicator = null;
@@ -435,25 +468,48 @@ function showYoutubeModal(url) {
             urlObj.searchParams.get('start') ||
             urlObj.searchParams.get('time_continue'));
     const startSeconds = tParam ? String(tParam).replace(/[^0-9]/g, '') : '';
-    const startTime = startSeconds ? `?start=${startSeconds}` : '';
 
     const container = document.getElementById('youtube-container');
-    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}${startTime}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+    suspendFiltersForYoutubeEmbed();
+
+    const embedQs = ['playsinline=1', 'rel=0', 'modestbranding=1'];
+    if (startSeconds) {
+        embedQs.unshift('start=' + encodeURIComponent(startSeconds));
+    }
+    const embedSrc =
+        'https://www.youtube.com/embed/' +
+        encodeURIComponent(videoId) +
+        '?' +
+        embedQs.join('&');
+
+    container.innerHTML = '';
+    const iframe = document.createElement('iframe');
+    iframe.width = 320;
+    iframe.height = 180;
+    iframe.setAttribute('frameborder', '0');
+    iframe.setAttribute('allowfullscreen', 'allowfullscreen');
+    iframe.setAttribute('webkitallowfullscreen', 'webkitallowfullscreen');
+    iframe.setAttribute('mozallowfullscreen', 'mozallowfullscreen');
+    iframe.src = embedSrc;
+    container.appendChild(iframe);
 
     const modal = document.getElementById('youtubeModal');
     modal.style.display = 'block';
 
-    // Close modal when clicking the close button or outside the modal
-    const closeBtn = modal.querySelector('.close-button');
-    closeBtn.onclick = () => {
+    function closeYoutubeModal() {
         modal.style.display = 'none';
         container.innerHTML = '';
+        restoreYoutubeModalFilters();
+    }
+
+    const closeBtn = modal.querySelector('.close-button');
+    closeBtn.onclick = function () {
+        closeYoutubeModal();
     };
 
-    window.onclick = (event) => {
+    window.onclick = function (event) {
         if (event.target === modal) {
-            modal.style.display = 'none';
-            container.innerHTML = '';
+            closeYoutubeModal();
         }
     };
 }

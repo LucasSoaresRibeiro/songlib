@@ -32,6 +32,9 @@ function updateAppVisibility(view, options = {}) {
         modal.style.display = 'none';
         const container = document.getElementById('youtube-container');
         if (container) container.innerHTML = '';
+        if (typeof restoreYoutubeModalFilters === 'function') {
+            restoreYoutubeModalFilters();
+        }
     }
     
     // Update visibility based on view
@@ -304,6 +307,9 @@ function addSongNavigation() {
                     modal.style.display = 'none';
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
+                    if (typeof restoreYoutubeModalFilters === 'function') {
+                        restoreYoutubeModalFilters();
+                    }
                 }
                 currentSongData = song;
                 createSongContent(currentSongData);
@@ -336,6 +342,9 @@ function addSongNavigation() {
                     modal.style.display = 'none';
                     const container = document.getElementById('youtube-container');
                     if (container) container.innerHTML = '';
+                    if (typeof restoreYoutubeModalFilters === 'function') {
+                        restoreYoutubeModalFilters();
+                    }
                 }
                 currentSongData = song;
                 createSongContent(currentSongData);

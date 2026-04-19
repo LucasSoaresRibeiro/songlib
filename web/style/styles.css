@@ -344,6 +344,9 @@ p {
     width: 320px;
     height: 180px;
     border-radius: 8px;
+    /* Evita composição em branco do vídeo com WebKit antigo (iframe + camadas GPU) */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
 }
 /* Related Songs Styles */
 .related-songs {
