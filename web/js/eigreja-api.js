@@ -31,7 +31,7 @@ async function fetchPublicJson(url, cfg) {
     const text = await res.text();
     try {
         body = text ? JSON.parse(text) : null;
-    } catch {
+    } catch (e) {
         body = null;
     }
     if (!res.ok) {
@@ -71,7 +71,7 @@ function eigrejaMusicaResponseToApiSong(body) {
     const topLinks = body.links;
     const hasSongLinks = Array.isArray(song.links) && song.links.length > 0;
     if (!hasSongLinks && Array.isArray(topLinks) && topLinks.length > 0) {
-        return { ...song, links: topLinks };
+        return Object.assign({}, song, { links: topLinks });
     }
     return song;
 }
@@ -164,22 +164,25 @@ function mapScheduleToSetData(schedule) {
               : '';
 
     // Campos opcionais (variam conforme versão/shape do payload)
-    const equipeNome =
+    var equipeObj = schedule.equipe;
+    var teamObj = schedule.team;
+    var equipeNome =
         schedule.equipeNome != null
             ? String(schedule.equipeNome)
-            : schedule.equipe?.nome != null
-              ? String(schedule.equipe.nome)
+            : equipeObj && equipeObj.nome != null
+              ? String(equipeObj.nome)
               : schedule.teamName != null
                 ? String(schedule.teamName)
-                : schedule.team?.name != null
-                  ? String(schedule.team.name)
+                : teamObj && teamObj.name != null
+                  ? String(teamObj.name)
                   : '';
 
-    const dirigenteNome =
+    var dirObj = schedule.dirigente;
+    var dirigenteNome =
         schedule.dirigenteNome != null
             ? String(schedule.dirigenteNome)
-            : schedule.dirigente?.nome != null
-              ? String(schedule.dirigente.nome)
+            : dirObj && dirObj.nome != null
+              ? String(dirObj.nome)
               : schedule.leaderName != null
                 ? String(schedule.leaderName)
                 : schedule.leader != null

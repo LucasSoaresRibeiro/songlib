@@ -352,8 +352,9 @@ function updateKeyAccumulationForSet(songsList) {
                     songData['chord_chart_original'],
                     songData['key_accumulation']
                 );
-                songData['key'] = formatter.format(
-                    parser.parse(songData['key']).transpose(songData['key_accumulation'])
+                songData['key'] = transposeKeyString(
+                    songData['key_original'],
+                    songData['key_accumulation']
                 );
             } else {
                 songData['key_accumulation'] = 0;

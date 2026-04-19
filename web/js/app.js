@@ -154,7 +154,7 @@ function displaySongsTable(songs) {
     if (noResults) noResults.style.display = 'none';
     
     // Sort songs alphabetically by title
-    const sortedSongs = [...songs].sort((a, b) => {
+    const sortedSongs = songs.slice().sort((a, b) => {
         return a.title.localeCompare(b.title, 'pt-BR');
     });
     

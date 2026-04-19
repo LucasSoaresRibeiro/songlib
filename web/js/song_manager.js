@@ -211,7 +211,7 @@ function exportLyricsToWhatsApp() {
         const trimmed = line.trim();
         if (trimmed === '') {
             const last = items[items.length - 1];
-            if (last?.type === 'lyrics' && last.lines.length > 0) {
+            if (last && last.type === 'lyrics' && last.lines.length > 0) {
                 last.lines.push('');
             }
             return;
@@ -225,9 +225,9 @@ function exportLyricsToWhatsApp() {
             return;
         }
 
-        const lyricText = line.trimStart().toUpperCase();
+        const lyricText = line.replace(/^\s+/, '').toUpperCase();
         const last = items[items.length - 1];
-        if (last?.type === 'lyrics') {
+        if (last && last.type === 'lyrics') {
             last.lines.push(lyricText);
         } else {
             items.push({ type: 'lyrics', lines: [lyricText] });
@@ -248,7 +248,7 @@ function exportLyricsToWhatsApp() {
     items.forEach(item => {
         if (item.type === 'heading') {
             parts.push(`*${item.name} ---------*`);
-        } else if (item.type === 'lyrics' && item.lines?.length > 0) {
+        } else if (item.type === 'lyrics' && item.lines && item.lines.length > 0) {
             const text = item.lines.join('\n').trim();
             if (text) {
                 parts.push(text);
@@ -260,6 +260,21 @@ function exportLyricsToWhatsApp() {
     const fullText = parts.join('\n').replace(/\n{3,}/g, '\n\n').trim();
     const waUrl = `https://wa.me/?text=${encodeURIComponent(fullText)}`;
     window.open(waUrl, '_blank');
+}
+
+function copyTextWithExecCommand(text) {
+    var ta = document.createElement('textarea');
+    ta.value = text;
+    ta.setAttribute('readonly', '');
+    ta.style.position = 'fixed';
+    ta.style.left = '-9999px';
+    document.body.appendChild(ta);
+    ta.select();
+    try {
+        return document.execCommand('copy');
+    } finally {
+        document.body.removeChild(ta);
+    }
 }
 
 /**
@@ -306,7 +321,10 @@ async function shareChordChart(event) {
         });
 
         const formattedText = formattedLines.join('\n');
-        const button = event?.target?.closest('.toggle-copy-chords') || document.querySelector('.toggle-copy-chords');
+        var evTarget = event && event.target;
+        var button =
+            (evTarget && evTarget.closest && evTarget.closest('.toggle-copy-chords')) ||
+            document.querySelector('.toggle-copy-chords');
         
         // Try Web Share API first (works on mobile devices)
         if (navigator.share) {
@@ -335,8 +353,12 @@ async function shareChordChart(event) {
             }
         }
         
-        // Fallback to clipboard copy
-        await navigator.clipboard.writeText(formattedText);
+        // Fallback to clipboard copy (API moderna ou execCommand em Safari antigo)
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            await navigator.clipboard.writeText(formattedText);
+        } else if (!copyTextWithExecCommand(formattedText)) {
+            throw new Error('Clipboard indisponível');
+        }
         
         // Show feedback to user
         if (button) {
@@ -364,7 +386,7 @@ function extractYoutubeVideoId(rawUrl) {
     let urlObj;
     try {
         urlObj = new URL(s);
-    } catch {
+    } catch (e) {
         return '';
     }
     const host = urlObj.hostname.toLowerCase();
@@ -394,7 +416,7 @@ function showYoutubeModal(url) {
         if (!/^https?:\/\//i.test(s)) s = `https://${s}`;
         try {
             return new URL(s);
-        } catch {
+        } catch (e) {
             return null;
         }
     })();

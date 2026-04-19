@@ -7,7 +7,7 @@ function YouTubeGetID(url) {
 	   url = url.split(/(vi\/|v=|\/v\/|youtu\.be\/|\/embed\/)/);
 	   return (url[2] !== undefined) ? url[2].split(/[^0-9a-z_\-]/i)[0] : url[0];
 	}
-   catch {
+   catch (e) {
    	return null;
    }
 }
@@ -84,19 +84,22 @@ for (let index = 0; index < songs.length; index++) {
 		thElements.forEach((thElement) => {
 			if (thElement.textContent.trim() === 'URL') {
 			    tdElementUrl = thElement.nextElementSibling;
-			    linkRef = tdElementUrl.firstChild?.href ? tdElementUrl.firstChild?.href : null;
+			    var fc0 = tdElementUrl.firstChild;
+			    linkRef = fc0 && fc0.href ? fc0.href : null;
 			}
 			if (thElement.textContent.trim() === 'Time sig') {
 				tdElementUrl = thElement.nextElementSibling;
-		    	timeSig = tdElementUrl.firstChild?.textContent ? tdElementUrl.firstChild?.textContent : null;
+		    	var fc1 = tdElementUrl.firstChild;
+		    	timeSig = fc1 && fc1.textContent ? fc1.textContent : null;
 			}
 			if (thElement.textContent.trim() === 'Notes') {
 				tdElementUrl = thElement.nextElementSibling;
-		    	notes = tdElementUrl.firstChild?.textContent ? tdElementUrl.firstChild?.textContent : null;
+		    	var fc2 = tdElementUrl.firstChild;
+		    	notes = fc2 && fc2.textContent ? fc2.textContent : null;
 			}
 		});
 
-    } catch {
+    } catch (e) {
 
     }
 
