@@ -93,7 +93,7 @@ function createSongContent(songData) {
         <p class="author key">Tom: <span id="song-key">${songData.key} ${keyAccumulationLabel}</span></p>
         <button id="toggleChords" class="toggle-chords"><i class="fas fa-guitar"></i>${chordsVisible ? 'Ocultar' : 'Mostrar'} Acordes</button>
         <button class="toggle-share whatsapp-share" onclick="window.open('https://wa.me/?text=${encodeURIComponent(waText)}', '_blank')"><i class="fas fa-share-alt"></i> Compartilhar</button>
-        ${firstVideoUrl ? `<button type="button" class="toggle-youtube" onclick="showYoutubeModal(${JSON.stringify(firstVideoUrl)})"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
+        ${firstVideoUrl ? `<button type="button" class="toggle-youtube"><i class="fab fa-youtube"></i> YouTube</button>` : ''}
         <button id="transposeUp" class="toggle-chords transpose-btn"><i class="fas fa-arrow-up"></i> Subir Tom</button>
         <button id="transposeDown" class="toggle-chords transpose-btn"><i class="fas fa-arrow-down"></i> Descer Tom</button>
         <button id="resetKey" class="toggle-chords transpose-btn"><i class="fas fa-undo"></i> Tom Original</button>
@@ -102,6 +102,11 @@ function createSongContent(songData) {
         <button class="toggle-copy-chords" onclick="shareChordChart(event)" title="Compartilhar cifras e letras"><i class="fas fa-share-alt"></i> Compartilhar Cifras</button>
     `;
     songContent.appendChild(header);
+
+    const youtubeBtn = header.querySelector('.toggle-youtube');
+    if (youtubeBtn && firstVideoUrl) {
+        youtubeBtn.addEventListener('click', () => showYoutubeModal(firstVideoUrl));
+    }
 
     // Scroll to top of page
     window.scrollTo(0, 0);
@@ -349,26 +354,70 @@ async function shareChordChart(event) {
     }
 }
 
+function extractYoutubeVideoId(rawUrl) {
+    if (!rawUrl || typeof rawUrl !== 'string') return '';
+    let s = rawUrl.trim();
+    if (!s) return '';
+    if (!/^https?:\/\//i.test(s)) {
+        s = `https://${s}`;
+    }
+    let urlObj;
+    try {
+        urlObj = new URL(s);
+    } catch {
+        return '';
+    }
+    const host = urlObj.hostname.toLowerCase();
+    const parts = urlObj.pathname.split('/').filter(Boolean);
+
+    if (host === 'youtu.be' || host.endsWith('.youtu.be')) {
+        const id = parts[0] || '';
+        return id.split('?')[0] || '';
+    }
+
+    if (host.includes('youtube.com') || host.includes('youtube-nocookie.com')) {
+        const v = urlObj.searchParams.get('v');
+        if (v) return v;
+        const seg = parts[0];
+        if ((seg === 'embed' || seg === 'shorts' || seg === 'live' || seg === 'v') && parts[1]) {
+            return parts[1].split('?')[0];
+        }
+    }
+    return '';
+}
+
 // Function to show YouTube modal
 function showYoutubeModal(url) {
-    const urlObj = new URL(url);
-    let videoId;
-    
-    if (urlObj.hostname.includes('youtube.com')) {
-        videoId = urlObj.searchParams.get('v');
-    } else if (urlObj.hostname.includes('youtu.be')) {
-        videoId = urlObj.pathname.substring(1);
+    const urlObj = (() => {
+        let s = (url || '').trim();
+        if (!s) return null;
+        if (!/^https?:\/\//i.test(s)) s = `https://${s}`;
+        try {
+            return new URL(s);
+        } catch {
+            return null;
+        }
+    })();
+
+    const videoId = extractYoutubeVideoId(url);
+    if (!videoId) {
+        if (url && /^https?:\/\//i.test(url.trim())) {
+            window.open(url.trim(), '_blank', 'noopener,noreferrer');
+        }
+        return;
     }
-    
-    if (!videoId) return;
-    
-    // Get additional parameters
-    const t = urlObj.searchParams.get('t');
-    const startTime = t ? `?start=${t.replace(/[^0-9]/g, '')}` : '';
+
+    const tParam =
+        urlObj &&
+        (urlObj.searchParams.get('t') ||
+            urlObj.searchParams.get('start') ||
+            urlObj.searchParams.get('time_continue'));
+    const startSeconds = tParam ? String(tParam).replace(/[^0-9]/g, '') : '';
+    const startTime = startSeconds ? `?start=${startSeconds}` : '';
 
     const container = document.getElementById('youtube-container');
-    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${videoId}${startTime}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
-    
+    container.innerHTML = `<iframe width="320" height="180" src="https://www.youtube.com/embed/${encodeURIComponent(videoId)}${startTime}" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>`;
+
     const modal = document.getElementById('youtubeModal');
     modal.style.display = 'block';
 

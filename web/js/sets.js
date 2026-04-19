@@ -48,7 +48,7 @@ async function loadSongDataForSet(songId) {
     try {
         const cfg = getEigrejaPublicConfig();
         const body = await fetchMusicaById(cfg, id);
-        const apiSong = body && body.song ? body.song : body;
+        const apiSong = eigrejaMusicaResponseToApiSong(body);
         if (!apiSong) {
             console.error('Resposta sem música para ID:', id);
             return null;

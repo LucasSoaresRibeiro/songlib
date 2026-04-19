@@ -52,9 +52,33 @@ async function fetchPublicJson(url, cfg) {
     return body;
 }
 
+function eigrejaLinkEntryUrl(entry) {
+    if (!entry || typeof entry !== 'object') return '';
+    const u = entry.url != null ? String(entry.url).trim() : '';
+    if (u) return u;
+    const h = entry.href != null ? String(entry.href).trim() : '';
+    return h || '';
+}
+
+/**
+ * Catálogo: cada item em `songs` inclui `links` na própria música.
+ * Detalhe GET /musicas/{id}: `links` vem no JSON raiz ao lado de `song`.
+ */
+function eigrejaMusicaResponseToApiSong(body) {
+    if (!body || typeof body !== 'object') return null;
+    const song = body.song != null ? body.song : body;
+    if (!song || typeof song !== 'object') return null;
+    const topLinks = body.links;
+    const hasSongLinks = Array.isArray(song.links) && song.links.length > 0;
+    if (!hasSongLinks && Array.isArray(topLinks) && topLinks.length > 0) {
+        return { ...song, links: topLinks };
+    }
+    return song;
+}
+
 function linksToUrlString(links) {
     if (!links || !Array.isArray(links) || links.length === 0) return '';
-    const urls = links.map(l => (l && l.url ? String(l.url).trim() : '')).filter(Boolean);
+    const urls = links.map(l => eigrejaLinkEntryUrl(l)).filter(Boolean);
     return urls.join('|');
 }
 
